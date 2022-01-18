@@ -11,12 +11,15 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/header.jsp"></jsp:include>
-
+<br/>
 <h1><fmt:message bundle="${loc}" key="local.personal.cabinet.title" /></h1>
 
 
 
 <c:if test="${role='PHARMACIST'}">
+<a href="/pharmacy/controller?command=GO_TO_MEDICINE_FORM">Med form</a>
+<br/>
+
 <table>
 <tr>
 <td>orderNumber</td>
@@ -26,13 +29,14 @@
 <td>amount</td>
 <td>orderStatus</td>
 <td>paymentStatus</td>
-
-
+<td>orderEntries</td>
 </tr>
+
 <c:forEach var = "order" items="${ordersAdmin}">
     <tr>
         <td><c:out value = "${order.orderNumber}"/> </td>
         <td> <c:out value="${order.client}"/> </td>
+         <c:out value="${medicine.medicineExpirationDate}" />
         <td> <fmt:formatDate pattern="yyyy-MM-dd" value="${order.deliveryTime.getTime()}" /> </td>
         <td> <c:out value="${order.pharmacist}"/> </td>
         <td> <c:out value="${order.amount}"/> </td>
@@ -40,13 +44,16 @@
         <td> <c:out value="${order.paymentStatus}" /> </td>
     </tr>
 </c:forEach>
-
 </table>
 </c:if>
 
-<a href="/pharmacy/controller?command=GO_TO_MEDICINE_FORM">Med form</a>
+
+
+
+<c:if test="${role='DOCTOR'}">
 <a href="/pharmacy/controller?command=GO_TO_PRESCRIPTION_PAGE">Prescription form</a>
 
+</c:if>
 
 
 </body>

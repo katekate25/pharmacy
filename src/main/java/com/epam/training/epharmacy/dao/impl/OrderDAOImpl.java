@@ -18,7 +18,7 @@ import static com.epam.training.epharmacy.dao.constant.DaoConstants.*;
 public class OrderDAOImpl extends AbstractEntityDAO implements OrderDAO {
 
     private static final String ADD_ORDER_SQL =
-            "INSERT INTO orders ( clients_id, order_status, pharmacist_id, payment_status, delivery_time )" +
+            "INSERT INTO orders ( clients_id, order_status, pharmacists_id, payment_status, delivery_time )" +
                     "VALUES ((SELECT id FROM users WHERE login = ?), ?, ?, ?, ? )";
     private static final String UPDATE_ORDER_SQL = "UPDATE orders SET delivery_time = ?, payment_status =?, pharmacists_id=? WHERE number = ?";
     private static final String SELECT_FROM_ORDER_PREFIX = "SELECT number, clients_id, delivery_time, " +
@@ -93,10 +93,10 @@ public class OrderDAOImpl extends AbstractEntityDAO implements OrderDAO {
             connection = ConnectionPool.getInstance().takeConnection();
             statement = connection.prepareStatement(ADD_ORDER_SQL, statement.RETURN_GENERATED_KEYS);
             statement.setString(1, order.getClient().getLogin());
-            statement.setString(2, String.valueOf(order.getOrderStatus()));
-            statement.setString(3, order.getPharmacist().getLogin());
-            statement.setString(4, String.valueOf(order.getPaymentStatus()));
-            statement.setDate(5,new Date(order.getDeliveryTime().getTime()));
+            statement.setString(2, order.getOrderStatus() != null ? order.getOrderStatus().toString() : null);
+            statement.setString(3, order.getPharmacist() != null ? order.getPharmacist().getLogin() : null);
+            statement.setString(4, order.getPaymentStatus() != null ? order.getPaymentStatus().toString() : null);
+            statement.setDate(5,  order.getDeliveryTime() != null ? new Date(order.getDeliveryTime().getTime()) : null);
 
             statement.executeUpdate();
             createOrderEntries(order.getOrderEntries());

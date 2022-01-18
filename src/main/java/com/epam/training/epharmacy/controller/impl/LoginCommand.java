@@ -38,10 +38,11 @@ public class LoginCommand implements Command {
                 String userName = user.getFullName();
                 int userId = user.getId();
                 String role = user.getUserRole().toString();
+                String userLogin = user.getLogin();
                 session.setAttribute("username", req.getParameter("userName"));
                 session.setAttribute("userid", req.getParameter("userId"));
                 session.setAttribute("role", req.getParameter("role"));
-                session.setAttribute("login", req.getParameter("login"));
+                session.setAttribute("login", req.getParameter("userLogin"));
                 resp.sendRedirect(req.getContextPath() + "/controller?command=GO_TO_MAIN_PAGE");
             } else {
                 resp.sendRedirect(req.getContextPath() + "/controller?command=GO_TO_LOGIN_PAGE&wrongUser=true");

@@ -85,9 +85,9 @@ public class MedicinesServiceImpl implements MedicinesService {
         DAOFactory factory = DAOFactory.getInstance();
         MedicineDAO medicineDAO = factory.getMedicineDAO();
         try {
-            return medicineDAO.showMedicineList();
+            return medicineDAO.findMedicineByCriteria(new Criteria<>());
 
-        } catch (DAOException | SQLException e){
+        } catch (DAOException e){
             // TODO log exception
             throw  new ServiceException(e);
         }

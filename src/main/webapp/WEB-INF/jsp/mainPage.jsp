@@ -10,7 +10,7 @@
 <body>
 
 <jsp:include page="/WEB-INF/jsp/header.jsp"></jsp:include>
-
+<br />
 <h1><fmt:message bundle="${loc}" key="local.greeting.main.page" /></h1>
 <br />
 
@@ -18,12 +18,12 @@
     Hello, <c:out value="${user.fullName}" />
 </c:if>
 
-<br />
-<a href="/pharmacy/controller?command=GO_TO_CATALOG"><fmt:message bundle="${loc}" key="local.catalog" /></a>
-<br />
-<a href="/pharmacy/controller?command=GO_TO_PERSONAL_CABINET"><fmt:message bundle="${loc}" key="local.personal.cabinet" /></a>
-<br/>
-<a href="/pharmacy/controller?command=SHOW_DOCTORS">Список врачей</a>
+<c:if test="${accessDenied}">
+   Access Denied />
+</c:if>
+
+
+
 
 </body>
 </html>

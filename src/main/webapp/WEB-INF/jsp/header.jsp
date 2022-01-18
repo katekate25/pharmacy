@@ -15,36 +15,34 @@
 <form action="/pharmacy/controller" method="post">
  <input type="hidden" name="command" value="localization" />
   <input type="hidden" name="local" value="ru" />
- <input type="submit" value="${ru_button}" />
+ <input type="submit" value="${ru_button}" /> <br>
 </form>
 
 <form action="/pharmacy/controller" method="post">
  <input type="hidden" name="command" value="localization" />
   <input type="hidden" name="local" value="en" />
- <input type="submit" value="${en_button}" /> <br />
+ <input type="submit" value="${en_button}" /> <br>
 </form>
 
 
 
 <c:if test="${not empty user}">
     Hello, <c:out value="${user.fullName}" />
-    <form action = "/pharmacy/controller" method = "post">
-    <input type="hidden" name="command" value="Logout">
-    <input type="submit" value="Logout" />
-    </form>
+    <a href="/pharmacy/controller?command=Logout">Logout</a>
 
-    <form action = "/pharmacy/controller" method = "post">
-        <input type="hidden" name="command" value="GO_TO_CART">
-        <input type="submit" value="Cart" />
-        </form>
+    <a href="/pharmacy/controller?command=GO_TO_CART">Cart</a>
+
+    <a href="/pharmacy/controller?command=GO_TO_PERSONAL_CABINET">To Personal Cabinet</a> <br>
 </c:if>
 
-<c:if test="${not empty user}">
-  <form action = "/pharmacy/controller" method = "post">
-        <input type="hidden" name="command" value="GO_TO_LOGIN_PAGE">
-        <input type="submit" value="Sign in" />
-  </form>
+<c:if test="${empty user}">
+<a href="/pharmacy/controller?command=GO_TO_REGISTRATION_PAGE"><fmt:message bundle="${loc}" key="local.registration.link" /></a>
+<a href="/pharmacy/controller?command=GO_TO_LOGIN_PAGE"><fmt:message bundle="${loc}" key="local.logination.link" /></a>
 </c:if>
+
+<a href="/pharmacy/controller?command=GO_TO_MAIN_PAGE">To Main Page</a>
+<a href="/pharmacy/controller?command=GO_TO_CATALOG"><fmt:message bundle="${loc}" key="local.catalog" /></a>
+<a href="/pharmacy/controller?command=SHOW_DOCTORS">Список врачей</a>
 
 
 </body>

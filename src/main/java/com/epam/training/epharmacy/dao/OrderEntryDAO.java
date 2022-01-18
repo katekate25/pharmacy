@@ -19,8 +19,6 @@ public interface OrderEntryDAO {
     void updateOrderEntry(OrderEntry orderEntry) throws DAOException;
 
     List<OrderEntry> findEntryByOrderStatus () throws DAOException;
-
-    List<OrderEntry> showEntries () throws DAOException, SQLException;
 }
 
 

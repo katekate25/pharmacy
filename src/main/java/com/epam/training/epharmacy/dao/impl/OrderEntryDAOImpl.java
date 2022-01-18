@@ -23,7 +23,6 @@ public class OrderEntryDAOImpl extends AbstractEntityDAO implements OrderEntryDA
                     "VALUES ((SELECT number FROM orders WHERE number = ?), (SELECT id FROM medicines WHERE serial_number = ?), ? )";
     private static final String UPDATE_ORDER_ENTRY_SQL = "UPDATE order_entry SET package_amount = ? WHERE order_number = ?";
     private static final String DELETE_ORDER_ENTRY_SQL = "DELETE FROM order_entry WHERE order_number = ?";
-    private static final String SHOW_ENTRY_LIST_SQL = "SELECT * FROM order_entry";
 
     private MedicineDAO medicineDAO;
 
@@ -51,8 +50,6 @@ public class OrderEntryDAOImpl extends AbstractEntityDAO implements OrderEntryDA
                 orderEntry.setMedicine(getMedicineById(rs.getInt(ENTRY_MEDICINES_ID)));
                 orderEntry.setOrderNumber(rs.getInt(ENTRY_ORDER_NUMBER));
                 orderEntry.setPackageAmount(rs.getDouble(PACKAGE_AMOUNT));
-                orderEntries.add(orderEntry);
-
                 orderEntries.add(orderEntry);
             }
         } catch (SQLException e) {
@@ -137,31 +134,5 @@ public class OrderEntryDAOImpl extends AbstractEntityDAO implements OrderEntryDA
     @Override
     public List<OrderEntry> findEntryByOrderStatus() throws DAOException {
         return null;
-    }
-
-    @Override
-    public List<OrderEntry> showEntries() throws DAOException, SQLException {
-        PreparedStatement statement = null;
-        Connection connection = null;
-        List<OrderEntry> orderEntries = new ArrayList<>();
-        try {
-            connection = ConnectionPool.getInstance().takeConnection();
-            statement = connection.prepareStatement(SHOW_ENTRY_LIST_SQL);
-            ResultSet rs = statement.executeQuery();
-            while(rs.next()){
-                OrderEntry orderEntry = new OrderEntry();
-                orderEntry.setMedicine(getMedicineById(rs.getInt(ENTRY_MEDICINES_ID)));
-                orderEntry.setOrderNumber(rs.getInt(ENTRY_ORDER_NUMBER));
-                orderEntry.setPackageAmount(rs.getDouble(PACKAGE_AMOUNT));
-                orderEntries.add(orderEntry);
-            }
-
-        } catch (SQLException e) {
-            throw new DAOException("Error during returning entries list", e);
-        }
-        finally {
-            ConnectionPool.getInstance().closeConnection(connection, statement);
-        }
-        return orderEntries;
     }
 }

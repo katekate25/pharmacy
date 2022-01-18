@@ -20,7 +20,7 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
     private static final String ADD_PRESCRIPTION_SQL =
             "INSERT INTO prescriptions (medicines_id, number_of_packages," +
                     "usage_instruction, creation_date, expiration_date, client_id, doctor_id) " +
-                    "VALUES ((SELECT id FROM medicines WHERE serial_number=?), ?, ?, ?, ?, ?, ?" +
+                    "VALUES ((SELECT id FROM medicines WHERE serial_number=?), ?, ?, ?, ?," +
                     "(SELECT id FROM users WHERE login=?), (SELECT id FROM users WHERE login=?))";
 
     private static final String DELETE_PRESCRIPTION_SQL = "DELETE FROM prescriptions WHERE prescription_number = ?";
@@ -81,7 +81,7 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
         return null;
     }
 
-    private User getUserById(int userId) throws DAOException, SQLException {
+    private User getUserById(int userId) throws SQLException {
         Criteria<SearchCriteria.User> criteria = new Criteria<>();
         criteria.getParametersMap().put(SearchCriteria.User.ID, userId);
         List<User> users = userDAO.findUserByCriteria(criteria);
@@ -93,7 +93,7 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
     }
 
     @Override
-    public void addPrescription(Prescription prescription) throws DAOException, SQLException {
+    public void addPrescription(Prescription prescription) throws SQLException {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
@@ -124,7 +124,7 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
     }
 
     @Override
-    public void deletePrescription(int prescriptionNumber) throws DAOException {
+    public void deletePrescription(int prescriptionNumber) {
         PreparedStatement statement = null;
         Connection connection = null;
         try {

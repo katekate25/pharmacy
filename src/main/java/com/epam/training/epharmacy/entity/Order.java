@@ -9,7 +9,7 @@ public class Order {
     private User client;
     private Date deliveryTime;
     private User pharmacist;
-    private double amount;
+    private double totalPrice;
     private OrderStatus orderStatus;
     private PaymentStatus paymentStatus;
     private List<OrderEntry> orderEntries;
@@ -48,12 +48,12 @@ public class Order {
         this.pharmacist = pharmacist;
     }
 
-    public double getAmount() {
-        return amount;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public OrderStatus getOrderStatus() {
@@ -93,12 +93,12 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return orderNumber == order.orderNumber && Double.compare(order.amount, amount) == 0 && Objects.equals(client, order.client) && Objects.equals(deliveryTime, order.deliveryTime) && Objects.equals(pharmacist, order.pharmacist) && orderStatus == order.orderStatus && paymentStatus == order.paymentStatus && Objects.equals(orderEntries, order.orderEntries) && Objects.equals(prescriptions, order.prescriptions);
+        return orderNumber == order.orderNumber;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderNumber, client, deliveryTime, pharmacist, amount, orderStatus, paymentStatus, orderEntries, prescriptions);
+        return Objects.hash(orderNumber, client, deliveryTime, pharmacist, totalPrice, orderStatus, paymentStatus, orderEntries, prescriptions);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class Order {
                 ", client=" + client +
                 ", deliveryTime=" + deliveryTime +
                 ", pharmacist=" + pharmacist +
-                ", amount=" + amount +
+                ", amount=" + totalPrice +
                 ", orderStatus=" + orderStatus +
                 ", paymentStatus=" + paymentStatus +
                 ", orderEntries=" + orderEntries +

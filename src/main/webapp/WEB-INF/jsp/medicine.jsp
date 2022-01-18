@@ -76,7 +76,7 @@
 <form action = "/pharmacy/controller" method = "post">
         <input type="hidden" name="command" value="ADD_ENTRY_TO_CART">
         <fmt:message bundle="${loc}" key="local.amount.medicine" />:
-        <input type="number" name="packageAmount" max="&{medicineBySeries.productBalance}"/>
+        <input type="number" name="packageAmount" max="${medicineBySeries.productBalance}"/>
         <input type="hidden" name="serialNumber" value="${medicineBySeries.serialNumber}">
         <br/>
 

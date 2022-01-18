@@ -254,3 +254,20 @@ INSERT INTO `pharmacy`.`users` (`login`, `password`, `name`, `roles_code`, `tele
 INSERT INTO pharmacy.medicines (commercial_name, international_name, dose, medicine_form, invoice_number, serial_number, price,
                     expiration_date, product_arrival, arrival_date, balance, prescription_required, producers_id, disease_groups_code)
                     VALUES ('Амоксициллин', 'Амоксициллин', 1000, 'Таб', '010101', '10012021', 10, '2023-1-10', 30, '2022-1-10', 30, false, (SELECT id FROM producers WHERE factory_name = 'SUN'), (SELECT code FROM disease_groups WHERE code = 'Antibiotics') );
+
+
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('Sandoz', 'Сербия');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('Белмедпрепараты', 'Беларусь');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('БЗМП', 'Беларусь');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('Лекфарм', 'Беларусь');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('Падисс', 'Беларусь');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('Фармлэнд', 'Беларусь');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('Bayer', 'Германия');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('KRKA', 'Словения');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('Берлин-Хеми', 'Германия');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('Др. Редди`с', 'Индия');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('Польфарма', 'Польша');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('Фармстандарт', 'Россия');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('EGIS Pharmaceuticals', 'Венгрия');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('OPELLA HEALTHCARE', 'Венгрия');
+INSERT INTO `pharmacy`.`producers` (`factory_name`, `producer_country`) VALUES ('Гедеон Рихтер', 'Венгрия');

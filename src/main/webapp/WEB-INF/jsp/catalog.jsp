@@ -67,7 +67,7 @@
         <td> <c:out value="${medicine.invoiceNumber}"/> </td>
         <td> <c:out value="${medicine.arrivalDate}" /> </td>
         <td> <c:out value="${medicine.productArrival}"/> </td>
-        <td><c:out value = "${medicine.productBalance}"/> </td>
+        <td> <c:out value="${medicine.productBalance}"/> </td>
         <td> <c:out value="${medicine.prescriptionRequired}"/> </td>
         <td> <c:out value="${medicine.producer.producerFactoryName}"/> </td>
         <td> <c:out value="${medicine.producer.producerCountry}"/> </td>
@@ -105,9 +105,9 @@
         <td> <c:out value="${medicine.medicineDose}"/> </td>
         <td> <c:out value="${medicine.serialNumber}"/> </td>
         <td> <c:out value="${medicine.packagePrice}" /> </td>
-        <td> <fmt:formatDate pattern="yyyy-MM-dd" value="${medicine.medicineExpirationDate.getTime()}" /> </td>
+        <td> <c:out value="${medicine.medicineExpirationDate}" /> </td>
         <td> <c:out value="${medicine.invoiceNumber}"/> </td>
-        <td> <fmt:formatDate pattern="yyyy-MM-dd" value="${medicine.arrivalDate.getTime()}" /> </td>
+        <td> <c:out value="${medicine.arrivalDate}" />  </td>
         <td> <c:out value="${medicine.productArrival}"/> </td>
         <td><c:out value = "${medicine.productBalance}"/> </td>
         <td> <c:out value="${medicine.prescriptionRequired}"/> </td>

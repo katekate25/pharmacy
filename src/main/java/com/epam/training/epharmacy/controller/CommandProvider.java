@@ -22,7 +22,6 @@ public final class CommandProvider {
         commands.put("SHOW_MEDICINES_LIST", new ShowMedicinesListCommand());
         commands.put("SEARCH_MEDICINES", new SearchMedicineCommand());
         commands.put("Logout", new LogoutCommand());
-        commands.put("SHOW_ORDERS", new ShowOrdersCommand());
         commands.put("SHOW_MEDICINE_DETAILS", new ShowMedicineDetailsCommand());
         commands.put("GO_TO_MEDICINE_PAGE", new GoToMedicinePage());
         commands.put("CHOOSE_AMOUNT", new ChooseMedicineAmountCommand());
@@ -37,7 +36,6 @@ public final class CommandProvider {
         commands.put("GO_TO_DOCTOR_CATALOG", new GoToDoctorsCatalogPageCommand());
         commands.put("GO_TO_DOCTOR_PERSONAL_PAGE", new GoToDoctorPersonalPage());
         commands.put("CREATE_REQUEST_FOR_PRESCRIPTION", new CreateRequestForPrescriptionCommand());
-        commands.put("SHOW_TOTAL_PRICE", new ShowTotalPriceCommand());
         commands.put("ADD_ORDER", new AddOrderCommand());
     }
 
