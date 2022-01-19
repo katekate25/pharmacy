@@ -1,5 +1,6 @@
 package com.epam.training.epharmacy.service.impl;
 
+import com.epam.training.epharmacy.controller.impl.AddPrescriptionCommand;
 import com.epam.training.epharmacy.dao.MedicineDAO;
 import com.epam.training.epharmacy.dao.ProducerDAO;
 import com.epam.training.epharmacy.dao.exception.DAOException;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class MedicinesServiceImpl implements MedicinesService {
-    Logger logger = LogManager.getLogger(MedicinesServiceImpl.class);
+    private final Logger LOG = LogManager.getLogger(MedicinesServiceImpl.class);
 
     @Override
     public List<Medicine> findMedicine(String name) {
@@ -27,6 +28,7 @@ public class MedicinesServiceImpl implements MedicinesService {
             criteria.getParametersMap().put(SearchCriteria.Medicine.COMMERCIAL_NAME, name);
             medicines = medicineDAO.findMedicineByCriteria(criteria);
         } catch (DAOException e){
+            LOG.error("Error during finding medicine", e);
             throw  new ServiceException(e);
         }
         return medicines;
@@ -48,6 +50,7 @@ public class MedicinesServiceImpl implements MedicinesService {
                 medicines.iterator().next();
             }
         } catch (DAOException e){
+            LOG.error("Error during finding medicine analogues", e);
             throw new ServiceException(e);
         }
         return medicines;
@@ -75,7 +78,7 @@ public class MedicinesServiceImpl implements MedicinesService {
                 medicineDAO.addMedicine(medicine);
             }
         } catch (DAOException | SQLException e){
-            logger.error("Problems while adding medicine to db", e);
+            LOG.error("Error during adding medicine to db", e);
             throw new IllegalArgumentException(e);
         }
     }
@@ -88,7 +91,7 @@ public class MedicinesServiceImpl implements MedicinesService {
             return medicineDAO.findMedicineByCriteria(new Criteria<>());
 
         } catch (DAOException e){
-            // TODO log exception
+            LOG.error("Error during returning medicine list", e);
             throw  new ServiceException(e);
         }
     }
@@ -104,6 +107,7 @@ public class MedicinesServiceImpl implements MedicinesService {
             criteria.getParametersMap().put(SearchCriteria.Medicine.SERIAL_NUMBER, serialNumber);
             medicine = medicineDAO.findMedicineByCriteria(criteria).iterator().next();
         } catch (DAOException e){
+            LOG.error("Error during searching medicines to show", e);
             throw  new ServiceException(e);
         }
         return medicine;
@@ -120,6 +124,7 @@ public class MedicinesServiceImpl implements MedicinesService {
             criteria.getParametersMap().put(SearchCriteria.Producer.FACTORY_NAME, name);
             producers = producerDAO.findProducerByCriteria(criteria);
         } catch (DAOException | SQLException e){
+            LOG.error("Error during searching producer by name", e);
             throw  new ServiceException(e);
         }
         return producers.iterator().next();

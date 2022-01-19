@@ -1,5 +1,6 @@
 package com.epam.training.epharmacy.service.impl;
 
+import com.epam.training.epharmacy.controller.impl.AddPrescriptionCommand;
 import com.epam.training.epharmacy.dao.UserDAO;
 import com.epam.training.epharmacy.dao.exception.DAOException;
 import com.epam.training.epharmacy.dao.factory.DAOFactory;
@@ -9,11 +10,16 @@ import com.epam.training.epharmacy.entity.User;
 import com.epam.training.epharmacy.entity.UserRole;
 import com.epam.training.epharmacy.service.exception.ServiceException;
 import com.epam.training.epharmacy.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
+
+    private final Logger LOG = LogManager.getLogger(UserServiceImpl.class);
+
     @Override
     public User authorization(String login, String password) throws ServiceException, DAOException {
 
@@ -29,6 +35,7 @@ public class UserServiceImpl implements UserService {
                 user = users.iterator().next();
             }
         } catch (DAOException e){
+            LOG.error("Error during authorization", e);
             throw  new ServiceException(e);
         }
         return user;
@@ -49,6 +56,7 @@ public class UserServiceImpl implements UserService {
             userDAO.saveUser(user);
 
         } catch (DAOException | SQLException e){
+            LOG.error("Error during registration", e);
             throw new IllegalArgumentException(e);
         }
     }
@@ -66,7 +74,7 @@ public class UserServiceImpl implements UserService {
             return userDAO.showUsersByRole(UserRole.DOCTOR);
 
         } catch (DAOException | SQLException e){
-            // TODO log exception
+            LOG.error("Error during showing doctors list", e);
             throw  new ServiceException(e);
         }
     }

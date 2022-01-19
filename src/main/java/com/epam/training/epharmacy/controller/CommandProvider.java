@@ -24,7 +24,6 @@ public final class CommandProvider {
         commands.put("Logout", new LogoutCommand());
         commands.put("SHOW_MEDICINE_DETAILS", new ShowMedicineDetailsCommand());
         commands.put("GO_TO_MEDICINE_PAGE", new GoToMedicinePage());
-        commands.put("CHOOSE_AMOUNT", new ChooseMedicineAmountCommand());
         commands.put("ADD_ENTRY_TO_CART", new AddEntryToCartCommand());
         commands.put("GO_TO_ERROR_PAGE", new GoToNotFoundErrorPage());
         commands.put("ADD_MEDICINE_TO_DB", new AddMedicineToDatabaseCommand());
@@ -36,7 +35,8 @@ public final class CommandProvider {
         commands.put("GO_TO_DOCTOR_CATALOG", new GoToDoctorsCatalogPageCommand());
         commands.put("GO_TO_DOCTOR_PERSONAL_PAGE", new GoToDoctorPersonalPage());
         commands.put("CREATE_REQUEST_FOR_PRESCRIPTION", new CreateRequestForPrescriptionCommand());
-        commands.put("ADD_ORDER", new AddOrderCommand());
+        commands.put("PAY_ORDER", new PayOrderCommand());
+        commands.put("DELETE_ENTRY", new DeleteEntryCommand());
     }
 
     public final Command getCommand(String commandName){

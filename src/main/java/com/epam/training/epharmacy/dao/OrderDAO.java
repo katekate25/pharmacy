@@ -12,6 +12,4 @@ public interface OrderDAO {
     void saveOrder(Order order) throws DAOException, SQLException;
 
     void updateOrder(Order order) throws DAOException;
-
-    List<Order> showOrderList () throws DAOException, SQLException;
 }

@@ -53,6 +53,7 @@ public class DaoConstants {
     public static final String PHARMACISTS_ID = "pharmacists_id";
     public static final String ORDER_STATUS = "order_status";
     public static final String PAYMENT_STATUS = "payment_status";
+    public static final String TOTAL_PRICE = "total_price";
 
     public static final String ORDER_ENTRY_ID = "id";
     public static final String PACKAGE_AMOUNT = "package_amount";

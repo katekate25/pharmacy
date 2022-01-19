@@ -4,8 +4,11 @@ import com.epam.training.epharmacy.controller.Command;
 import com.epam.training.epharmacy.dao.exception.DAOException;
 import com.epam.training.epharmacy.entity.Medicine;
 import com.epam.training.epharmacy.service.MedicinesService;
+import com.epam.training.epharmacy.service.UserService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
 import com.epam.training.epharmacy.service.factory.ServiceFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,12 +18,17 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import static com.epam.training.epharmacy.controller.constant.ControllerConstants.ERROR_PAGE;
+
 public class SearchMedicineCommand implements Command {
+
+    private final Logger LOG = LogManager.getLogger(SearchMedicineCommand.class);
+    ServiceFactory factory = ServiceFactory.getInstance();
+    MedicinesService medicinesService = factory.getMedicinesService();
+
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException, DAOException, ServiceException, DAOException {
         String name = req.getParameter("commercialName");
-        ServiceFactory factory = ServiceFactory.getInstance();
-        MedicinesService medicinesService = factory.getMedicinesService();
 
         try {
             List<Medicine> medicines = medicinesService.findMedicine(name);
@@ -31,10 +39,10 @@ public class SearchMedicineCommand implements Command {
             }
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/catalog.jsp");
             dispatcher.forward(req, resp);
-//            resp.sendRedirect(req.getContextPath() + "/controller?command=SEARCH_MEDICINES");
+
         } catch (ServiceException e){
-            //log
-            //send to error page
+            LOG.error("Error during searching medicine", e);
+            resp.sendRedirect(ERROR_PAGE);
         }
     }
 }

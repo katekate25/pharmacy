@@ -5,6 +5,8 @@ import com.epam.training.epharmacy.entity.User;
 import com.epam.training.epharmacy.entity.UserRole;
 import com.epam.training.epharmacy.service.factory.ServiceFactory;
 import com.epam.training.epharmacy.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,13 +15,16 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import static com.epam.training.epharmacy.controller.constant.ControllerConstants.ERROR_PAGE;
+
 public class RegistrationCommand implements Command {
+
+    private final Logger LOG = LogManager.getLogger(RegistrationCommand.class);
+    ServiceFactory factory = ServiceFactory.getInstance();
+    UserService userService = factory.getUserService();
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
-
-        ServiceFactory factory = ServiceFactory.getInstance();
-        UserService userService = factory.getUserService();
 
         User user = new User();
         user.setUserRole(UserRole.CUSTOMER);
@@ -29,14 +34,12 @@ public class RegistrationCommand implements Command {
         user.setEmail(req.getParameter("email"));
         user.setTelNumber(req.getParameter("telNumber"));
 
-
         try {
             userService.register(user);
 
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            LOG.error("Error during registration", e);
             resp.sendRedirect("/pharmacy/controller?command=GO_TO_REGISTRATION_PAGE&userExists=true");
-            return;
         }
         HttpSession session = req.getSession(true);
         session.setAttribute("user", user);

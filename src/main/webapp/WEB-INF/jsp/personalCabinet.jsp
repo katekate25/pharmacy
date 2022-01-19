@@ -16,7 +16,7 @@
 
 
 
-<c:if test="${role='PHARMACIST'}">
+<c:if test="${user.userRole.name() eq 'PHARMACIST'}">
 <a href="/pharmacy/controller?command=GO_TO_MEDICINE_FORM">Med form</a>
 <br/>
 

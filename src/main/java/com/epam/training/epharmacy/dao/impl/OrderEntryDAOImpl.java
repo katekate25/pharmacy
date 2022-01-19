@@ -22,7 +22,7 @@ public class OrderEntryDAOImpl extends AbstractEntityDAO implements OrderEntryDA
             "INSERT INTO order_entry ( order_number, medicines_id, package_amount) " +
                     "VALUES ((SELECT number FROM orders WHERE number = ?), (SELECT id FROM medicines WHERE serial_number = ?), ? )";
     private static final String UPDATE_ORDER_ENTRY_SQL = "UPDATE order_entry SET package_amount = ? WHERE order_number = ?";
-    private static final String DELETE_ORDER_ENTRY_SQL = "DELETE FROM order_entry WHERE order_number = ?";
+    private static final String DELETE_ORDER_ENTRY_SQL = "DELETE FROM order_entry WHERE id = ?";
 
     private MedicineDAO medicineDAO;
 
@@ -47,6 +47,7 @@ public class OrderEntryDAOImpl extends AbstractEntityDAO implements OrderEntryDA
             while (rs.next()) {
 
                 OrderEntry orderEntry = new OrderEntry();
+                orderEntry.setId(rs.getInt(ORDER_ENTRY_ID));
                 orderEntry.setMedicine(getMedicineById(rs.getInt(ENTRY_MEDICINES_ID)));
                 orderEntry.setOrderNumber(rs.getInt(ENTRY_ORDER_NUMBER));
                 orderEntry.setPackageAmount(rs.getDouble(PACKAGE_AMOUNT));
@@ -103,7 +104,7 @@ public class OrderEntryDAOImpl extends AbstractEntityDAO implements OrderEntryDA
         try {
             connection = ConnectionPool.getInstance().takeConnection();
             statement = connection.prepareStatement(DELETE_ORDER_ENTRY_SQL);
-            statement.setInt(1, orderEntry.getOrderNumber());
+            statement.setInt(1, orderEntry.getId());
             statement.executeUpdate();
         } catch (ConnectionPoolException | SQLException e) {
             throw new DAOException("Error during deleting order entry", e);

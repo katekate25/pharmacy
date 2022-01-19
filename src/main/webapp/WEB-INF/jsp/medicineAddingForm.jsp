@@ -45,7 +45,7 @@ medicineExpirationDate:
 <input type="text" name="medicineExpirationDate" value=""/>
 <br/>
 isPrescriptionRequired:
-<input type="text" name="isPrescriptionRequired" value=""/>
+<input type="text" name="prescriptionRequired" value=""/>
 <br/>
 packagePrice:
 <input type="text" name="packagePrice" value=""/>

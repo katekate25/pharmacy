@@ -8,7 +8,6 @@ public final class ServiceFactory {
 
     private final UserService userService = new UserServiceImpl();
     private final MedicinesService medicinesService = new MedicinesServiceImpl();
-    private final OrderEntryService orderEntryService = new OrderEntryServiceImpl();
     private final OrderService orderService = new OrderServiceImpl();
     private final MessageService messageService = new MessageServiceImpl();
     private final PrescriptionService prescriptionService = new PrescriptionServiceImpl();
@@ -27,10 +26,6 @@ public final class ServiceFactory {
 
     public static ServiceFactory getInstance() {
         return instance;
-    }
-
-    public OrderEntryService getOrderEntryService() {
-        return orderEntryService;
     }
 
     public OrderService getOrderService() {

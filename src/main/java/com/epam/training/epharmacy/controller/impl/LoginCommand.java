@@ -16,18 +16,19 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import static com.epam.training.epharmacy.controller.constant.ControllerConstants.ERROR_PAGE;
+
 public class LoginCommand implements Command {
+
+    private final Logger LOG = LogManager.getLogger(LoginCommand.class);
+    ServiceFactory factory = ServiceFactory.getInstance();
+    UserService userService = factory.getUserService();
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException, DAOException, ServiceException {
 
-        Logger logger = LogManager.getLogger(LoginCommand.class);
-
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-
-        ServiceFactory factory = ServiceFactory.getInstance();
-        UserService userService = factory.getUserService();
 
         try {
             User user = userService.authorization(login, password);
@@ -49,8 +50,8 @@ public class LoginCommand implements Command {
             }
 
         } catch (ServiceException e){
-            logger.error("Problems on logging", e);
-            resp.sendRedirect("/pharmacy/controller?command=GO_TO_ERROR_PAGE");
+            LOG.error("Error during logging", e);
+            resp.sendRedirect(ERROR_PAGE);
         }
     }
 }

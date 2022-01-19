@@ -17,7 +17,7 @@ import java.util.List;
 
 public class PrescriptionServiceImpl implements PrescriptionService {
 
-    private final Logger LOG = LogManager.getLogger(AddPrescriptionCommand.class);
+    private final Logger LOG = LogManager.getLogger(PrescriptionServiceImpl.class);
 
     private final DAOFactory factory = DAOFactory.getInstance();
     private final MedicineDAO medicineDAO = factory.getMedicineDAO();
@@ -42,6 +42,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             criteria.getParametersMap().put(SearchCriteria.Medicine.SERIAL_NUMBER, serialNumber);
             medicines = medicineDAO.findMedicineByCriteria(criteria);
         } catch (DAOException e) {
+            LOG.error("Error during finding medicine by serial number", e);
             throw new ServiceException(e);
         }
         return medicines.iterator().next();
@@ -55,6 +56,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             criteria.getParametersMap().put(SearchCriteria.User.LOGIN, login);
             users = userDAO.findUserByCriteria(criteria);
         } catch (DAOException e) {
+            LOG.error("Error during finding user by login", e);
             throw new ServiceException(e);
         }
         return users.iterator().next();

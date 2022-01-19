@@ -17,9 +17,24 @@
         <td>${orderEntry.medicine.commercialName}</td>
         <td>${orderEntry.packageAmount}</td>
         <td>${orderEntry.medicine.packagePrice}</td>
+        <td>
+        <form action = "/pharmacy/controller" method = "post">
+         <input type="hidden" name="command" value="DELETE_ENTRY">
+         <input type="hidden" name="entryId" value="${orderEntry.id}"/>
+         <input type="submit" value="Remove"/>
+        </form>
+        </td>
     </tr>
 </c:forEach>
     <tr>
         <td></td><td></td><td>Total price: ${order.totalPrice}</td>
     </tr>
 </table>
+
+<form action = "/pharmacy/controller" method = "post">
+   <input type="hidden" name="command" value="PAY_ORDER">
+   <p>Select delivery Time</p>
+   <input type="datetime-local" name="deliveryTime">
+   <p><input type="submit" value="Pay"></p>
+</form>
+

@@ -138,6 +138,10 @@ public class Order {
             return this;
         }
 
+        public Builder totalPrice(Double totalPrice){
+            order.setTotalPrice(totalPrice);
+            return this;
+        }
 
         public Builder pharmacist(User pharmacist) {
             order.setPharmacist(pharmacist);

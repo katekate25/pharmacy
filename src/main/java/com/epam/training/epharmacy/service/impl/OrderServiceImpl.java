@@ -1,5 +1,6 @@
 package com.epam.training.epharmacy.service.impl;
 
+import com.epam.training.epharmacy.controller.impl.AddPrescriptionCommand;
 import com.epam.training.epharmacy.dao.MedicineDAO;
 import com.epam.training.epharmacy.dao.OrderDAO;
 import com.epam.training.epharmacy.dao.OrderEntryDAO;
@@ -8,13 +9,18 @@ import com.epam.training.epharmacy.dao.factory.DAOFactory;
 import com.epam.training.epharmacy.entity.*;
 import com.epam.training.epharmacy.service.OrderService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import static com.epam.training.epharmacy.entity.OrderStatus.READY_FOR_PAYMENT;
 
 public class OrderServiceImpl implements OrderService {
+
+    private final Logger LOG = LogManager.getLogger(OrderServiceImpl.class);
 
     private final OrderDAO orderDAO = DAOFactory.getInstance().getOrderDAO();
     private final OrderEntryDAO orderEntryDAO = DAOFactory.getInstance().getOrderEntryDAO();
@@ -29,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
             List<Order> orders = orderDAO.findOrderByCriteria(criteriaOrd);
             return orders != null && !orders.isEmpty() ? orders.iterator().next() : null;
         } catch (DAOException | SQLException e) {
-            // TODO log exception
+            LOG.error("Error during getting cart for user", e);
             throw new ServiceException(e);
         }
     }
@@ -53,9 +59,39 @@ public class OrderServiceImpl implements OrderService {
             medicineDAO.updateMedicine(medicine);
             recalculateCart(user);
         } catch (DAOException | SQLException e) {
+            LOG.error("Error during adding or updating entry", e);
             throw new IllegalArgumentException(e);
         }
         return orderEntry;
+    }
+
+    @Override
+    public void deleteOrderEntry(User user,int id) throws SQLException {
+        Criteria<SearchCriteria.OrderEntry> criteria = new Criteria<>();
+        criteria.getParametersMap().put(SearchCriteria.OrderEntry.ID, id);
+        try {
+            List<OrderEntry> entries = orderEntryDAO.findOrderEntryByCriteria(criteria);
+            OrderEntry entry = entries.iterator().next();
+            if (entries != null && !entries.isEmpty()) {
+                Medicine medicine = findMedicineBySerialNumber(entry.getMedicine().getSerialNumber());
+                medicine.setProductBalance(medicine.getProductBalance() + entry.getPackageAmount());
+                medicineDAO.updateMedicine(medicine);
+                orderEntryDAO.deleteOrderEntry(entry);
+                recalculateCart(user);
+            }
+        }catch (DAOException | SQLException e){
+            LOG.error("Error during deleting entry", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void payOrder(User user, Date date) {
+        Order order = getCartForUser(user);
+        order.setPaymentStatus(PaymentStatus.PAID);
+        order.setOrderStatus(OrderStatus.PAID);
+        order.setDeliveryTime(date);
+        orderDAO.updateOrder(order);
     }
 
     private void recalculateCart(User user) {

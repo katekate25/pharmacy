@@ -18,13 +18,12 @@ import static com.epam.training.epharmacy.dao.constant.DaoConstants.*;
 public class OrderDAOImpl extends AbstractEntityDAO implements OrderDAO {
 
     private static final String ADD_ORDER_SQL =
-            "INSERT INTO orders ( clients_id, order_status, pharmacists_id, payment_status, delivery_time )" +
-                    "VALUES ((SELECT id FROM users WHERE login = ?), ?, ?, ?, ? )";
-    private static final String UPDATE_ORDER_SQL = "UPDATE orders SET delivery_time = ?, payment_status =?, pharmacists_id=? WHERE number = ?";
+            "INSERT INTO orders (clients_id, order_status, pharmacists_id, payment_status, delivery_time, " +
+                    "total_price) VALUES ((SELECT id FROM users WHERE login = ?), ?, ?, ?, ?, ?)";
+    private static final String UPDATE_ORDER_SQL = "UPDATE orders SET delivery_time = ?, payment_status =?, " +
+            "pharmacists_id=?, order_status=?, total_price=? WHERE number = ?";
     private static final String SELECT_FROM_ORDER_PREFIX = "SELECT number, clients_id, delivery_time, " +
-            "pharmacists_id, order_status, payment_status FROM orders";
-    private static final String SHOW_ORDER_LIST_SQL = "SELECT * FROM orders";
-    private static final String ADD_ORDER_ENTRY = "SELECT * FROM orders WHERE number = ? UNION SELECT * FROM order_entry WHERE order_number = ?";
+            "pharmacists_id, order_status, payment_status, total_price FROM orders";
 
     private UserDAO userDAO;
     private OrderEntryDAO orderEntryDAO;
@@ -58,6 +57,7 @@ public class OrderDAOImpl extends AbstractEntityDAO implements OrderDAO {
                         .deliveryTime(rs.getDate(DELIVERY_TIME))
                         .orderStatus(OrderStatus.valueOf(rs.getString(ORDER_STATUS)))
                         .paymentStatus(PaymentStatus.valueOf(rs.getString(PAYMENT_STATUS)))
+                        .totalPrice(rs.getDouble(TOTAL_PRICE))
                         .build();
 
                 Criteria<SearchCriteria.OrderEntry> orderEntriesSearchCriteria = new Criteria<>();
@@ -97,6 +97,7 @@ public class OrderDAOImpl extends AbstractEntityDAO implements OrderDAO {
             statement.setString(3, order.getPharmacist() != null ? order.getPharmacist().getLogin() : null);
             statement.setString(4, order.getPaymentStatus() != null ? order.getPaymentStatus().toString() : null);
             statement.setDate(5,  order.getDeliveryTime() != null ? new Date(order.getDeliveryTime().getTime()) : null);
+            statement.setDouble(6, order.getTotalPrice());
 
             statement.executeUpdate();
             createOrderEntries(order.getOrderEntries());
@@ -128,10 +129,13 @@ public class OrderDAOImpl extends AbstractEntityDAO implements OrderDAO {
         try {
             connection = ConnectionPool.getInstance().takeConnection();
             statement = connection.prepareStatement(UPDATE_ORDER_SQL);
-            statement.setDate(1, new Date(order.getDeliveryTime().getTime()));
+            statement.setDate(1, order.getDeliveryTime() != null ? new Date(order.getDeliveryTime().getTime()) : null);
+            statement.setString(2, order.getPaymentStatus() != null ? order.getPaymentStatus().toString() : null);
+            statement.setString(3, order.getPharmacist() != null ? order.getPharmacist().getLogin() : null);
+            statement.setString(4, order.getOrderStatus() != null ? order.getOrderStatus().toString() : null);
+            statement.setDouble(5, order.getTotalPrice());
+            statement.setInt(6, order.getOrderNumber());
 
-            statement.setString(2, order.getPaymentStatus().name());
-            statement.setString(3, order.getPharmacist().getLogin());
 
             statement.executeUpdate();
         } catch (ConnectionPoolException | SQLException e) {
@@ -139,39 +143,6 @@ public class OrderDAOImpl extends AbstractEntityDAO implements OrderDAO {
         } finally {
             ConnectionPool.getInstance().closeConnection(connection, statement);
         }
-    }
-
-    @Override
-    public List<Order> showOrderList() throws DAOException, SQLException {
-        PreparedStatement statement = null;
-        Connection connection = null;
-        List<Order> orders = new ArrayList<>();
-        try {
-            connection = ConnectionPool.getInstance().takeConnection();
-            statement = connection.prepareStatement(SHOW_ORDER_LIST_SQL);
-            ResultSet rs = statement.executeQuery();
-            while(rs.next()){
-
-                Order order = new Order.Builder()
-                        .orderNumber(rs.getInt(ORDER_NUMBER))
-                        .client(getUserById(rs.getInt(CLIENT_ID)))
-                        .deliveryTime(rs.getDate(DELIVERY_TIME))
-                        .pharmacist(getUserById(rs.getInt(PHARMACISTS_ID)))
-                        .orderStatus(OrderStatus.valueOf(rs.getString(ORDER_STATUS)))
-                        .paymentStatus(PaymentStatus.valueOf(rs.getString(PAYMENT_STATUS)))
-                        .build();
-                order.setDeliveryTime(rs.getDate(DELIVERY_TIME));
-                orders.add(order);
-
-            }
-
-        } catch (SQLException e) {
-            throw new DAOException("Error during returning order list", e);
-        }
-        finally {
-            ConnectionPool.getInstance().closeConnection(connection, statement);
-        }
-        return orders;
     }
 
 }
