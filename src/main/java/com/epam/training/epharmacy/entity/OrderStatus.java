@@ -5,5 +5,7 @@ public enum OrderStatus {
     READY_FOR_APPROVE,
     PAYMENT_IN_PROGRESS,
     PAID,
-    COMPLETED
+    COMPLETED,
+    IN_PROGRESS,
+    CANCELLED
 }

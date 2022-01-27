@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.epam.training.epharmacy.controller.constant.ControllerConstants.GREETING_PAGE;
 
 public class GoToCartCommand implements Command {
 
@@ -22,7 +21,6 @@ public class GoToCartCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         User user = ControllerUtils.getUserFromRequest(req);
-
         if (user == null) {
             throw new PermissionsDeniedException();
         }

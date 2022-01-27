@@ -13,7 +13,7 @@ public interface OrderService {
 
     OrderEntry addOrUpdateOrderEntry(String serialNumber, Double amount, User client);
 
-    void deleteOrderEntry(User user,int id) throws SQLException;
+    void deleteOrderEntry(User user,int id);
 
-    void payOrder(User user, Date date);
+    void payOrder(User user, Date date, Integer orderNumber);
 }

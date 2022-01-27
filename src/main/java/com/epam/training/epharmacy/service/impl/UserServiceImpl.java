@@ -1,6 +1,5 @@
 package com.epam.training.epharmacy.service.impl;
 
-import com.epam.training.epharmacy.controller.impl.AddPrescriptionCommand;
 import com.epam.training.epharmacy.dao.UserDAO;
 import com.epam.training.epharmacy.dao.exception.DAOException;
 import com.epam.training.epharmacy.dao.factory.DAOFactory;
@@ -19,14 +18,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final Logger LOG = LogManager.getLogger(UserServiceImpl.class);
+    private final UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
 
     @Override
     public User authorization(String login, String password) throws ServiceException, DAOException {
-
-        DAOFactory factory = DAOFactory.getInstance();
-        UserDAO userDAO = factory.getUserDAO();
         User user = null;
-
         try {
             Criteria<SearchCriteria.User> criteria = new Criteria<>();
             criteria.getParametersMap().put(SearchCriteria.User.LOGIN, login);
@@ -43,9 +39,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(User user) {
-        DAOFactory factory = DAOFactory.getInstance();
-        UserDAO userDAO = factory.getUserDAO();
-
         try {
             Criteria<SearchCriteria.User> criteria = new Criteria<>();
             criteria.getParametersMap().put(SearchCriteria.User.LOGIN, user.getLogin());
@@ -62,20 +55,46 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getCurrentUser() {
-        return null;
-    }
-
-    @Override
     public List<User> showDoctors() {
-        DAOFactory factory = DAOFactory.getInstance();
-        UserDAO userDAO = factory.getUserDAO();
         try {
             return userDAO.showUsersByRole(UserRole.DOCTOR);
 
         } catch (DAOException | SQLException e){
             LOG.error("Error during showing doctors list", e);
             throw  new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<User> showCustomers() {
+        try {
+            return userDAO.showUsersByRole(UserRole.CUSTOMER);
+        } catch (DAOException | SQLException e){
+            LOG.error("Error during showing doctors list", e);
+            throw  new ServiceException(e);
+        }
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        List<User> users = null;
+        try {
+            Criteria<SearchCriteria.User> criteria = new Criteria<>();
+            criteria.getParametersMap().put(SearchCriteria.User.LOGIN, login);
+            users = userDAO.findUserByCriteria(criteria);
+            return (users != null && !users.isEmpty()) ? users.iterator().next() : null;
+        } catch (DAOException e) {
+            throw new ServiceException("Error during finding user", e);
+        }
+    }
+
+    @Override
+    public void updateUser(User user) {
+        try {
+            userDAO.updateUser(user);
+        } catch (DAOException e) {
+            LOG.error("Error during user update", e);
+            throw new ServiceException(e);
         }
     }
 

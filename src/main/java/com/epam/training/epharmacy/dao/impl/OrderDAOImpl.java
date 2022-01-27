@@ -134,7 +134,7 @@ public class OrderDAOImpl extends AbstractEntityDAO implements OrderDAO {
             statement.setString(3, order.getPharmacist() != null ? order.getPharmacist().getLogin() : null);
             statement.setString(4, order.getOrderStatus() != null ? order.getOrderStatus().toString() : null);
             statement.setDouble(5, order.getTotalPrice());
-            statement.setInt(6, order.getOrderNumber());
+            statement.setInt(6, order.getOrderNumber()!= null ? order.getOrderNumber() : null);
 
 
             statement.executeUpdate();

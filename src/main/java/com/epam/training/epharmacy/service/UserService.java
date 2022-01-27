@@ -1,6 +1,5 @@
 package com.epam.training.epharmacy.service;
 
-
 import com.epam.training.epharmacy.dao.exception.DAOException;
 import com.epam.training.epharmacy.entity.User;
 import com.epam.training.epharmacy.service.exception.ServiceException;
@@ -13,7 +12,11 @@ public interface UserService {
 
     void register(User user);
 
-    User getCurrentUser();
-
     List<User> showDoctors();
+
+    List<User> showCustomers();
+
+    User getUserByLogin(String login);
+
+    void updateUser(User user);
 }

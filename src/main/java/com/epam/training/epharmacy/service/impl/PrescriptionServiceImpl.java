@@ -1,6 +1,5 @@
 package com.epam.training.epharmacy.service.impl;
 
-import com.epam.training.epharmacy.controller.impl.AddPrescriptionCommand;
 import com.epam.training.epharmacy.dao.MedicineDAO;
 import com.epam.training.epharmacy.dao.PrescriptionDAO;
 import com.epam.training.epharmacy.dao.UserDAO;
@@ -60,5 +59,21 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             throw new ServiceException(e);
         }
         return users.iterator().next();
+    }
+
+    @Override
+    public List<Prescription> showPrescription(String login) {
+        DAOFactory factory = DAOFactory.getInstance();
+        UserDAO userDAO = factory.getUserDAO();
+        PrescriptionDAO prescriptionDAO = factory.getPrescriptionDAO();
+        try {
+            Criteria<SearchCriteria.Prescription> criteria = new Criteria<>();
+            criteria.getParametersMap().put(SearchCriteria.Prescription.CLIENT_ID, login);
+            return prescriptionDAO.findPrescriptionByCriteria(criteria);
+
+        } catch (DAOException e){
+            LOG.error("Error during finding doctors list", e);
+            throw  new ServiceException(e);
+        }
     }
 }

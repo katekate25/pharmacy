@@ -24,7 +24,7 @@ public class RegistrationCommand implements Command {
     UserService userService = factory.getUserService();
 
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
+    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
         User user = new User();
         user.setUserRole(UserRole.CUSTOMER);
@@ -33,6 +33,9 @@ public class RegistrationCommand implements Command {
         user.setFullName(req.getParameter("name"));
         user.setEmail(req.getParameter("email"));
         user.setTelNumber(req.getParameter("telNumber"));
+        user.setAge(Integer.parseInt(req.getParameter("age")));
+        user.setWorkPlace(req.getParameter("workPlace"));
+        user.setSpecialization(req.getParameter("specialization"));
 
         try {
             userService.register(user);
@@ -43,7 +46,7 @@ public class RegistrationCommand implements Command {
         }
         HttpSession session = req.getSession(true);
         session.setAttribute("user", user);
-        resp.sendRedirect("/pharmacy/controller?command=GO_TO_MAIN_PAGE");
+        resp.sendRedirect("/pharmacy/controller?command=GO_TO_GREETING_PAGE");
     }
 
 }

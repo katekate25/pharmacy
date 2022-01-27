@@ -9,7 +9,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ProducerDAO {
-    List<Producer> findProducerByCriteria (Criteria<SearchCriteria.Producer> criteria) throws DAOException, SQLException;
 
-    void addProducer (Producer producer) throws DAOException, SQLException;
+    List<Producer> findProducerByCriteria(Criteria<SearchCriteria.Producer> criteria) throws DAOException, SQLException;
+
+    void addProducer(Producer producer) throws DAOException, SQLException;
 }

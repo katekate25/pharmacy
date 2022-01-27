@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Order {
-    private int orderNumber;
+    private Integer orderNumber;
     private User client;
     private Date deliveryTime;
     private User pharmacist;
@@ -16,11 +16,11 @@ public class Order {
     private List<Prescription> prescriptions;
 
 
-    public int getOrderNumber() {
+    public Integer getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(int orderNumber) {
+    public void setOrderNumber(Integer orderNumber) {
         this.orderNumber = orderNumber;
     }
 
@@ -123,7 +123,7 @@ public class Order {
             order = new Order();
         }
 
-        public Builder orderNumber(int orderNumber) {
+        public Builder orderNumber(Integer orderNumber) {
             order.setOrderNumber(orderNumber);
             return this;
         }

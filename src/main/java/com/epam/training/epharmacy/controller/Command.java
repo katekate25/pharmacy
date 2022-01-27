@@ -12,5 +12,5 @@ import java.sql.SQLException;
 import java.text.ParseException;
 
 public interface Command {
-    void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException, DAOException, ServiceException, DAOException, ParseException;
+    void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException;
 }

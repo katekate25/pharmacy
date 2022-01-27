@@ -19,7 +19,7 @@ public class UserDAOImpl extends AbstractEntityDAO implements UserDAO {
 
     private static final String ADD_USER_SQL = "INSERT INTO users (name, login, password, roles_code, email, telephone_number, age, work_place, specialization) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_USER_SQL = "UPDATE users SET password = ? WHERE login = ?";
+    private static final String UPDATE_USER_SQL = "UPDATE users SET name = ?, password = ?, email = ?, telephone_number = ?, age = ?, work_place = ?  WHERE login = ?";
     private static final String SHOW_USERS_BY_ROLE_SQL = "SELECT id, name, login, password, roles_code, email, telephone_number, age, work_place, specialization FROM users WHERE roles_code=?";
 
     @Override
@@ -57,9 +57,6 @@ public class UserDAOImpl extends AbstractEntityDAO implements UserDAO {
         }
         return users;
     }
-
-
-
 
     @Override
     public void saveUser(User user) throws DAOException, SQLException {
@@ -100,8 +97,13 @@ public class UserDAOImpl extends AbstractEntityDAO implements UserDAO {
             try {
                 connection = ConnectionPool.getInstance().takeConnection();
                 statement = connection.prepareStatement(UPDATE_USER_SQL);
-                statement.setString(1, user.getPassword());
-                statement.setString(2, user.getLogin());
+                statement.setString(1, user.getFullName());
+                statement.setString(2, user.getPassword());
+                statement.setString(3, user.getEmail());
+                statement.setString(4, user.getTelNumber());
+                statement.setInt(5, user.getAge());
+                statement.setString(6, user.getWorkPlace());
+                statement.setString(7, user.getLogin());
 
                 statement.executeUpdate();
             } catch (ConnectionPoolException | SQLException e) {

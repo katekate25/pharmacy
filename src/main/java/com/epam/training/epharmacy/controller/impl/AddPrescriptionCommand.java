@@ -2,7 +2,7 @@ package com.epam.training.epharmacy.controller.impl;
 
 import com.epam.training.epharmacy.controller.Command;
 import com.epam.training.epharmacy.controller.exception.PermissionsDeniedException;
-import com.epam.training.epharmacy.dao.exception.DAOException;
+import com.epam.training.epharmacy.controller.util.ControllerUtils;
 import com.epam.training.epharmacy.entity.Prescription;
 import com.epam.training.epharmacy.entity.User;
 import com.epam.training.epharmacy.entity.UserRole;
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,13 +30,10 @@ public class AddPrescriptionCommand implements Command {
     private final PrescriptionService prescriptionService = factory.getPrescriptionService();
 
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException, DAOException, ServiceException, DAOException, ParseException {
-
-        HttpSession session = req.getSession(false);
-        User doctor = (User) session.getAttribute("user");
-        if (doctor == null || doctor.getUserRole() != UserRole.DOCTOR)
-        {
-            resp.sendRedirect(PHARMACY_CONTROLLER + "command=GO_TO_MAIN_PAGE&accessDenied=true");
+    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        User doctor = ControllerUtils.getUserFromRequest(req);
+        if (doctor == null || doctor.getUserRole() != UserRole.DOCTOR) {
+            throw new PermissionsDeniedException();
         }
 
         DateFormat formatter = new SimpleDateFormat(DATE_FORMAT_PATTERN);
@@ -54,7 +50,7 @@ public class AddPrescriptionCommand implements Command {
                     .build();
             prescriptionService.addPrescription(prescription);
 
-        } catch (ServiceException e) {
+        } catch (ServiceException | ParseException e) {
             LOG.error("Something went wrong", e);
             resp.sendRedirect(ERROR_PAGE);
             return;

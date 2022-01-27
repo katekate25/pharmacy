@@ -14,9 +14,8 @@ import java.sql.SQLException;
 public class LocalizationCommand implements Command {
 
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
+    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         req.getSession(true).setAttribute("local", req.getParameter("local"));
-        //req.getSession().invalidate();
         String url = req.getHeader("Referer");
         resp.sendRedirect(url);
     }

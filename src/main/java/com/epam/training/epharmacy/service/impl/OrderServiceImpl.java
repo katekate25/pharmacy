@@ -15,7 +15,9 @@ import org.apache.logging.log4j.Logger;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
+import static com.epam.training.epharmacy.entity.OrderStatus.IN_PROGRESS;
 import static com.epam.training.epharmacy.entity.OrderStatus.READY_FOR_PAYMENT;
 
 public class OrderServiceImpl implements OrderService {
@@ -48,11 +50,8 @@ public class OrderServiceImpl implements OrderService {
             Order order = getCartForUser(user);
             if (isOrderAlreadyHasAppropriateOrderEntry(order, serialNumber)) {
                 orderEntry = updateExistOrderEntry(serialNumber, amount, order);
-            }
-            else {
-                if (order == null) {
-                    order = createNewOrder(user);
-                }
+            } else {
+                order = Optional.ofNullable(order).orElse(createNewOrder(user));
                 orderEntry = createNewOrderEntry(amount, medicine, order);
             }
             medicine.setProductBalance(medicine.getProductBalance() - amount);
@@ -66,38 +65,39 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteOrderEntry(User user,int id) throws SQLException {
+    public void deleteOrderEntry(User user, int id) {
         Criteria<SearchCriteria.OrderEntry> criteria = new Criteria<>();
         criteria.getParametersMap().put(SearchCriteria.OrderEntry.ID, id);
         try {
             List<OrderEntry> entries = orderEntryDAO.findOrderEntryByCriteria(criteria);
-            OrderEntry entry = entries.iterator().next();
             if (entries != null && !entries.isEmpty()) {
+                OrderEntry entry = entries.iterator().next();
                 Medicine medicine = findMedicineBySerialNumber(entry.getMedicine().getSerialNumber());
                 medicine.setProductBalance(medicine.getProductBalance() + entry.getPackageAmount());
                 medicineDAO.updateMedicine(medicine);
                 orderEntryDAO.deleteOrderEntry(entry);
                 recalculateCart(user);
             }
-        }catch (DAOException | SQLException e){
+        } catch (DAOException | SQLException e) {
             LOG.error("Error during deleting entry", e);
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public void payOrder(User user, Date date) {
+    public void payOrder(User user, Date date, Integer orderNumber) {
         Order order = getCartForUser(user);
-        order.setPaymentStatus(PaymentStatus.PAID);
-        order.setOrderStatus(OrderStatus.PAID);
+        order.setPaymentStatus(PaymentStatus.WAITING_FOR_PAYMENT);
+        order.setOrderStatus(OrderStatus.READY_FOR_APPROVE);
         order.setDeliveryTime(date);
+        order.setOrderNumber(orderNumber);
         orderDAO.updateOrder(order);
     }
 
     private void recalculateCart(User user) {
         Order cart = getCartForUser(user);
         double totalPrice = 0.0;
-        if(cart != null && cart.getOrderEntries() != null) {
+        if (cart != null && cart.getOrderEntries() != null) {
             for (OrderEntry entry : cart.getOrderEntries()) {
                 totalPrice += entry.getPackageAmount() * entry.getMedicine().getPackagePrice();
             }
@@ -123,8 +123,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private OrderEntry getAppropriateOrderEntry(Order order, String serialNumber) {
-        if (order != null && order.getOrderEntries() != null)
-        {
+        if (order != null && order.getOrderEntries() != null) {
             for (OrderEntry entry : order.getOrderEntries()) {
                 if (entry.getMedicine() != null && entry.getMedicine().getSerialNumber().equals(serialNumber)) {
                     return entry;
@@ -151,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
     private Order createNewOrder(User user) throws SQLException {
         Order order = new Order();
         order.setClient(user);
-        order.setOrderStatus(READY_FOR_PAYMENT);
+        order.setOrderStatus(IN_PROGRESS);
         order.setPaymentStatus(PaymentStatus.WAITING_FOR_PAYMENT);
         orderDAO.saveOrder(order);
         return order;

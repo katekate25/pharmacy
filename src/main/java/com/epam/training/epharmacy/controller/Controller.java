@@ -1,8 +1,7 @@
 package com.epam.training.epharmacy.controller;
 
+import com.epam.training.epharmacy.controller.constant.ControllerConstants;
 import com.epam.training.epharmacy.controller.exception.PermissionsDeniedException;
-import com.epam.training.epharmacy.dao.exception.DAOException;
-import com.epam.training.epharmacy.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.text.ParseException;
 
 public class Controller extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -22,26 +19,28 @@ public class Controller extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            process(req, resp);
-        } catch (Throwable t) {
-            LOG.error("Something went wrong during request to {}", req.getContextPath(), t);
-        }
+        process(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            process(req, resp);
-        } catch (Throwable t) {
-            LOG.error("Something went wrong during request to {}", req.getContextPath(), t);
-        }
+        process(req, resp);
     }
 
-    private void process(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException, DAOException, ServiceException, ParseException {
-        String commandName = req.getParameter("command");
-        Command command = provider.getCommand(commandName);
-        resp.setCharacterEncoding("UTF-8");
-        command.execute(req, resp);
+    private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String commandName = req.getParameter("command");
+            Command command = provider.getCommand(commandName);
+            resp.setCharacterEncoding(ControllerConstants.UTF_8);
+            command.execute(req, resp);
+        } catch (PermissionsDeniedException e) {
+            LOG.error("User doesn't have permissions to perform operation {} with params {}",
+                    req.getContextPath(), req.getParameterMap(), e);
+            resp.sendRedirect(ControllerConstants.LOGIN_PAGE);
+        } catch (Throwable t) {
+            LOG.error("Something went wrong during request to {} and params {}",
+                    req.getContextPath(), req.getParameterMap(), t);
+            throw new ServletException(t);
+        }
     }
 }

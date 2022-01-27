@@ -13,17 +13,13 @@ import java.sql.SQLException;
 
 public class LogoutCommand implements Command {
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException, DAOException, ServiceException, DAOException {
+    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         HttpSession session = req.getSession(false);
-        session.getAttribute("user");
         if(session != null){
             session.invalidate();
         }
 
         String url = req.getHeader("referer");
         resp.sendRedirect(url);
-//        RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
-//        dispatcher.forward(req, resp);
-
     }
 }

@@ -1,11 +1,10 @@
 package com.epam.training.epharmacy.controller.impl;
 
 import com.epam.training.epharmacy.controller.Command;
+import com.epam.training.epharmacy.controller.constant.ControllerConstants;
 import com.epam.training.epharmacy.controller.exception.PermissionsDeniedException;
 import com.epam.training.epharmacy.controller.util.ControllerUtils;
-import com.epam.training.epharmacy.entity.Message;
 import com.epam.training.epharmacy.entity.User;
-import com.epam.training.epharmacy.service.MessageService;
 import com.epam.training.epharmacy.service.UserService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
 import com.epam.training.epharmacy.service.factory.ServiceFactory;
@@ -14,14 +13,13 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Date;
 
-public class CreateRequestForPrescriptionCommand implements Command {
+public class UpdateUserProfileCommand implements Command {
 
-    private final Logger LOG = LogManager.getLogger(CreateRequestForPrescriptionCommand.class);
+    private final Logger LOG = LogManager.getLogger(UpdateUserProfileCommand.class);
     private final UserService userService = ServiceFactory.getInstance().getUserService();
-    private final MessageService messageService = ServiceFactory.getInstance().getMessageService();
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -30,18 +28,18 @@ public class CreateRequestForPrescriptionCommand implements Command {
             throw new PermissionsDeniedException();
         }
 
-        try {
-            Message message = new Message();
-            message.setMessage(req.getParameter("message"));
-            message.setMessageDate(new Date());
-            message.setRecipient(userService.getUserByLogin(req.getParameter("recipient")));
-            message.setSender(currentUser);
-            messageService.sendMessage(message);
+        currentUser.setFullName(req.getParameter("userName"));
+        currentUser.setEmail(req.getParameter("email"));
+        currentUser.setTelNumber(req.getParameter("telNumber"));
 
-        } catch (ServiceException e) {
-            LOG.error("Error during sending message", e);
-            resp.sendRedirect("/pharmacy/controller?command=GO_TO_ERROR_PAGE");
+        try {
+            userService.updateUser(currentUser);
+            HttpSession session = req.getSession(true);
+            session.setAttribute("user", currentUser);
+            resp.sendRedirect(ControllerConstants.PERSONAL_CABINET);
+        } catch (ServiceException e){
+            LOG.error("Error during updating user profile", e);
+            resp.sendRedirect(ControllerConstants.ERROR_PAGE);
         }
-        resp.sendRedirect("/pharmacy/controller?command=GO_TO_DOCTOR_PERSONAL_PAGE&sendSuccessful=true");
     }
 }

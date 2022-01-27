@@ -5,6 +5,8 @@ import com.epam.training.epharmacy.entity.Prescription;
 import com.epam.training.epharmacy.entity.Producer;
 import com.epam.training.epharmacy.entity.User;
 
+import java.util.List;
+
 public interface PrescriptionService {
 
     void addPrescription(Prescription prescription);
@@ -12,4 +14,6 @@ public interface PrescriptionService {
     public Medicine getMedicineByNameSerialNumber(String serialNumber);
 
     public User getUserByLogin(String login);
+
+    public List<Prescription> showPrescription(String login);
 }

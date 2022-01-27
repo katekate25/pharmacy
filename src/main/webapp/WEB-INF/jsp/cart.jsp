@@ -1,25 +1,26 @@
 <%@ page trimDirectiveWhitespaces="true" contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="order" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="common" tagdir="/WEB-INF/tags/common" %>
+<%@ taglib prefix="order" tagdir="/WEB-INF/tags/order" %>
 
-<html >
-<head>
+<html>
+<common:head title="Cart" />
 
-<fmt:setLocale value="${sessionScope.local}"/>
-<fmt:setBundle basename="localization.local" var="loc"/>
-<jsp:include page="/WEB-INF/jsp/header.jsp"></jsp:include>
-</head>
 <body>
+    <div class="container">
+        <common:header />
 
-<c:choose>
-    <c:when test="${not empty order.orderEntries}">
-       <order:order order="${order}"/>
-    </c:when>
-    <c:otherwise>
-        Cart is empty
-    </c:otherwise>
-</c:choose>
+        <c:choose>
+            <c:when test="${not empty order.orderEntries}">
+                <order:order order="${order}" />
+            </c:when>
+            <c:otherwise>
+                <fmt:message bundle="${loc}" key="local.cart.empty" />
+            </c:otherwise>
+        </c:choose>
 
+    </div>
 </body>
+
 </html>

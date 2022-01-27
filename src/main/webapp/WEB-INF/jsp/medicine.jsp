@@ -1,87 +1,72 @@
 <%@ page trimDirectiveWhitespaces="true" contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.local}"/>
-<fmt:setBundle basename="localization.local" var="loc"/>
-<fmt:message bundle="${loc}" key="local.locbutton.name.en" var="en_button" />
+<%@ taglib prefix="common" tagdir="/WEB-INF/tags/common" %>
+
+<fmt:setLocale value="${sessionScope.local}" />
+<fmt:setBundle basename="localization.local" var="loc" />
+
 <html>
-<head>
-<title>Medicine Page</title>
-<style>
-   table {
-    width: 100%;
-    border: 4px double black;
-    border-collapse: collapse;
-   }
-   th {
-    text-align: left;
-    background: #ccc;
-    padding: 5px;
-    border: 1px solid black;
-   }
-   td {
-    padding: 5px;
-    border: 1px solid black;
-   }
-  </style>
+<common:head title="Medicine" />
 
-</head>
 <body>
+    <div class="container">
+        <common:header />
 
-<jsp:include page="/WEB-INF/jsp/header.jsp"></jsp:include>
+        <br>
+        <fmt:message bundle="${loc}" key="local.commercialName" />:${medicineBySeries.commercialName}<br>
+        <fmt:message bundle="${loc}" key="local.internationalName" />:
+        <c:out value="${medicineBySeries.internationalName}" /><br>
+        <fmt:message bundle="${loc}" key="local.medicineForm" />:
+        <c:out value="${medicineBySeries.medicineForm}" /><br>
+        <fmt:message bundle="${loc}" key="local.medicineDose" />:
+        <c:out value="${medicineBySeries.medicineDose}" />mg<br>
+        <fmt:message bundle="${loc}" key="local.packagePrice" />:
+        <c:out value="${medicineBySeries.packagePrice}" />руб<br>
+        <fmt:message bundle="${loc}" key="local.expirationDate" />:
+        <c:out value="${medicineBySeries.medicineExpirationDate}" /><br>
+        <fmt:message bundle="${loc}" key="local.productBalance" />
+        <c:out value="${medicineBySeries.productBalance}" /><br>
+        <fmt:message bundle="${loc}" key="local.prescriptionRequired" />:
+        <c:out value="${medicineBySeries.prescriptionRequired}" /><br>
+        <fmt:message bundle="${loc}" key="local.producer" />:
+        <c:out value="${medicineBySeries.producer.producerFactoryName}" />,
+        <c:out value="${medicineBySeries.producer.producerCountry}" /><br>
+        <fmt:message bundle="${loc}" key="local.diseaseGroup" />:
+        <c:out value="${medicineBySeries.diseaseGroup}" /><br>
 
 
-<table>
-<tr>
-<td>commercialName</td>
-<td>internationalName</td>
-<td>medicineForm</td>
-<td>medicineDose</td>
-<td>serialNumber</td>
-<td>packagePrice</td>
-<td>ExpirationDate</td>
-<td>invoiceNumber</td>
-<td>arrivalDate</td>
-<td>productArrival</td>
-<td>productBalance</td>
-<td>prescriptionRequired</td>
-<td>producer</td>
-<td>producer Country</td>
-<td>diseaseGroup</td>
-<td>Create Prescription</td>
-</tr>
+        <c:if test="${user.userRole.name() eq 'PHARMACIST'}">
+            <fmt:message bundle="${loc}" key="local.serialNumber" />:
+            <c:out value="${medicineBySeries.serialNumber}" /><br>
+            <fmt:message bundle="${loc}" key="local.invoiceNumber" />:
+            <c:out value="${medicineBySeries.invoiceNumber}" /><br>
+            <fmt:message bundle="${loc}" key="local.arrivalDate" />:
+            <c:out value="${medicineBySeries.arrivalDate}" /><br>
+            <fmt:message bundle="${loc}" key="local.productArrival" />:
+            <c:out value="${medicineBySeries.productArrival}" /><br>
+        </c:if>
+
+        <c:if test="${user.userRole.name() eq 'DOCTOR'}">
+            <br>
+            <fmt:message bundle="${loc}" key="local.add.prescription" />:<a href="/pharmacy/controller?command=GO_TO_PRESCRIPTION_PAGE&serialNumber=${medicineBySeries.serialNumber}">Prescribe</a><br>
+        </c:if>
 
 
-    <tr>
-        <td>${medicineBySeries.commercialName}</td>
-        <td> <c:out value="${medicineBySeries.internationalName}"/> </td>
-        <td> <c:out value="${medicineBySeries.medicineForm}"/> </td>
-        <td> <c:out value="${medicineBySeries.medicineDose}"/> </td>
-        <td> <c:out value="${medicineBySeries.serialNumber}"/> </td>
-        <td> <c:out value="${medicineBySeries.packagePrice}" /> </td>
-        <td> <c:out value="${medicineBySeries.medicineExpirationDate}" />  </td>
-        <td> <c:out value="${medicineBySeries.invoiceNumber}"/> </td>
-        <td> <c:out value="${medicineBySeries.arrivalDate}" /> </td>
-        <td> <c:out value="${medicineBySeries.productArrival}"/> </td>
-        <td><c:out value = "${medicineBySeries.productBalance}"/> </td>
-        <td> <c:out value="${medicineBySeries.prescriptionRequired}"/> </td>
-        <td> <c:out value="${medicineBySeries.producer.producerFactoryName}"/> </td>
-        <td> <c:out value="${medicineBySeries.producer.producerCountry}"/> </td>
-        <td> <c:out value="${medicineBySeries.diseaseGroup}"/> </td>
-        <td><a href="/pharmacy/controller?command=GO_TO_PRESCRIPTION_PAGE&serialNumber=${medicineBySeries.serialNumber}">Prescribe</a></td>
+        <c:if test="${user.userRole.name() eq 'CUSTOMER'}">
+            <form action="/pharmacy/controller" method="post">
+                <input type="hidden" name="command" value="ADD_ENTRY_TO_CART">
+                <fmt:message bundle="${loc}" key="local.amount.medicine" />:
+                <input type="number" name="packageAmount" max="${medicineBySeries.productBalance}" />
+                <input type="hidden" name="serialNumber" value="${medicineBySeries.serialNumber}">
+                <br />
+                <input type="submit" value="enter" />
+            </form>
+            <br />
+        </c:if>
 
-    </tr>
-
-</table>
-<form action = "/pharmacy/controller" method = "post">
-        <input type="hidden" name="command" value="ADD_ENTRY_TO_CART">
-        <fmt:message bundle="${loc}" key="local.amount.medicine" />:
-        <input type="number" name="packageAmount" max="${medicineBySeries.productBalance}"/>
-        <input type="hidden" name="serialNumber" value="${medicineBySeries.serialNumber}">
-        <br/>
-
-        <input type="submit" value="enter" />
-        </form>
-        <br/>
+        <common:footer />
+    </div>
 </body>
+
 </html>

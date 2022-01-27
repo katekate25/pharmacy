@@ -1,7 +1,7 @@
 package com.epam.training.epharmacy.controller.impl;
 
 import com.epam.training.epharmacy.controller.Command;
-import com.epam.training.epharmacy.service.MedicinesService;
+import com.epam.training.epharmacy.service.UserService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
 import com.epam.training.epharmacy.service.factory.ServiceFactory;
 import org.apache.logging.log4j.LogManager;
@@ -15,20 +15,20 @@ import java.io.IOException;
 
 import static com.epam.training.epharmacy.controller.constant.ControllerConstants.ERROR_PAGE;
 
-public class GoToCatalogPage implements Command {
+public class ShowCustomersCommand implements Command {
 
-    private final Logger LOG = LogManager.getLogger(GoToCatalogPage.class);
-    private final ServiceFactory factory = ServiceFactory.getInstance();
-    private final MedicinesService medicinesService = factory.getMedicinesService();
+    private final Logger LOG = LogManager.getLogger(ShowCustomersCommand.class);
+    ServiceFactory factory = ServiceFactory.getInstance();
+    UserService userService = factory.getUserService();
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         try {
-            req.setAttribute("medicines", medicinesService.showMedicineList());
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/catalog.jsp");
+            req.setAttribute("customers", userService.showCustomers());
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/personalPage.jsp");
             dispatcher.forward(req, resp);
         } catch (ServiceException e){
-            LOG.error("Error during redirecting to catalog", e);
+            LOG.error("Error during returning customers list", e);
             resp.sendRedirect(ERROR_PAGE);
         }
     }

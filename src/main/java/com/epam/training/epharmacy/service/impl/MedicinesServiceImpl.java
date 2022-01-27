@@ -1,6 +1,5 @@
 package com.epam.training.epharmacy.service.impl;
 
-import com.epam.training.epharmacy.controller.impl.AddPrescriptionCommand;
 import com.epam.training.epharmacy.dao.MedicineDAO;
 import com.epam.training.epharmacy.dao.ProducerDAO;
 import com.epam.training.epharmacy.dao.exception.DAOException;
@@ -8,19 +7,21 @@ import com.epam.training.epharmacy.dao.factory.DAOFactory;
 import com.epam.training.epharmacy.entity.*;
 import com.epam.training.epharmacy.service.MedicinesService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MedicinesServiceImpl implements MedicinesService {
     private final Logger LOG = LogManager.getLogger(MedicinesServiceImpl.class);
+    private final MedicineDAO medicineDAO = DAOFactory.getInstance().getMedicineDAO();
+    private final ProducerDAO producerDAO = DAOFactory.getInstance().getProducerDAO();
 
     @Override
     public List<Medicine> findMedicine(String name) {
-        DAOFactory factory = DAOFactory.getInstance();
-        MedicineDAO medicineDAO = factory.getMedicineDAO();
         List<Medicine> medicines = null;
 
         try {
@@ -36,19 +37,16 @@ public class MedicinesServiceImpl implements MedicinesService {
 
     @Override
     public List<Medicine> findMedicineAnalogue(String name) {
-        DAOFactory factory = DAOFactory.getInstance();
-        MedicineDAO medicineDAO = factory.getMedicineDAO();
         List<Medicine> medicines = null;
-        String medicineInternatName = findMedicine(name).get(0).getInternationalName();
+        String medicineInternationalName = findMedicine(name).get(0).getInternationalName();
 
         try {
             Criteria<SearchCriteria.Medicine> criteria = new Criteria<>();
-            criteria.getParametersMap().put(SearchCriteria.Medicine.INTERNATIONAL_NAME, medicineInternatName);
-            medicines = medicineDAO.findMedicineByCriteria(criteria);
-
-            if (medicines != null && !medicines.isEmpty()) {
-                medicines.iterator().next();
-            }
+            criteria.getParametersMap().put(SearchCriteria.Medicine.INTERNATIONAL_NAME, medicineInternationalName);
+            medicines = CollectionUtils.emptyIfNull(medicineDAO.findMedicineByCriteria(criteria))
+                    .stream()
+                    .filter(medicine -> !medicine.getInternationalName().equals(name))
+                    .collect(Collectors.toList());
         } catch (DAOException e){
             LOG.error("Error during finding medicine analogues", e);
             throw new ServiceException(e);
@@ -58,9 +56,6 @@ public class MedicinesServiceImpl implements MedicinesService {
 
     @Override
     public void addMedicine(Medicine medicine){
-        DAOFactory factory = DAOFactory.getInstance();
-        MedicineDAO medicineDAO = factory.getMedicineDAO();
-
         try {
             Criteria<SearchCriteria.Medicine> criteria = new Criteria<>();
             criteria.getParametersMap().put(SearchCriteria.Medicine.SERIAL_NUMBER, medicine.getSerialNumber());
@@ -85,8 +80,6 @@ public class MedicinesServiceImpl implements MedicinesService {
 
     @Override
     public List<Medicine> showMedicineList() {
-        DAOFactory factory = DAOFactory.getInstance();
-        MedicineDAO medicineDAO = factory.getMedicineDAO();
         try {
             return medicineDAO.findMedicineByCriteria(new Criteria<>());
 
@@ -98,10 +91,7 @@ public class MedicinesServiceImpl implements MedicinesService {
 
     @Override
     public Medicine findMedicineToShow(String serialNumber) {
-        DAOFactory factory = DAOFactory.getInstance();
-        MedicineDAO medicineDAO = factory.getMedicineDAO();
         Medicine medicine = null;
-
         try {
             Criteria<SearchCriteria.Medicine> criteria = new Criteria<>();
             criteria.getParametersMap().put(SearchCriteria.Medicine.SERIAL_NUMBER, serialNumber);
@@ -115,19 +105,18 @@ public class MedicinesServiceImpl implements MedicinesService {
 
     @Override
     public Producer getProducerByName(String name) {
-        DAOFactory factory = DAOFactory.getInstance();
-        ProducerDAO producerDAO = factory.getProducerDAO();
         List<Producer> producers = null;
-
         try {
             Criteria<SearchCriteria.Producer> criteria = new Criteria<>();
             criteria.getParametersMap().put(SearchCriteria.Producer.FACTORY_NAME, name);
             producers = producerDAO.findProducerByCriteria(criteria);
+            if (CollectionUtils.isNotEmpty(producers)) {
+               return producers.iterator().next();
+            }
         } catch (DAOException | SQLException e){
             LOG.error("Error during searching producer by name", e);
-            throw  new ServiceException(e);
+            throw new ServiceException(e);
         }
-        return producers.iterator().next();
-
+        return null;
     }
 }

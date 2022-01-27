@@ -20,11 +20,10 @@ import static com.epam.training.epharmacy.controller.constant.ControllerConstant
 public class ShowMedicinesListCommand implements Command {
 
     private final Logger LOG = LogManager.getLogger(ShowMedicinesListCommand.class);
-    ServiceFactory factory = ServiceFactory.getInstance();
-    MedicinesService medicinesService = factory.getMedicinesService();
+    MedicinesService medicinesService = ServiceFactory.getInstance().getMedicinesService();
 
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException, DAOException, ServiceException, DAOException {
+    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
         try {
            req.setAttribute("medicines", medicinesService.showMedicineList());
