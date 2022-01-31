@@ -8,7 +8,13 @@
 
 <html>
 <common:head title="Add medicine" />
+ <style>
+body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
+      background-size:cover;
+      margin: 0;
 
+      }
+       </style>
 <body>
     <div class="container">
         <common:header />

@@ -4,6 +4,7 @@ import com.epam.training.epharmacy.controller.Command;
 import com.epam.training.epharmacy.service.UserService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
 import com.epam.training.epharmacy.service.factory.ServiceFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,9 +24,16 @@ public class ShowCustomersCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+
         try {
             req.setAttribute("customers", userService.showCustomers());
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/personalPage.jsp");
+
+            String client = req.getParameter("client");
+            if (StringUtils.isNotBlank(client)) {
+                req.setAttribute("customerByLogin", userService.getUserByLogin(client));
+            }
+
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/customersList.jsp");
             dispatcher.forward(req, resp);
         } catch (ServiceException e){
             LOG.error("Error during returning customers list", e);

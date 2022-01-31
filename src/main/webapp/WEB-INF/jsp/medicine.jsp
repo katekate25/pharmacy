@@ -8,42 +8,48 @@
 
 <html>
 <common:head title="Medicine" />
+ <style>
+body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
+      background-size:cover;
+      margin: 0;
 
+      }
+       </style>
 <body>
     <div class="container">
         <common:header />
 
         <br>
-        <fmt:message bundle="${loc}" key="local.commercialName" />:${medicineBySeries.commercialName}<br>
-        <fmt:message bundle="${loc}" key="local.internationalName" />:
+        <fmt:message bundle="${loc}" key="local.commercialName" /> - ${medicineBySeries.commercialName}<br>
+        <fmt:message bundle="${loc}" key="local.internationalName" /> -
         <c:out value="${medicineBySeries.internationalName}" /><br>
-        <fmt:message bundle="${loc}" key="local.medicineForm" />:
+        <fmt:message bundle="${loc}" key="local.medicineForm" /> -
         <c:out value="${medicineBySeries.medicineForm}" /><br>
-        <fmt:message bundle="${loc}" key="local.medicineDose" />:
+        <fmt:message bundle="${loc}" key="local.medicineDose" /> -
         <c:out value="${medicineBySeries.medicineDose}" />mg<br>
-        <fmt:message bundle="${loc}" key="local.packagePrice" />:
-        <c:out value="${medicineBySeries.packagePrice}" />руб<br>
-        <fmt:message bundle="${loc}" key="local.expirationDate" />:
+        <fmt:message bundle="${loc}" key="local.packagePrice" /> -
+        <c:out value="${medicineBySeries.packagePrice}" />$<br>
+        <fmt:message bundle="${loc}" key="local.expirationDate" /> -
         <c:out value="${medicineBySeries.medicineExpirationDate}" /><br>
-        <fmt:message bundle="${loc}" key="local.productBalance" />
+        <fmt:message bundle="${loc}" key="local.productBalance" /> -
         <c:out value="${medicineBySeries.productBalance}" /><br>
-        <fmt:message bundle="${loc}" key="local.prescriptionRequired" />:
+        <fmt:message bundle="${loc}" key="local.prescriptionRequired" /> -
         <c:out value="${medicineBySeries.prescriptionRequired}" /><br>
-        <fmt:message bundle="${loc}" key="local.producer" />:
+        <fmt:message bundle="${loc}" key="local.producer" /> -
         <c:out value="${medicineBySeries.producer.producerFactoryName}" />,
         <c:out value="${medicineBySeries.producer.producerCountry}" /><br>
-        <fmt:message bundle="${loc}" key="local.diseaseGroup" />:
+        <fmt:message bundle="${loc}" key="local.diseaseGroup" /> -
         <c:out value="${medicineBySeries.diseaseGroup}" /><br>
 
 
         <c:if test="${user.userRole.name() eq 'PHARMACIST'}">
-            <fmt:message bundle="${loc}" key="local.serialNumber" />:
+            <fmt:message bundle="${loc}" key="local.serialNumber" /> -
             <c:out value="${medicineBySeries.serialNumber}" /><br>
-            <fmt:message bundle="${loc}" key="local.invoiceNumber" />:
+            <fmt:message bundle="${loc}" key="local.invoiceNumber" /> -
             <c:out value="${medicineBySeries.invoiceNumber}" /><br>
-            <fmt:message bundle="${loc}" key="local.arrivalDate" />:
+            <fmt:message bundle="${loc}" key="local.arrivalDate" /> -
             <c:out value="${medicineBySeries.arrivalDate}" /><br>
-            <fmt:message bundle="${loc}" key="local.productArrival" />:
+            <fmt:message bundle="${loc}" key="local.productArrival" /> -
             <c:out value="${medicineBySeries.productArrival}" /><br>
         </c:if>
 
@@ -57,7 +63,7 @@
             <form action="/pharmacy/controller" method="post">
                 <input type="hidden" name="command" value="ADD_ENTRY_TO_CART">
                 <fmt:message bundle="${loc}" key="local.amount.medicine" />:
-                <input type="number" name="packageAmount" max="${medicineBySeries.productBalance}" />
+                <input type="number" name="packageAmount" min="1" max="${medicineBySeries.productBalance}" />
                 <input type="hidden" name="serialNumber" value="${medicineBySeries.serialNumber}">
                 <br />
                 <input type="submit" value="enter" />

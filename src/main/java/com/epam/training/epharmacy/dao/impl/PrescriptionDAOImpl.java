@@ -25,8 +25,11 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
 
     private static final String DELETE_PRESCRIPTION_SQL = "DELETE FROM prescriptions WHERE prescription_number = ?";
 
+    private static final String UPDATE_PRESCRIPTION_SQL = "UPDATE prescriptions SET orders_number = ? WHERE prescription_number = ?";
+
     private MedicineDAO medicineDAO;
     private UserDAO userDAO;
+    private PrescriptionDAO prescriptionDAO;
 
     public PrescriptionDAOImpl(MedicineDAO medicineDAO, UserDAO userDAO) {
         this.medicineDAO = medicineDAO;
@@ -138,5 +141,6 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
             ConnectionPool.getInstance().closeConnection(connection, statement);
         }
     }
+
 
 }

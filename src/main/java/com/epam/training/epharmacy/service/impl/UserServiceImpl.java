@@ -3,12 +3,10 @@ package com.epam.training.epharmacy.service.impl;
 import com.epam.training.epharmacy.dao.UserDAO;
 import com.epam.training.epharmacy.dao.exception.DAOException;
 import com.epam.training.epharmacy.dao.factory.DAOFactory;
-import com.epam.training.epharmacy.entity.Criteria;
-import com.epam.training.epharmacy.entity.SearchCriteria;
-import com.epam.training.epharmacy.entity.User;
-import com.epam.training.epharmacy.entity.UserRole;
+import com.epam.training.epharmacy.entity.*;
 import com.epam.training.epharmacy.service.exception.ServiceException;
 import com.epam.training.epharmacy.service.UserService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -67,10 +65,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> showCustomers() {
+        List<User> users = null;
+
         try {
-            return userDAO.showUsersByRole(UserRole.CUSTOMER);
-        } catch (DAOException | SQLException e){
-            LOG.error("Error during showing doctors list", e);
+            Criteria<SearchCriteria.User> criteria = new Criteria<>();
+            criteria.getParametersMap().put(SearchCriteria.User.ROLES_CODE, UserRole.CUSTOMER);
+            return userDAO.findUserByCriteria(criteria);
+
+        } catch (DAOException e){
+            LOG.error("Error during showing customers list", e);
             throw  new ServiceException(e);
         }
     }
@@ -78,15 +81,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByLogin(String login) {
         List<User> users = null;
+        User user = null;
         try {
             Criteria<SearchCriteria.User> criteria = new Criteria<>();
             criteria.getParametersMap().put(SearchCriteria.User.LOGIN, login);
             users = userDAO.findUserByCriteria(criteria);
-            return (users != null && !users.isEmpty()) ? users.iterator().next() : null;
+            if(CollectionUtils.isNotEmpty(users)){
+                return users.iterator().next();
+            }
         } catch (DAOException e) {
             throw new ServiceException("Error during finding user", e);
         }
+        return null;
     }
+
 
     @Override
     public void updateUser(User user) {

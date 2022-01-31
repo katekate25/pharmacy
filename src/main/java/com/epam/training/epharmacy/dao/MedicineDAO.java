@@ -12,6 +12,8 @@ public interface MedicineDAO {
 
     List<Medicine> findMedicineByCriteria(Criteria<SearchCriteria.Medicine> criteria) throws DAOException;
 
+    List<Medicine> findMedicineByCriteria(Criteria<SearchCriteria.Medicine> criteria, boolean isUseLike) throws DAOException;
+
     void addORUpdateMedicine(Medicine medicine) throws DAOException, SQLException;
 
     void addMedicine (Medicine medicine) throws DAOException, SQLException;
@@ -20,5 +22,4 @@ public interface MedicineDAO {
 
     void deleteMedicine(Medicine medicine) throws DAOException, SQLException;
 
-    List<Medicine> showMedicineList () throws DAOException, SQLException;
 }

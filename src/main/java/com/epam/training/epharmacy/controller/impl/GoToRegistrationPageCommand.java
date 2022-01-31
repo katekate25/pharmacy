@@ -4,6 +4,7 @@ import com.epam.training.epharmacy.controller.Command;
 import com.epam.training.epharmacy.controller.exception.PermissionsDeniedException;
 import com.epam.training.epharmacy.controller.util.ControllerUtils;
 import com.epam.training.epharmacy.entity.User;
+import com.epam.training.epharmacy.entity.UserRole;
 
 
 import javax.servlet.RequestDispatcher;
@@ -19,7 +20,7 @@ public class GoToRegistrationPageCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         User currentUser = ControllerUtils.getUserFromRequest(req);
-        if (currentUser == null) {
+        if (currentUser != null && currentUser.getUserRole() != UserRole.PHARMACIST) {
             resp.sendRedirect(GREETING_PAGE);
             return;
         }

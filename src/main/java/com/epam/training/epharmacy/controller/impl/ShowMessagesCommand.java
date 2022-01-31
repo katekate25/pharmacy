@@ -34,13 +34,13 @@ public class ShowMessagesCommand implements Command {
             throw new PermissionsDeniedException();
         }
 
-        try {
-            req.setAttribute("messages", messageService.showMessagesToUser(currentUser) );
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/personalCabinet.jsp");
-            dispatcher.forward(req, resp);
-        } catch (ServiceException e){
-            LOG.error("Error during returning message list", e);
-            resp.sendRedirect(ERROR_PAGE);
-        }
+//        try {
+//            req.setAttribute("messages", messageService.showMessagesToUser(currentUser) );
+//            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/personalCabinet.jsp");
+//            dispatcher.forward(req, resp);
+//        } catch (ServiceException e){
+//            LOG.error("Error during returning message list", e);
+//            resp.sendRedirect(ERROR_PAGE);
+//        }
     }
 }

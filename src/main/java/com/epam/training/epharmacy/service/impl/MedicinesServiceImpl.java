@@ -12,6 +12,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,14 +22,17 @@ public class MedicinesServiceImpl implements MedicinesService {
     private final MedicineDAO medicineDAO = DAOFactory.getInstance().getMedicineDAO();
     private final ProducerDAO producerDAO = DAOFactory.getInstance().getProducerDAO();
 
+
     @Override
-    public List<Medicine> findMedicine(String name) {
+    public List<Medicine> findMedicine(String name, boolean isFindByPartialName) {
         List<Medicine> medicines = null;
 
         try {
             Criteria<SearchCriteria.Medicine> criteria = new Criteria<>();
             criteria.getParametersMap().put(SearchCriteria.Medicine.COMMERCIAL_NAME, name);
-            medicines = medicineDAO.findMedicineByCriteria(criteria);
+            medicines = isFindByPartialName ?
+                    medicineDAO.findMedicineByCriteria(criteria, isFindByPartialName) :
+                    medicineDAO.findMedicineByCriteria(criteria);
         } catch (DAOException e){
             LOG.error("Error during finding medicine", e);
             throw  new ServiceException(e);
@@ -36,22 +41,26 @@ public class MedicinesServiceImpl implements MedicinesService {
     }
 
     @Override
-    public List<Medicine> findMedicineAnalogue(String name) {
-        List<Medicine> medicines = null;
-        String medicineInternationalName = findMedicine(name).get(0).getInternationalName();
+    public List<Medicine> findMedicineAnalogue(Medicine medicine) {
+        List<Medicine> analogues;
 
         try {
+            if (medicine == null)
+            {
+                return Collections.emptyList();
+            }
+            String medicineInternationalName = medicine.getInternationalName();
             Criteria<SearchCriteria.Medicine> criteria = new Criteria<>();
             criteria.getParametersMap().put(SearchCriteria.Medicine.INTERNATIONAL_NAME, medicineInternationalName);
-            medicines = CollectionUtils.emptyIfNull(medicineDAO.findMedicineByCriteria(criteria))
+            analogues = CollectionUtils.emptyIfNull(medicineDAO.findMedicineByCriteria(criteria))
                     .stream()
-                    .filter(medicine -> !medicine.getInternationalName().equals(name))
+                    .filter(analogue -> !analogue.getCommercialName().equals(medicine.getCommercialName()))
                     .collect(Collectors.toList());
         } catch (DAOException e){
             LOG.error("Error during finding medicine analogues", e);
             throw new ServiceException(e);
         }
-        return medicines;
+        return analogues;
     }
 
     @Override
@@ -79,7 +88,7 @@ public class MedicinesServiceImpl implements MedicinesService {
     }
 
     @Override
-    public List<Medicine> showMedicineList() {
+    public List<Medicine> findAllMedicines() {
         try {
             return medicineDAO.findMedicineByCriteria(new Criteria<>());
 
@@ -118,5 +127,42 @@ public class MedicinesServiceImpl implements MedicinesService {
             throw new ServiceException(e);
         }
         return null;
+    }
+
+    @Override
+    public List<Medicine> medicineByIncome(Date beginning, Date end) {
+        List<Medicine> medicines = null;
+        List<Medicine> foundMedicines = null;
+
+        try {
+            medicines = medicineDAO.findMedicineByCriteria(new Criteria<>());
+            for (int i=0;i<medicines.size(); i++) {
+                if ((medicines.get(i).getArrivalDate().after(beginning) || medicines.get(i).getArrivalDate().equals(beginning))
+                        && (medicines.get(i).getArrivalDate().before(end) || medicines.get(i).getArrivalDate().equals(end))  ){
+                    foundMedicines.add(medicines.get(i));
+                }
+            }
+
+        } catch (DAOException e){
+            LOG.error("Error during finding medicines by date", e);
+            throw  new ServiceException(e);
+        }
+        return foundMedicines;
+    }
+
+    @Override
+    public List<Medicine> medicineByInvoiceNumber(String invoice) {
+        List<Medicine> medicines = null;
+
+        try {
+            Criteria<SearchCriteria.Medicine> criteria = new Criteria<>();
+            criteria.getParametersMap().put(SearchCriteria.Medicine.INVOICE_NUMBER, invoice);
+            medicines = medicineDAO.findMedicineByCriteria(criteria);
+
+        } catch (DAOException e){
+            LOG.error("Error during finding medicines by invoice", e);
+            throw  new ServiceException(e);
+        }
+        return medicines;
     }
 }

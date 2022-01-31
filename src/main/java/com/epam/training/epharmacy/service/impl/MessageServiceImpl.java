@@ -7,11 +7,15 @@ import com.epam.training.epharmacy.dao.factory.DAOFactory;
 import com.epam.training.epharmacy.entity.*;
 import com.epam.training.epharmacy.service.MessageService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class MessageServiceImpl implements MessageService {
+
+    private final Logger LOG = LogManager.getLogger(MessageServiceImpl.class);
 
     public void sendMessage(Message message) {
         DAOFactory factory = DAOFactory.getInstance();
@@ -29,11 +33,14 @@ public class MessageServiceImpl implements MessageService {
     public List<Message> showMessagesToUser(User user) {
         DAOFactory factory = DAOFactory.getInstance();
         MessageDAO messageDAO = factory.getMessageDAO();
+        Criteria<SearchCriteria.Message> criteria = new Criteria<>();
+        criteria.getParametersMap().put(SearchCriteria.Message.RECIPIENT, user.getId());
         try {
 
-            return messageDAO.getUserMessages(user.getLogin());
+            return messageDAO.findMessageByCriteria(criteria);
 
-        } catch (DAOException | SQLException e) {
+        } catch (DAOException e) {
+            LOG.error("Error during returning messages for user", e);
             throw new ServiceException(e);
         }
     }

@@ -9,6 +9,7 @@ import com.epam.training.epharmacy.service.PrescriptionService;
 import com.epam.training.epharmacy.service.UserService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
 import com.epam.training.epharmacy.service.factory.ServiceFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,7 +28,6 @@ public class ShowPrescriptionsCommand implements Command {
     private final Logger LOG = LogManager.getLogger(ShowAllDoctorsCommand.class);
     ServiceFactory factory = ServiceFactory.getInstance();
     PrescriptionService prescriptionService = factory.getPrescriptionService();
-    UserService userService = factory.getUserService();
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -37,11 +37,15 @@ public class ShowPrescriptionsCommand implements Command {
         }
 
         try {
-            req.setAttribute("prescriptions", prescriptionService.showPrescription(currentUser.getLogin()));
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/personalPage.jsp");
+           req.setAttribute("prescriptions", prescriptionService.showPrescription(currentUser.getLogin()));
+            String client = req.getParameter("client");
+            if (StringUtils.isNotBlank(client)) {
+                req.setAttribute("foundPrescription", prescriptionService.showPrescription(client));
+            }
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/prescriptionsList.jsp");
             dispatcher.forward(req, resp);
         } catch (ServiceException e){
-            LOG.error("Error during returning doctors list", e);
+            LOG.error("Error during returning prescriptions list", e);
             resp.sendRedirect(ERROR_PAGE);
         }
     }

@@ -67,13 +67,34 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         UserDAO userDAO = factory.getUserDAO();
         PrescriptionDAO prescriptionDAO = factory.getPrescriptionDAO();
         try {
+            Criteria<SearchCriteria.User> criteriaUser = new Criteria<>();
+            criteriaUser.getParametersMap().put(SearchCriteria.User.LOGIN, login);
+            Integer id = userDAO.findUserByCriteria(criteriaUser).iterator().next().getId();
+
+
             Criteria<SearchCriteria.Prescription> criteria = new Criteria<>();
-            criteria.getParametersMap().put(SearchCriteria.Prescription.CLIENT_ID, login);
+            criteria.getParametersMap().put(SearchCriteria.Prescription.CLIENT_ID, id);
             return prescriptionDAO.findPrescriptionByCriteria(criteria);
 
         } catch (DAOException e){
-            LOG.error("Error during finding doctors list", e);
+            LOG.error("Error during finding prescriptions to customer", e);
             throw  new ServiceException(e);
         }
     }
+
+    @Override
+    public List<Prescription> getAllPrescription() {
+        DAOFactory factory = DAOFactory.getInstance();
+        UserDAO userDAO = factory.getUserDAO();
+        PrescriptionDAO prescriptionDAO = factory.getPrescriptionDAO();
+        try {
+
+            return prescriptionDAO.findPrescriptionByCriteria(new Criteria<>());
+
+        } catch (DAOException e){
+            LOG.error("Error during finding prescriptions list", e);
+            throw  new ServiceException(e);
+        }
+    }
+
 }

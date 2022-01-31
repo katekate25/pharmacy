@@ -1,7 +1,9 @@
 package com.epam.training.epharmacy.controller.impl;
 
 import com.epam.training.epharmacy.controller.Command;
+import com.epam.training.epharmacy.service.UserService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
+import com.epam.training.epharmacy.service.factory.ServiceFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,14 +18,14 @@ import static com.epam.training.epharmacy.controller.constant.ControllerConstant
 public class GoToDoctorPersonalPage implements Command {
 
     private final Logger LOG = LogManager.getLogger(GoToDoctorPersonalPage.class);
+    UserService userService = ServiceFactory.getInstance().getUserService();
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
-        String login = req.getParameter("recipient");
-
         try {
-            req.setAttribute("recipient", login );
+            String recipient = req.getParameter("recipient");
+            req.setAttribute("recipient", userService.getUserByLogin(recipient) );
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/doctorPersonalPage.jsp");
             dispatcher.forward(req, resp);
         } catch (ServiceException e){

@@ -23,9 +23,8 @@ public class MedicineDAOImp extends AbstractEntityDAO implements MedicineDAO {
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT id FROM producers WHERE factory_name=?), (SELECT code FROM disease_groups WHERE code=?))";
     private static final String DELETE_MEDICINE_SQL = "DELETE FROM medicines WHERE serial_number = ?";
     private static final String UPDATE_MEDICINE_SQL = "UPDATE medicines SET product_arrival = ?, balance = ?, invoice_number=?, arrival_date=?, price=?  WHERE serial_number = ?";
-    private static final String SHOW_MEDICINE_LIST_SQL = "SELECT * FROM medicines";
 
-    private ProducerDAO producerDAO;
+    private final ProducerDAO producerDAO;
 
     public MedicineDAOImp(ProducerDAO producerDAO) {
         this.producerDAO = producerDAO;
@@ -98,12 +97,17 @@ public class MedicineDAOImp extends AbstractEntityDAO implements MedicineDAO {
 
     @Override
     public List<Medicine> findMedicineByCriteria(Criteria<SearchCriteria.Medicine> criteria) throws DAOException {
+        return findMedicineByCriteria(criteria, false);
+    }
+
+    @Override
+    public List<Medicine> findMedicineByCriteria(Criteria<SearchCriteria.Medicine> criteria, boolean isUseLike) throws DAOException {
         PreparedStatement statement = null;
         Connection connection = null;
         List<Medicine> medicines = new ArrayList<>();
         try {
             connection = ConnectionPool.getInstance().takeConnection();
-            statement = createStatement(connection, criteria);
+            statement = (isUseLike) ? createLikeStatement(connection, criteria) : createStatement(connection, criteria);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Medicine medicine = new Medicine.Builder()
@@ -158,45 +162,6 @@ public class MedicineDAOImp extends AbstractEntityDAO implements MedicineDAO {
         } finally {
             ConnectionPool.getInstance().closeConnection(connection, statement);
         }
-    }
-
-    @Override
-    public List<Medicine> showMedicineList() throws DAOException, SQLException {
-//        PreparedStatement statement = null;
-//        Connection connection = null;
-//        List<Medicine> medicines = new ArrayList<>();
-//        try {
-//            connection = ConnectionPool.getInstance().takeConnection();
-//            ResultSet rs = statement.executeQuery();
-//            while(rs.next()){
-//                Medicine medicine = new Medicine.Builder()
-//                        .id(rs.getInt(MEDICINE_ID))
-//                        .commercialName(rs.getString(COMMERCIAL_NAME))
-//                        .internationalName(rs.getString(INTERNATIONAL_NAME))
-//                        .medicineForm(rs.getString(FORM))
-//                        .medicineDose(rs.getInt(DOSE))
-//                        .productArrival(rs.getDouble(PRODUCT_ARRIVAL))
-//                        .diseaseGroup(DiseaseGroup.valueOf(rs.getString(DISEASE_GROUP)))
-//                        .arrivalDate(rs.getDate(ARRIVAL_DATE))
-//                        .invoiceNumber(rs.getString(INVOICE_NUMBER))
-//                        .medicineExpirationDate(rs.getDate(EXPIRATION_DATE))
-//                        .isPrescriptionRequired(rs.getBoolean(PRESCRIPTION_REQUIRED))
-//                        .packagePrice(rs.getDouble(PRICE))
-//                        .producer(getProducerById(rs.getInt(PRODUCER_ID)))
-//                        .serialNumber(rs.getString(SERIAL_NUMBER))
-//                        .productBalance(rs.getDouble(PRODUCT_BALANCE))
-//                        .build();
-//
-//                medicines.add(medicine);
-//            }
-//
-//        } catch (SQLException e) {
-//            throw new DAOException("Error during returning medicines list", e);
-//        }
-//        finally {
-//            ConnectionPool.getInstance().closeConnection(connection, statement);
-//        }
-        return null;
     }
 
     @Override

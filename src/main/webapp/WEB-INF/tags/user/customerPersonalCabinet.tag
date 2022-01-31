@@ -27,6 +27,12 @@
         </div>
    </div>
    <div class="form-group">
+           <label class="col-sm-2 control-label"><fmt:message bundle="${loc}" key="local.password" /></label>
+           <div class="col-sm-3">
+               <input class="form-control" type="text" name="password" value="" placeholder="Enter new password">
+           </div>
+      </div>
+   <div class="form-group">
         <button type="submit" class="btn btn-dark"/>Update</button>
    <div class="form-group">
 </form>

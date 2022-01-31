@@ -9,10 +9,24 @@
 
 <html>
 <common:head title="Personal page" />
+ <style>
+body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
+      background-size:cover;
+      margin: 0;
 
+      }
+       </style>
 <body>
     <div class="container">
         <common:header />
+
+        Name - ${recipient.fullName} <br>
+        Email - ${recipient.email} <br>
+        Tel. Number - ${recipient.telNumber} <br>
+        Work Place - ${recipient.workPlace} <br>
+        Specialization - ${recipient.specialization} <br>
+        Age - ${recipient.age} <br>
+
 
         <c:if test="${user.userRole.name() eq 'CUSTOMER'}">
             <h2>
@@ -24,7 +38,7 @@
                 <fmt:message bundle="${loc}" key="local.message.message" />:
                 <input type="text" name="message" value="" />
                 <br />
-                <input type="hidden" name="recipient" value="${recipient}" />
+                <input type="hidden" name="recipient" value="${recipient.login}" />
 
                 <input type="submit" value="${send_button}" />
             </form>
@@ -35,7 +49,7 @@
             </c:if>
 
         </c:if>
-
+        <common:footer />
     </div>
 </body>
 

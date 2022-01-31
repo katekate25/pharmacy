@@ -15,4 +15,5 @@ public interface PrescriptionDAO {
     void addPrescription(Prescription prescription) throws SQLException;
 
     void deletePrescription (int prescriptionNumber);
+
 }

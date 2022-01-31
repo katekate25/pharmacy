@@ -1,6 +1,7 @@
 package com.epam.training.epharmacy.controller.impl;
 
 import com.epam.training.epharmacy.controller.Command;
+import com.epam.training.epharmacy.controller.constant.ControllerConstants;
 import com.epam.training.epharmacy.controller.exception.PermissionsDeniedException;
 import com.epam.training.epharmacy.controller.util.ControllerUtils;
 import com.epam.training.epharmacy.entity.Message;
@@ -30,11 +31,12 @@ public class CreateRequestForPrescriptionCommand implements Command {
             throw new PermissionsDeniedException();
         }
 
+        String recipient = req.getParameter("recipient");
         try {
             Message message = new Message();
             message.setMessage(req.getParameter("message"));
             message.setMessageDate(new Date());
-            message.setRecipient(userService.getUserByLogin(req.getParameter("recipient")));
+            message.setRecipient(userService.getUserByLogin(recipient));
             message.setSender(currentUser);
             messageService.sendMessage(message);
 
@@ -42,6 +44,7 @@ public class CreateRequestForPrescriptionCommand implements Command {
             LOG.error("Error during sending message", e);
             resp.sendRedirect("/pharmacy/controller?command=GO_TO_ERROR_PAGE");
         }
-        resp.sendRedirect("/pharmacy/controller?command=GO_TO_DOCTOR_PERSONAL_PAGE&sendSuccessful=true");
+        resp.sendRedirect(ControllerConstants.DOCTOR_PAGE
+                + String.format("&recipient=%s&sendSuccessful=true", recipient));
     }
 }

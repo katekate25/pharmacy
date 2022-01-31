@@ -7,6 +7,36 @@
 <fmt:setBundle basename="localization.local" var="loc" />
 
 <html>
+<style>
+   h1 {
+       margin: 1em 0 0.5em 0;
+       color: #343434;
+       font-weight: normal;
+       font-family: 'Ultra', sans-serif;
+       font-size: 36px;
+       line-height: 42px;
+       text-transform: uppercase;
+       text-shadow: 0 2px white, 0 3px #777;
+   }
+   h3 {
+       margin: 1em 0 0.5em 0;
+       color: #343434;
+       font-size: 22px;
+       line-height: 40px;
+       font-weight: normal;
+       text-transform: uppercase;
+       font-family: 'Orienta', sans-serif;
+       letter-spacing: 1px;
+       font-style: normal;
+   }
+
+     body { background: url(img/shopping-cart.jpg);
+      background-size: contain;
+      margin: 0;
+          height: 100%;
+
+      }
+  </style>
 <common:head title="Welcome" />
 
 <body>
@@ -18,15 +48,20 @@
         </c:if>
 
         <br />
+        <h3>
+           <fmt:message bundle="${loc}" key="local.greeting.add" />
+        </h3>
+
         <h1>
             <fmt:message bundle="${loc}" key="local.greeting.main.page" />
         </h1>
-        <h2>
-            <fmt:message bundle="${loc}" key="local.sold.now" />
-        </h2>
-        <h2>
-            <fmt:message bundle="${loc}" key="local.articles" />
-        </h2>
+
+        <p>
+        <font size="3" color="black"> <em>We care about your health</em>
+        </p>
+
+
+    <common:footer />
     </div>
 </body>
 

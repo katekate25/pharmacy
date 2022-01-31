@@ -1,6 +1,5 @@
 package com.epam.training.epharmacy.service.impl;
 
-import com.epam.training.epharmacy.controller.impl.AddPrescriptionCommand;
 import com.epam.training.epharmacy.dao.MedicineDAO;
 import com.epam.training.epharmacy.dao.OrderDAO;
 import com.epam.training.epharmacy.dao.OrderEntryDAO;
@@ -17,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.training.epharmacy.entity.OrderStatus.IN_PROGRESS;
 import static com.epam.training.epharmacy.entity.OrderStatus.READY_FOR_PAYMENT;
 
 public class OrderServiceImpl implements OrderService {
@@ -51,7 +49,9 @@ public class OrderServiceImpl implements OrderService {
             if (isOrderAlreadyHasAppropriateOrderEntry(order, serialNumber)) {
                 orderEntry = updateExistOrderEntry(serialNumber, amount, order);
             } else {
-                order = Optional.ofNullable(order).orElse(createNewOrder(user));
+                if (order == null) {
+                    order = createNewOrder(user);
+                }
                 orderEntry = createNewOrderEntry(amount, medicine, order);
             }
             medicine.setProductBalance(medicine.getProductBalance() - amount);
@@ -85,13 +85,49 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void payOrder(User user, Date date, Integer orderNumber) {
+    public void payOrder(User user, Date date) {
         Order order = getCartForUser(user);
-        order.setPaymentStatus(PaymentStatus.WAITING_FOR_PAYMENT);
-        order.setOrderStatus(OrderStatus.READY_FOR_APPROVE);
+        order.setPaymentStatus(PaymentStatus.PAID);
+        order.setOrderStatus(OrderStatus.PAID);
         order.setDeliveryTime(date);
-        order.setOrderNumber(orderNumber);
         orderDAO.updateOrder(order);
+    }
+
+    @Override
+    public List<Order> getOrdersForUser(User user) {
+        Criteria<SearchCriteria.Order> criteria = new Criteria<>();
+        criteria.getParametersMap().put(SearchCriteria.Order.CLIENTS_ID, user.getId());
+        try {
+            return orderDAO.findOrderByCriteria(criteria);
+        } catch (DAOException | SQLException e) {
+            LOG.error("Error during finding orders for user", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<Order> getOrdersForAdmin() {
+
+        try {
+            return orderDAO.findOrderByCriteria(new Criteria<>());
+        } catch (DAOException | SQLException e) {
+            LOG.error("Error during returning order list", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void updateOrder(Integer orderNumber, OrderStatus status) throws SQLException {
+        Criteria<SearchCriteria.Order> criteria = new Criteria<>();
+        criteria.getParametersMap().put(SearchCriteria.Order.NUMBER, orderNumber);
+        Order order = orderDAO.findOrderByCriteria(criteria).iterator().next();
+        try {
+            order.setOrderStatus(status);
+            orderDAO.updateOrder(order);
+        } catch (DAOException e) {
+            LOG.error("Error during order update", e);
+            throw new ServiceException(e);
+        }
     }
 
     private void recalculateCart(User user) {
@@ -150,7 +186,7 @@ public class OrderServiceImpl implements OrderService {
     private Order createNewOrder(User user) throws SQLException {
         Order order = new Order();
         order.setClient(user);
-        order.setOrderStatus(IN_PROGRESS);
+        order.setOrderStatus(READY_FOR_PAYMENT);
         order.setPaymentStatus(PaymentStatus.WAITING_FOR_PAYMENT);
         orderDAO.saveOrder(order);
         return order;

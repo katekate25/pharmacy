@@ -9,31 +9,38 @@
 
 <html>
 <common:head title="Doctors" />
+ <style>
+body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
+      background-size:cover;
+      margin: 0;
 
+      }
+       </style>
 <body>
     <div class="container">
         <common:header />
-
-
-        <table class="table table-hover table-bordered">
+        <br> <br>
+        <table class="table table-hover table-bordered text-center">
+            <thead class="thead-dark">
             <tr>
-                <td>
+                <th>
                     <fmt:message bundle="${loc}" key="local.fullName" />
-                </td>
-                <td>
+                </th>
+                <th>
                     <fmt:message bundle="${loc}" key="local.specialization" />
-                </td>
-                <td>
+                </th>
+                <th>
                     <fmt:message bundle="${loc}" key="local.workPlace" />
-                </td>
-                <c:if test="${user.userRole.name() eq 'CUSTOMER'}">
-                    <td></td>
-                </c:if>
+                </th>
             </tr>
+            </thead>
+            <tbody>
             <c:forEach var="doctor" items="${doctors}">
                 <tr>
                     <td>
-                        <c:out value="${doctor.fullName}" />
+                        <a href="/pharmacy/controller?command=GO_TO_DOCTOR_PERSONAL_PAGE&recipient=${doctor.login}">
+                            ${doctor.fullName}
+                        </a>
                     </td>
                     <td>
                         <c:out value="${doctor.specialization}" />
@@ -41,16 +48,11 @@
                     <td>
                         <c:out value="${doctor.workPlace}" />
                     </td>
-
-                    <c:if test="${user.userRole.name() eq 'CUSTOMER'}">
-                        <td><a href="/pharmacy/controller?command=GO_TO_DOCTOR_PERSONAL_PAGE&recipient=${doctor.login}">
-                                <fmt:message bundle="${loc}" key="local.doctor.details" />
-                            </a></td>
-                    </c:if>
                 </tr>
             </c:forEach>
+            </tbody>
         </table>
-
+        <common:footer />
     </div>
 </body>
 

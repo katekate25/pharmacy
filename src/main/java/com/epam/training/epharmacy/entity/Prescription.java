@@ -13,7 +13,9 @@ public class Prescription {
     private String usageInstruction;
     private Date creationDate;
     private Date expirationDate;
+    private Integer orderNumber;
 
+    public Prescription() {}
 
     public int getPrescriptionNumber() {
         return prescriptionNumber;
@@ -79,17 +81,25 @@ public class Prescription {
         this.expirationDate = expirationDate;
     }
 
+    public Integer getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Prescription that = (Prescription) o;
-        return prescriptionNumber == that.prescriptionNumber && Double.compare(that.packageAmount, packageAmount) == 0 && Objects.equals(client, that.client) && Objects.equals(doctor, that.doctor) && Objects.equals(medicine, that.medicine) && Objects.equals(usageInstruction, that.usageInstruction) && Objects.equals(creationDate, that.creationDate) && Objects.equals(expirationDate, that.expirationDate);
+        return prescriptionNumber == that.prescriptionNumber && Double.compare(that.packageAmount, packageAmount) == 0 && Objects.equals(client, that.client) && Objects.equals(doctor, that.doctor) && Objects.equals(medicine, that.medicine) && Objects.equals(usageInstruction, that.usageInstruction) && Objects.equals(creationDate, that.creationDate) && Objects.equals(expirationDate, that.expirationDate) && Objects.equals(orderNumber, that.orderNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(prescriptionNumber, client, doctor, medicine, packageAmount, usageInstruction, creationDate, expirationDate);
+        return Objects.hash(prescriptionNumber, client, doctor, medicine, packageAmount, usageInstruction, creationDate, expirationDate, orderNumber);
     }
 
     @Override
@@ -103,6 +113,7 @@ public class Prescription {
                 ", usageInstruction='" + usageInstruction + '\'' +
                 ", creationDate=" + creationDate +
                 ", expirationDate=" + expirationDate +
+                ", orderNumber=" + orderNumber +
                 '}';
     }
 

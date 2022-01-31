@@ -11,6 +11,8 @@ public class Message implements Serializable {
     private User recipient;
     private User sender;
 
+
+
     public Integer getId() {
         return id;
     }

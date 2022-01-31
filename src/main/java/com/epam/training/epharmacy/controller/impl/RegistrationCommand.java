@@ -1,6 +1,8 @@
 package com.epam.training.epharmacy.controller.impl;
 
 import com.epam.training.epharmacy.controller.Command;
+import com.epam.training.epharmacy.controller.exception.PermissionsDeniedException;
+import com.epam.training.epharmacy.controller.util.ControllerUtils;
 import com.epam.training.epharmacy.entity.User;
 import com.epam.training.epharmacy.entity.UserRole;
 import com.epam.training.epharmacy.service.factory.ServiceFactory;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import static com.epam.training.epharmacy.controller.constant.ControllerConstants.ERROR_PAGE;
+import static com.epam.training.epharmacy.controller.constant.ControllerConstants.LOGIN_PAGE;
 
 public class RegistrationCommand implements Command {
 
@@ -25,9 +28,14 @@ public class RegistrationCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        User currentUser = ControllerUtils.getUserFromRequest(req);
+        if (currentUser != null && currentUser.getUserRole() != UserRole.PHARMACIST)
+        {
+            throw new PermissionsDeniedException();
+        }
 
         User user = new User();
-        user.setUserRole(UserRole.CUSTOMER);
+        user.setUserRole(currentUser == null ? UserRole.CUSTOMER : UserRole.DOCTOR);
         user.setLogin(req.getParameter("login"));
         user.setPassword(req.getParameter("password"));
         user.setFullName(req.getParameter("name"));
@@ -44,9 +52,7 @@ public class RegistrationCommand implements Command {
             LOG.error("Error during registration", e);
             resp.sendRedirect("/pharmacy/controller?command=GO_TO_REGISTRATION_PAGE&userExists=true");
         }
-        HttpSession session = req.getSession(true);
-        session.setAttribute("user", user);
-        resp.sendRedirect("/pharmacy/controller?command=GO_TO_GREETING_PAGE");
+        resp.sendRedirect(LOGIN_PAGE);
     }
 
 }

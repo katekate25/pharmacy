@@ -18,7 +18,7 @@ public class MessageDAOImpl extends AbstractEntityDAO implements MessageDAO {
 
     private static final String ADD_MESSAGE_SQL = "INSERT INTO messages (message, date, recipient, sender) " +
             "VALUES (?, ?, (SELECT id FROM users WHERE login=?), (SELECT id FROM users WHERE login=?))";
-    private static final String SHOW_MESSAGES_SQL = "SELECT message, date, sender FROM messages WHERE recipient=?";
+    private static final String SHOW_MESSAGES_SQL = "SELECT message, date, sender FROM messages WHERE (SELECT id FROM users WHERE login=?)";
 
     private UserDAO userDAO;
 
@@ -45,8 +45,8 @@ public class MessageDAOImpl extends AbstractEntityDAO implements MessageDAO {
                 message.setId(rs.getInt(MESSAGE_ID));
                 message.setMessage(rs.getString(MESSAGE_MESSAGE));
                 message.setMessageDate(rs.getDate(MESSAGE_DATE));
-                message.setRecipient(getUserByLogin(rs.getString(MESSAGE_RECIPIENT)));
-                message.setSender(getUserByLogin(rs.getString(MESSAGE_SENDER)));
+                message.setRecipient(getUserById(Integer.valueOf(rs.getString(MESSAGE_RECIPIENT))));
+                message.setSender(getUserById(Integer.valueOf(rs.getString(MESSAGE_SENDER))));
                 messages.add(message);
             }
         } catch (SQLException e) {
@@ -54,12 +54,13 @@ public class MessageDAOImpl extends AbstractEntityDAO implements MessageDAO {
         } finally {
             ConnectionPool.getInstance().closeConnection(connection, statement);
         }
+
         return messages;
     }
 
-    private User getUserByLogin(String login) throws DAOException, SQLException {
+    private User getUserById(Integer id) throws DAOException, SQLException {
         Criteria<SearchCriteria.User> criteria = new Criteria<>();
-        criteria.getParametersMap().put(SearchCriteria.User.LOGIN, login);
+        criteria.getParametersMap().put(SearchCriteria.User.ID, id);
         List<User> users = userDAO.findUserByCriteria(criteria);
         if (users != null && !users.isEmpty()) {
             return users.iterator().next();
@@ -106,7 +107,7 @@ public class MessageDAOImpl extends AbstractEntityDAO implements MessageDAO {
                 Message message = new Message();
                 message.setMessage(rs.getString(MESSAGE_MESSAGE));
                 message.setMessageDate(rs.getDate(MESSAGE_DATE));
-                message.setSender(getUserByLogin(rs.getString(MESSAGE_SENDER)));
+                message.setSender(getUserById(Integer.valueOf(rs.getString(MESSAGE_SENDER))));
                 messages.add(message);
             }
 

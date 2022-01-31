@@ -34,6 +34,7 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -113,6 +114,7 @@
                     <url>http://localhost:8080/manager/text</url>
                     <server>TomcatServer</server>
                     <path>/pharmacy</path>
+                    <contextReloadable>true</contextReloadable>
                 </configuration>
             </plugin>
         </plugins>

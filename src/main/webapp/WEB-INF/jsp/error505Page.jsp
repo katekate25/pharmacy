@@ -8,7 +8,10 @@
 <body>
     <div class="container">
         <common:header />
+
         <h1>Error 505</h1>
+
+        <common:footer />
     </div>
 </body>
 

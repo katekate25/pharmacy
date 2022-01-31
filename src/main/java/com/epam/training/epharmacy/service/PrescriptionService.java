@@ -16,4 +16,7 @@ public interface PrescriptionService {
     public User getUserByLogin(String login);
 
     public List<Prescription> showPrescription(String login);
+
+    public List<Prescription> getAllPrescription();
+
 }

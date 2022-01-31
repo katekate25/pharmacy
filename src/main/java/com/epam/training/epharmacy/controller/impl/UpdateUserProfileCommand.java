@@ -8,6 +8,7 @@ import com.epam.training.epharmacy.entity.User;
 import com.epam.training.epharmacy.service.UserService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
 import com.epam.training.epharmacy.service.factory.ServiceFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,6 +32,12 @@ public class UpdateUserProfileCommand implements Command {
         currentUser.setFullName(req.getParameter("userName"));
         currentUser.setEmail(req.getParameter("email"));
         currentUser.setTelNumber(req.getParameter("telNumber"));
+        String password = req.getParameter("password");
+        if (StringUtils.isNotBlank(password))
+        {
+            currentUser.setPassword(password);
+        }
+        currentUser.setWorkPlace(req.getParameter("workPlace"));
 
         try {
             userService.updateUser(currentUser);

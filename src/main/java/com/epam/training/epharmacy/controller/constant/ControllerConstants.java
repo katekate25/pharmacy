@@ -8,6 +8,9 @@ public class ControllerConstants {
     public static final String GREETING_PAGE = PHARMACY_CONTROLLER + "command=GO_TO_GREETING_PAGE";
     public static final String LOGIN_PAGE = PHARMACY_CONTROLLER + "command=GO_TO_LOGIN_PAGE";
     public static final String PERSONAL_CABINET = PHARMACY_CONTROLLER + "command=GO_TO_PERSONAL_CABINET";
+    public static final String ORDERS_PAGE = PHARMACY_CONTROLLER + "command=GO_TO_ORDERS";
+    public static final String DOCTOR_PAGE = PHARMACY_CONTROLLER + "command=GO_TO_DOCTOR_PERSONAL_PAGE";
+    public static final String ORDER_LIST = PHARMACY_CONTROLLER + "command=GO_TO_ORDER_LIST";
 
 
     public static final String DATE_FORMAT_PATTERN = "dd-MM-yyyy";

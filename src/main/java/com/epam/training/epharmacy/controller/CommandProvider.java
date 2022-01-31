@@ -19,7 +19,6 @@ public final class CommandProvider {
         commands.put("GO_TO_CATALOG", new GoToCatalogPage());
         commands.put("GO_TO_PERSONAL_CABINET", new GoToPersonalCabinet());
         commands.put("SHOW_MEDICINES_LIST", new ShowMedicinesListCommand());
-        commands.put("SEARCH_MEDICINES", new SearchMedicineCommand());
         commands.put("Logout", new LogoutCommand());
         commands.put("SHOW_MEDICINE_DETAILS", new ShowMedicineDetailsCommand());
         commands.put("GO_TO_MEDICINE_PAGE", new GoToMedicinePage());
@@ -38,9 +37,15 @@ public final class CommandProvider {
         commands.put("DELETE_ENTRY", new DeleteEntryCommand());
         commands.put("SHOW_MESSAGES", new ShowMessagesCommand());
         commands.put("SHOW_CUSTOMERS", new ShowCustomersCommand());
-        commands.put("SHOW_ORDER", new ShowOrdersCommand());
+        commands.put("GO_TO_ORDERS", new ShowOrdersCommand());
         commands.put("SHOW_PRESCRIPTIONS", new ShowPrescriptionsCommand());
         commands.put("UPDATE_PROFILE", new UpdateUserProfileCommand());
+        commands.put("GO_TO_ORDER_LIST", new GoToOrderListCommand());
+        commands.put("GO_TO_CUSTOMERS_LIST", new GoToCustomersListCommand());
+        commands.put("GO_TO_PRESCRIPTIONS_LIST", new GoToPrescriptionsListCommand());
+        commands.put("GO_TO_MESSAGES_LIST", new GoToMessagesPageCommand());
+        commands.put("GO_TO_NEWS", new GoToNews());
+        commands.put("UPDATE_STATUS", new UpdateOrderStatusCommand());
     }
 
     public final Command getCommand(String commandName){
