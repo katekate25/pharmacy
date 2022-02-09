@@ -22,6 +22,16 @@
            margin: 0;
 
            }
+
+              .leftimg {
+               float:left; /* Выравнивание по левому краю */
+               margin: 7px 7px 7px 0; /* Отступы вокруг картинки */
+              }
+              .rightimg  {
+               float: right; /* Выравнивание по правому краю  */
+               margin: 7px 0 7px 7px; /* Отступы вокруг картинки */
+              }
+
   </style>
 
 <body>
@@ -29,8 +39,8 @@
 <common:header />
 
 <br>
-<p><img src="img/snake.png" width="100" height="120" alt="Snake"></p>
-<a href="http://minzdrav.gov.by/ru/">Ministry of Health</a>
+<p><img src="img/snake.png" width="100" height="120" alt="Snake"><br><br><a href="http://minzdrav.gov.by/ru/">Ministry of Health</a></p>
+
 <br>
 <common:footer />
     </div>

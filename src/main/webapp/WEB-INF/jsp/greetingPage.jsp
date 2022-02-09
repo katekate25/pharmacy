@@ -13,8 +13,8 @@
        color: #343434;
        font-weight: normal;
        font-family: 'Ultra', sans-serif;
-       font-size: 36px;
-       line-height: 42px;
+       font-size: 100px;
+       line-height: 100px;
        text-transform: uppercase;
        text-shadow: 0 2px white, 0 3px #777;
    }
@@ -36,6 +36,7 @@
           height: 100%;
 
       }
+
   </style>
 <common:head title="Welcome" />
 
@@ -55,9 +56,9 @@
         <h1>
             <fmt:message bundle="${loc}" key="local.greeting.main.page" />
         </h1>
-
+<br>
         <p>
-        <font size="3" color="black"> <em>We care about your health</em>
+        <font size="5" color="black"> <em><fmt:message bundle="${loc}" key="local.care" /></em>
         </p>
 
 

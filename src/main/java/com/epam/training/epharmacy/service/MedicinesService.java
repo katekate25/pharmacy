@@ -5,6 +5,7 @@ import com.epam.training.epharmacy.entity.Producer;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public interface MedicinesService {
 
@@ -22,5 +23,7 @@ public interface MedicinesService {
 
     List <Medicine> medicineByIncome(Date beginning, Date end);
 
-    List <Medicine> medicineByInvoiceNumber(String invoice);
+    Set<String> showInvoiceList(Date beginning, Date end);
+
+    List <Medicine> medicineByInvoiceNumber(String invoiceNumber);
 }

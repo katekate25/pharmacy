@@ -17,6 +17,7 @@ public class User implements Serializable {
     private String workPlace;
     private String specialization;
     private Integer age;
+    private String salt;
 
 
 
@@ -116,17 +117,25 @@ public class User implements Serializable {
         this.age = age;
     }
 
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(fullName, user.fullName) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && userRole == user.userRole && Objects.equals(email, user.email) && Objects.equals(telNumber, user.telNumber) && Objects.equals(workPlace, user.workPlace) && Objects.equals(specialization, user.specialization) && Objects.equals(age, user.age);
+        return Objects.equals(id, user.id) && Objects.equals(fullName, user.fullName) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && userRole == user.userRole && Objects.equals(orders, user.orders) && Objects.equals(prescriptions, user.prescriptions) && Objects.equals(email, user.email) && Objects.equals(telNumber, user.telNumber) && Objects.equals(workPlace, user.workPlace) && Objects.equals(specialization, user.specialization) && Objects.equals(age, user.age) && Objects.equals(salt, user.salt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fullName, login, password, userRole, email, telNumber, workPlace, specialization, age);
+        return Objects.hash(id, fullName, login, password, userRole, orders, prescriptions, email, telNumber, workPlace, specialization, age, salt);
     }
 
     @Override
@@ -137,11 +146,14 @@ public class User implements Serializable {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", userRole=" + userRole +
+                ", orders=" + orders +
+                ", prescriptions=" + prescriptions +
                 ", email='" + email + '\'' +
                 ", telNumber='" + telNumber + '\'' +
                 ", workPlace='" + workPlace + '\'' +
                 ", specialization='" + specialization + '\'' +
                 ", age=" + age +
+                ", salt='" + salt + '\'' +
                 '}';
     }
 }

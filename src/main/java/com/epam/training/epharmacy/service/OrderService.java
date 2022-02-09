@@ -24,4 +24,6 @@ public interface OrderService {
     List<Order> getOrdersForAdmin();
 
     void updateOrder(Integer orderNumber, OrderStatus status) throws SQLException;
+
+    void addPrescriptionToEntry(Integer orderEntryNumber, Integer prescrNumber) throws SQLException;
 }

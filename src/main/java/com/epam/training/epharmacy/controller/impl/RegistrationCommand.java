@@ -13,11 +13,8 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 
-import static com.epam.training.epharmacy.controller.constant.ControllerConstants.ERROR_PAGE;
 import static com.epam.training.epharmacy.controller.constant.ControllerConstants.LOGIN_PAGE;
 
 public class RegistrationCommand implements Command {
@@ -37,7 +34,7 @@ public class RegistrationCommand implements Command {
         User user = new User();
         user.setUserRole(currentUser == null ? UserRole.CUSTOMER : UserRole.DOCTOR);
         user.setLogin(req.getParameter("login"));
-        user.setPassword(req.getParameter("password"));
+        user.setPassword(String.valueOf(ControllerUtils.generateHash(req.getParameter("password"))));
         user.setFullName(req.getParameter("name"));
         user.setEmail(req.getParameter("email"));
         user.setTelNumber(req.getParameter("telNumber"));

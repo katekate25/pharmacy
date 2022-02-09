@@ -21,6 +21,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
         <common:header />
 
         <br>
+        <c:if test="${user.userRole.name() eq 'PHARMACIST'}">
         <div class="row">
             <div class="col-md-8 offset-md-1">
                 <form class="form-inline" action="/pharmacy/controller" method="post">
@@ -56,8 +57,9 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                        expirationDate
                      </th>
                      <th>
-                       orderNumber
+                       status
                      </th>
+
                 </tr>
             </thead>
 
@@ -94,8 +96,9 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                             <c:out value="${prescription.expirationDate}" />
                                         </td>
                                         <td>
-                                            <c:out value="${prescription.orderNumber}" />
+                                            <c:out value="${prescription.status}" />
                                         </td>
+
                                     </tr>
                                 </c:forEach>
             <tbody>
@@ -127,7 +130,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                        expirationDate
                      </th>
                      <th>
-                       orderNumber
+                       status
                      </th>
                 </tr>
             </thead>
@@ -165,7 +168,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                             <c:out value="${prescription.expirationDate}" />
                                         </td>
                                         <td>
-                                            <c:out value="${prescription.orderNumber}" />
+                                            <c:out value="${prescription.status}" />
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -173,7 +176,76 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
 <common:footer />
         </table>
         </c:if>
+</c:if>
 
+<c:if test="${user.userRole.name() eq 'CUSTOMER'}">
+<c:if test="${not empty prescriptions}">
+        <table class="table table-hover table-bordered text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        prescriptionNumber
+                    </th>
+                    <th>
+                        client
+                    </th>
+                    <th>
+                        doctor
+                    </th>
+                    <th>
+                        medicine
+                        packageAmount
+                    </th>
+                    <th>
+                       creationDate
+                    </th>
+                     <th>
+                       expirationDate
+                     </th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                <c:forEach var="prescription" items="${prescriptions}">
+                                    <tr>
+                                        <td>
+                                            <c:out value="${prescription.prescriptionNumber}" />
+                                        </td>
+                                        <td>
+                                            <c:out value="${prescription.client.fullName}" /><br>
+                                            <c:out value="${prescription.client.login}" />
+                                        </td>
+
+                                        <td>
+                                            <c:out value="${prescription.doctor.fullName}" />
+                                            <br>
+                                            <c:out value="${prescription.doctor.login}" />
+                                        </td>
+                                        <td>
+                                            <c:out value="${prescription.medicine.commercialName}" /><br>
+                                            <c:out value="${prescription.medicine.internationalName}" /><br>
+                                            <c:out value="${prescription.medicine.medicineForm}" />&nbsp
+                                            <c:out value="${prescription.medicine.medicineDose}" />mg<br>
+                                            <c:out value="${prescription.medicine.serialNumber}" /><br>
+                                            <c:out value="${prescription.medicine.producer.producerFactoryName}" /><br><br>
+                                            <c:out value="${prescription.packageAmount}" />уп
+                                        </td>
+
+                                        <td>
+                                            <c:out value="${prescription.creationDate}" />
+                                        </td>
+                                        <td>
+                                            <c:out value="${prescription.expirationDate}" />
+                                        </td>
+
+                                    </tr>
+                                </c:forEach>
+            <tbody>
+<common:footer />
+        </table>
+        </c:if>
+</c:if>
     </div>
 </body>
 </html>

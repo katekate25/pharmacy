@@ -13,7 +13,8 @@ public class Prescription {
     private String usageInstruction;
     private Date creationDate;
     private Date expirationDate;
-    private Integer orderNumber;
+    private Integer orderEntryNumber;
+    private PrescriptionStatus status;
 
     public Prescription() {}
 
@@ -81,12 +82,20 @@ public class Prescription {
         this.expirationDate = expirationDate;
     }
 
-    public Integer getOrderNumber() {
-        return orderNumber;
+    public Integer getOrderEntryNumber() {
+        return orderEntryNumber;
     }
 
-    public void setOrderNumber(Integer orderNumber) {
-        this.orderNumber = orderNumber;
+    public void setOrderEntryNumber(Integer orderEntryNumber) {
+        this.orderEntryNumber = orderEntryNumber;
+    }
+
+    public PrescriptionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PrescriptionStatus status) {
+        this.status = status;
     }
 
     @Override
@@ -94,12 +103,12 @@ public class Prescription {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Prescription that = (Prescription) o;
-        return prescriptionNumber == that.prescriptionNumber && Double.compare(that.packageAmount, packageAmount) == 0 && Objects.equals(client, that.client) && Objects.equals(doctor, that.doctor) && Objects.equals(medicine, that.medicine) && Objects.equals(usageInstruction, that.usageInstruction) && Objects.equals(creationDate, that.creationDate) && Objects.equals(expirationDate, that.expirationDate) && Objects.equals(orderNumber, that.orderNumber);
+        return prescriptionNumber == that.prescriptionNumber && Double.compare(that.packageAmount, packageAmount) == 0 && Objects.equals(client, that.client) && Objects.equals(doctor, that.doctor) && Objects.equals(medicine, that.medicine) && Objects.equals(usageInstruction, that.usageInstruction) && Objects.equals(creationDate, that.creationDate) && Objects.equals(expirationDate, that.expirationDate) && Objects.equals(orderEntryNumber, that.orderEntryNumber) && status == that.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(prescriptionNumber, client, doctor, medicine, packageAmount, usageInstruction, creationDate, expirationDate, orderNumber);
+        return Objects.hash(prescriptionNumber, client, doctor, medicine, packageAmount, usageInstruction, creationDate, expirationDate, orderEntryNumber, status);
     }
 
     @Override
@@ -113,7 +122,8 @@ public class Prescription {
                 ", usageInstruction='" + usageInstruction + '\'' +
                 ", creationDate=" + creationDate +
                 ", expirationDate=" + expirationDate +
-                ", orderNumber=" + orderNumber +
+                ", orderEntryNumber=" + orderEntryNumber +
+                ", status=" + status +
                 '}';
     }
 
@@ -162,6 +172,11 @@ public class Prescription {
 
         public Builder doctor(User doctor) {
             prescription.setDoctor(doctor);
+            return this;
+        }
+
+        public Builder status(PrescriptionStatus status) {
+            prescription.setStatus(status);
             return this;
         }
 

@@ -61,6 +61,8 @@
                         <a class="dropdown-item" href="/pharmacy/controller?command=GO_TO_ORDERS">
                             <fmt:message bundle="${loc}" key="local.my.orders" />
                         </a>
+                        <a class="dropdown-item" href="/pharmacy/controller?command=GO_TO_PRESCRIPTIONS_LIST">
+                            <fmt:message bundle="${loc}" key="local.prescriptions.list" /> </a>
                     </c:if>
                     <c:if test="${user.userRole.name() eq 'DOCTOR'}">
                         <a class="dropdown-item" href="/pharmacy/controller?command=GO_TO_MESSAGES_LIST">
@@ -74,6 +76,8 @@
                             <fmt:message bundle="${loc}" key="local.customers.list" /> </a>
                         <a class="dropdown-item" href="/pharmacy/controller?command=GO_TO_PRESCRIPTIONS_LIST">
                             <fmt:message bundle="${loc}" key="local.prescriptions.list" /> </a>
+                        <a class="dropdown-item" href="/pharmacy/controller?command=GO_TO_ACCOUNT_PAGE">
+                            report</a>
                     </c:if>
                     <a class="dropdown-item" href="/pharmacy/controller?command=GO_TO_PERSONAL_CABINET">
                         <fmt:message bundle="${loc}" key="local.personal.cabinet.title" /> </a>

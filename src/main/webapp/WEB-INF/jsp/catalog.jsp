@@ -14,6 +14,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       margin: 0;
 
       }
+
        </style>
 <common:head title="Catalog" />
 
@@ -55,6 +56,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
         </c:if>
         <common:footer />
     </div>
+
 </body>
 
 </html>

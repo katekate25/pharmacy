@@ -42,6 +42,7 @@ public class GoToPrescriptionsListCommand implements Command {
                 req.setAttribute("foundPrescription", prescriptionService.showPrescription(client));
             }
 
+            req.setAttribute("prescriptions", prescriptionService.showPrescription(currentUser.getLogin()));
             req.setAttribute("prescriptionsList", prescriptionService.getAllPrescription());
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/prescriptionsList.jsp");
             dispatcher.forward(req, resp);

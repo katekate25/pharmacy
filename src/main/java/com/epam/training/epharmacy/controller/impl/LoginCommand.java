@@ -1,6 +1,7 @@
 package com.epam.training.epharmacy.controller.impl;
 
 import com.epam.training.epharmacy.controller.Command;
+import com.epam.training.epharmacy.controller.util.ControllerUtils;
 import com.epam.training.epharmacy.dao.exception.DAOException;
 import com.epam.training.epharmacy.entity.User;
 import com.epam.training.epharmacy.service.exception.ServiceException;
@@ -31,7 +32,7 @@ public class LoginCommand implements Command {
 
         try {
             User user = userService.authorization(login, password);
-
+           // String.valueOf(ControllerUtils.generateHash(password))
             if (user != null) {
                 HttpSession session = req.getSession(true);
                 session.setAttribute("user", user);

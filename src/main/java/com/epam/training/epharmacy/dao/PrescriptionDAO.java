@@ -16,4 +16,6 @@ public interface PrescriptionDAO {
 
     void deletePrescription (int prescriptionNumber);
 
+    void updatePrescription(Prescription prescription);
+
 }
