@@ -8,7 +8,7 @@ public class OrderEntry {
     private Medicine medicine;
     private double packageAmount;
     private int orderNumber;
-    private Integer prescriptionNumber;
+    private Prescription prescription;
 
     public int getId() {
         return id;
@@ -42,12 +42,12 @@ public class OrderEntry {
         this.orderNumber = orderNumber;
     }
 
-    public Integer getPrescriptionNumber() {
-        return prescriptionNumber;
+    public Prescription getPrescription() {
+        return prescription;
     }
 
-    public void setPrescriptionNumber(Integer prescriptionNumber) {
-        this.prescriptionNumber = prescriptionNumber;
+    public void setPrescription(Prescription prescription) {
+        this.prescription = prescription;
     }
 
     @Override
@@ -55,12 +55,12 @@ public class OrderEntry {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderEntry entry = (OrderEntry) o;
-        return id == entry.id && Double.compare(entry.packageAmount, packageAmount) == 0 && orderNumber == entry.orderNumber && Objects.equals(medicine, entry.medicine) && Objects.equals(prescriptionNumber, entry.prescriptionNumber);
+        return id == entry.id && Double.compare(entry.packageAmount, packageAmount) == 0 && orderNumber == entry.orderNumber && Objects.equals(medicine, entry.medicine);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, medicine, packageAmount, orderNumber, prescriptionNumber);
+        return Objects.hash(id, medicine, packageAmount, orderNumber);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class OrderEntry {
                 ", medicine=" + medicine +
                 ", packageAmount=" + packageAmount +
                 ", orderNumber=" + orderNumber +
-                ", prescriptionNumber=" + prescriptionNumber +
+                ", prescription=" + prescription +
                 '}';
     }
 }

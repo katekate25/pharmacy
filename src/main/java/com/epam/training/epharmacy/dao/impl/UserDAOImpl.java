@@ -17,14 +17,14 @@ import static com.epam.training.epharmacy.dao.constant.DaoConstants.*;
 
 public class UserDAOImpl extends AbstractEntityDAO implements UserDAO {
 
-    private static final String ADD_USER_SQL = "INSERT INTO users (name, login, password, roles_code, email, telephone_number, age, work_place, specialization) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_USER_SQL = "UPDATE users SET name = ?, password = ?, email = ?, telephone_number = ?, age = ?, work_place = ?  WHERE login = ?";
+    private static final String ADD_USER_SQL = "INSERT INTO users (name, login, password, roles_code, email, telephone_number, age, work_place, specialization, salt) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_USER_SQL = "UPDATE users SET name = ?, password = ?, email = ?, telephone_number = ?, age = ?, work_place = ? WHERE login = ?";
     private static final String SHOW_USERS_BY_ROLE_SQL = "SELECT id, name, login, password, roles_code, email, telephone_number, age, work_place, specialization FROM users WHERE roles_code=?";
 
     @Override
     protected String getInitialQuery() {
-        return "SELECT id, name, login, password, roles_code, email, telephone_number, age, work_place, specialization FROM users";
+        return "SELECT id, name, login, password, roles_code, email, telephone_number, age, work_place, specialization, salt FROM users";
     }
 
     @Override
@@ -48,6 +48,7 @@ public class UserDAOImpl extends AbstractEntityDAO implements UserDAO {
                 user.setAge(rs.getInt(USER_AGE));
                 user.setSpecialization(rs.getString(USER_SPECIALIZATION));
                 user.setWorkPlace(rs.getString(USER_WORK_PLACE));
+                user.setSalt(rs.getString(SALT));
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -74,6 +75,7 @@ public class UserDAOImpl extends AbstractEntityDAO implements UserDAO {
             statement.setInt(7, user.getAge());
             statement.setString(8, user.getWorkPlace());
             statement.setString(9, user.getSpecialization());
+            statement.setString(10, user.getSalt());
 
             statement.executeUpdate();
         } catch (ConnectionPoolException | SQLException e) {

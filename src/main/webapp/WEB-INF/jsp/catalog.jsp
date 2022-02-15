@@ -19,8 +19,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
 <common:head title="Catalog" />
 
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
         <h2>
             <fmt:message bundle="${loc}" key="local.sold.now" />
         </h2>
@@ -54,8 +54,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
            <medicine:medicinesTable medicineList="${analogs}" />
 
         </c:if>
-        <common:footer />
     </div>
+    <common:footer />
 
 </body>
 

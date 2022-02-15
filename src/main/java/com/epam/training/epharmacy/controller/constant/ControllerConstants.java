@@ -11,9 +11,11 @@ public class ControllerConstants {
     public static final String ORDERS_PAGE = PHARMACY_CONTROLLER + "command=GO_TO_ORDERS";
     public static final String DOCTOR_PAGE = PHARMACY_CONTROLLER + "command=GO_TO_DOCTOR_PERSONAL_PAGE";
     public static final String ORDER_LIST = PHARMACY_CONTROLLER + "command=GO_TO_ORDER_LIST";
-
+    public static final String CART = PHARMACY_CONTROLLER + "command=GO_TO_CART";
+    public static final String MESSAGE_LIST = PHARMACY_CONTROLLER + "command=GO_TO_MESSAGES_LIST";
 
     public static final String DATE_FORMAT_PATTERN = "dd-MM-yyyy";
+    public static final String DELIVERY_DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 
     private ControllerConstants() {
     }

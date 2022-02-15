@@ -17,8 +17,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       }
        </style>
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
 
         Name - ${recipient.fullName} <br>
         Email - ${recipient.email} <br>
@@ -49,8 +49,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             </c:if>
 
         </c:if>
-        <common:footer />
     </div>
+    <common:footer />
 </body>
 
 </html>

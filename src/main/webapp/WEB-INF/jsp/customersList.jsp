@@ -17,9 +17,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       }
        </style>
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
-
         <br>
                 <div class="row">
                     <div class="col-md-8 offset-md-1">
@@ -126,13 +125,13 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                     </tr>
                                 </c:forEach>
             <tbody>
-<common:footer />
         </table>
         </c:if>
         <c:if test="${empty customers}">
             You do not have customers yet
         </c:if>
-        <common:footer />
+
     </div>
+    <common:footer />
 </body>
 </html>

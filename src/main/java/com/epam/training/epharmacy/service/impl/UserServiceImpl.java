@@ -4,6 +4,7 @@ import com.epam.training.epharmacy.dao.UserDAO;
 import com.epam.training.epharmacy.dao.exception.DAOException;
 import com.epam.training.epharmacy.dao.factory.DAOFactory;
 import com.epam.training.epharmacy.entity.*;
+import com.epam.training.epharmacy.service.PasswordService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
 import com.epam.training.epharmacy.service.UserService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -17,6 +18,11 @@ public class UserServiceImpl implements UserService {
 
     private final Logger LOG = LogManager.getLogger(UserServiceImpl.class);
     private final UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+    private final PasswordService passwordService;
+
+    public UserServiceImpl(PasswordService passwordService) {
+        this.passwordService = passwordService;
+    }
 
     @Override
     public User authorization(String login, String password) throws ServiceException, DAOException {
@@ -25,12 +31,15 @@ public class UserServiceImpl implements UserService {
             Criteria<SearchCriteria.User> criteria = new Criteria<>();
             criteria.getParametersMap().put(SearchCriteria.User.LOGIN, login);
             List<User> users = userDAO.findUserByCriteria(criteria);
-            if (users != null && !users.isEmpty() && users.iterator().next().getPassword().equals(password)) {
+            if (CollectionUtils.isNotEmpty(users)) {
                 user = users.iterator().next();
             }
         } catch (DAOException e){
             LOG.error("Error during authorization", e);
-            throw  new ServiceException(e);
+            throw new ServiceException(e);
+        }
+        if (!passwordService.isPasswordValid(user, password)) {
+            throw new IllegalArgumentException("Password not valid");
         }
         return user;
     }

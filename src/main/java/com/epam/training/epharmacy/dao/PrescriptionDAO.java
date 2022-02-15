@@ -12,7 +12,7 @@ public interface PrescriptionDAO {
 
     List<Prescription> findPrescriptionByCriteria(Criteria<SearchCriteria.Prescription> criteria) throws DAOException;
 
-    void addPrescription(Prescription prescription) throws SQLException;
+    void addPrescription(Prescription prescription);
 
     void deletePrescription (int prescriptionNumber);
 

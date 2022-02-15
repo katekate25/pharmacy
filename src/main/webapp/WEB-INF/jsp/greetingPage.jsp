@@ -41,8 +41,8 @@
 <common:head title="Welcome" />
 
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
 
         <c:if test="${accessDenied}">
             <fmt:message bundle="${loc}" key="local.access.denied" />
@@ -61,9 +61,8 @@
         <font size="5" color="black"> <em><fmt:message bundle="${loc}" key="local.care" /></em>
         </p>
 
-
-    <common:footer />
     </div>
+    <common:footer />
 </body>
 
 </html>

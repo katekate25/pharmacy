@@ -17,8 +17,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       }
        </style>
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
 
         <c:choose>
             <c:when test="${not empty order.orderEntries}">
@@ -29,8 +29,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             </c:otherwise>
         </c:choose>
 
-        <common:footer />
     </div>
+    <common:footer />
 </body>
 
 </html>

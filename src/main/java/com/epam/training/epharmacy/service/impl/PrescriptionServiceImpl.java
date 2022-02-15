@@ -8,10 +8,12 @@ import com.epam.training.epharmacy.dao.factory.DAOFactory;
 import com.epam.training.epharmacy.entity.*;
 import com.epam.training.epharmacy.service.PrescriptionService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PrescriptionServiceImpl implements PrescriptionService {
@@ -26,8 +28,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Override
     public void addPrescription(Prescription prescription) {
         try {
+            prescription.setStatus(PrescriptionStatus.NOT_USED);
             prescriptionDAO.addPrescription(prescription);
-        } catch (DAOException | SQLException e) {
+        } catch (DAOException e) {
             LOG.error("Error during adding prescription", e);
             throw new ServiceException(e);
         }
@@ -44,6 +47,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             LOG.error("Error during finding medicine by serial number", e);
             throw new ServiceException(e);
         }
+        if (CollectionUtils.isEmpty(medicines)) {
+            throw new ServiceException(String.format("There is no medicine with serialNumber %s", serialNumber));
+        }
         return medicines.iterator().next();
     }
 
@@ -58,43 +64,91 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             LOG.error("Error during finding user by login", e);
             throw new ServiceException(e);
         }
+        if (CollectionUtils.isEmpty(users)) {
+            throw new ServiceException(String.format("There is no user with login %s", login));
+        }
         return users.iterator().next();
     }
 
     @Override
-    public List<Prescription> showPrescription(String login) {
-        DAOFactory factory = DAOFactory.getInstance();
-        UserDAO userDAO = factory.getUserDAO();
-        PrescriptionDAO prescriptionDAO = factory.getPrescriptionDAO();
+    public List<Prescription> getUserAvailablePrescriptions(int userId) {
         try {
-            Criteria<SearchCriteria.User> criteriaUser = new Criteria<>();
-            criteriaUser.getParametersMap().put(SearchCriteria.User.LOGIN, login);
-            Integer id = userDAO.findUserByCriteria(criteriaUser).iterator().next().getId();
-
-
             Criteria<SearchCriteria.Prescription> criteria = new Criteria<>();
-            criteria.getParametersMap().put(SearchCriteria.Prescription.CLIENT_ID, id);
+            criteria.getParametersMap().put(SearchCriteria.Prescription.CLIENT_ID, userId);
+            criteria.getParametersMap().put(SearchCriteria.Prescription.STATUS, PrescriptionStatus.NOT_USED);
             return prescriptionDAO.findPrescriptionByCriteria(criteria);
 
         } catch (DAOException e){
-            LOG.error("Error during finding prescriptions to customer", e);
+            LOG.error("Error during finding prescriptions for customer", e);
             throw  new ServiceException(e);
         }
     }
 
     @Override
     public List<Prescription> getAllPrescription() {
-        DAOFactory factory = DAOFactory.getInstance();
-        UserDAO userDAO = factory.getUserDAO();
-        PrescriptionDAO prescriptionDAO = factory.getPrescriptionDAO();
         try {
-
             return prescriptionDAO.findPrescriptionByCriteria(new Criteria<>());
-
         } catch (DAOException e){
             LOG.error("Error during finding prescriptions list", e);
             throw  new ServiceException(e);
         }
     }
+
+    @Override
+    public List<Prescription> getAllUserPrescription(String login) {
+        try {
+            Criteria<SearchCriteria.User> criteriaUser = new Criteria<>();
+            criteriaUser.getParametersMap().put(SearchCriteria.User.LOGIN, login);
+
+            Criteria<SearchCriteria.Prescription> criteria = new Criteria<>();
+            criteria.getParametersMap().put(SearchCriteria.Prescription.CLIENT_ID, userDAO.findUserByCriteria(criteriaUser).iterator().next().getId());
+            return prescriptionDAO.findPrescriptionByCriteria(criteria);
+        } catch (DAOException e){
+            LOG.error("Error during finding prescriptions list", e);
+            throw  new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void updatePrescription(Integer prescriptionNumber, PrescriptionStatus status) {
+        Criteria<SearchCriteria.Prescription> criteria = new Criteria<>();
+        criteria.getParametersMap().put(SearchCriteria.Prescription.PRESCRIPTION_NUMBER, prescriptionNumber);
+        Prescription prescription = prescriptionDAO.findPrescriptionByCriteria(criteria).iterator().next();
+
+        try {
+            prescription.setStatus(status);
+            prescriptionDAO.updatePrescription(prescription);
+        } catch (DAOException e) {
+            LOG.error("Error during prescription update", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<Prescription> findValidPrescriptionsByMedicine(User currentUser, String medicineSerialNumber) {
+        Integer medicineId = getMedicineByNameSerialNumber(medicineSerialNumber).getId();
+        Date currentDate = new Date();
+        List<Prescription> validPrescriptions = new ArrayList<>();
+        try {
+            Criteria<SearchCriteria.Prescription> criteria = new Criteria<>();
+            criteria.getParametersMap().put(SearchCriteria.Prescription.MEDICINES_ID, medicineId);
+            List<Prescription> prescriptions = prescriptionDAO.findPrescriptionByCriteria(criteria);
+            for (Prescription prescription : prescriptions) {
+                if ((prescription.getExpirationDate().after(currentDate)
+                            || prescription.getExpirationDate().compareTo(currentDate) == 0)
+                        && (prescription.getCreationDate().before(currentDate)
+                            || prescription.getCreationDate().compareTo(currentDate) == 0)
+                        && prescription.getClient().getLogin().equals(currentUser.getLogin())){
+                    validPrescriptions.add(prescription);
+                }
+            }
+
+        } catch (DAOException e) {
+            LOG.error("Error during finding prescription by medicine serial number", e);
+            throw new ServiceException(e);
+        }
+        return validPrescriptions;
+    }
+
 
 }

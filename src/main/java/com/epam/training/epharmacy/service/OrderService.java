@@ -25,5 +25,12 @@ public interface OrderService {
 
     void updateOrder(Integer orderNumber, OrderStatus status) throws SQLException;
 
-    void addPrescriptionToEntry(Integer orderEntryNumber, Integer prescrNumber) throws SQLException;
+    void addPrescriptionToEntry(Integer entryId, Integer prescriptionNumber) throws SQLException;
+
+    boolean isCartReadyForPayment(Order order);
+
+    void deletePrescriptionFromEntry(Integer entryId, Integer prescriptionNumber) throws SQLException;
+
+    void updateEntryAmount(Integer entryId, Double amount, User client) throws SQLException;
+
 }

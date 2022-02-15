@@ -4,6 +4,7 @@ import com.epam.training.epharmacy.controller.Command;
 import com.epam.training.epharmacy.controller.exception.PermissionsDeniedException;
 import com.epam.training.epharmacy.controller.util.ControllerUtils;
 import com.epam.training.epharmacy.entity.Prescription;
+import com.epam.training.epharmacy.entity.PrescriptionStatus;
 import com.epam.training.epharmacy.entity.User;
 import com.epam.training.epharmacy.service.*;
 import com.epam.training.epharmacy.service.exception.ServiceException;
@@ -34,11 +35,13 @@ public class PayOrderCommand implements Command {
             throw new PermissionsDeniedException();
         }
 
+
         try {
             String deliveryTime = req.getParameter("deliveryTime");
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             Date date = format.parse(deliveryTime);
             orderService.payOrder(user, date);
+
             resp.sendRedirect(ORDERS_PAGE);
         } catch (ServiceException | ParseException e){
             LOG.error("Error during payment", e);

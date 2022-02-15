@@ -22,29 +22,18 @@ import static com.epam.training.epharmacy.controller.constant.ControllerConstant
 public class GoToInvoicesPageCommand implements Command {
     private final Logger LOG = LogManager.getLogger(GoToInvoicesPageCommand.class);
     ServiceFactory factory = ServiceFactory.getInstance();
-    UserService userService = factory.getUserService();
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
         try {
-            Date begin = formatter.parse(req.getParameter("begin"));
-            Date end = formatter.parse(req.getParameter("end"));
-//            if (StringUtils.isNotBlank(begin) && StringUtils.isNotBlank(end)) {
-//                req.setAttribute("foundMedicinesByDate",  factory.getMedicinesService().medicineByIncome(begin, end);
-//            }
-           // req.setAttribute("invoices",);userService.showCustomers());
 
-            String client = req.getParameter("client");
-            if (StringUtils.isNotBlank(client)) {
-                req.setAttribute("customerByLogin", userService.getUserByLogin(client));
-            }
 
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/invoices.jsp");
             dispatcher.forward(req, resp);
-        } catch (ServiceException | ParseException e){
-            LOG.error("Error during returning customers list", e);
+        } catch (ServiceException e){
+            LOG.error("Error during returning invoices list", e);
             resp.sendRedirect(ERROR_PAGE);
         }
     }

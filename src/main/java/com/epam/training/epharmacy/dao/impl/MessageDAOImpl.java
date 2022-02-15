@@ -16,9 +16,12 @@ import static com.epam.training.epharmacy.dao.constant.DaoConstants.*;
 
 public class MessageDAOImpl extends AbstractEntityDAO implements MessageDAO {
 
-    private static final String ADD_MESSAGE_SQL = "INSERT INTO messages (message, date, recipient, sender) " +
-            "VALUES (?, ?, (SELECT id FROM users WHERE login=?), (SELECT id FROM users WHERE login=?))";
-    private static final String SHOW_MESSAGES_SQL = "SELECT message, date, sender FROM messages WHERE (SELECT id FROM users WHERE login=?)";
+    private static final String ADD_MESSAGE_SQL = "INSERT INTO messages (message, date, recipient, sender, approved) " +
+            "VALUES (?, ?, (SELECT id FROM users WHERE login=?), (SELECT id FROM users WHERE login=?), ?)";
+    private static final String SHOW_MESSAGES_SQL = "SELECT message, date, sender, approved FROM messages WHERE (SELECT id FROM users WHERE login=?)";
+
+    private static final String UPDATE_MESSAGE_SQL = "UPDATE messages SET approved = ? WHERE id = ?";
+
 
     private UserDAO userDAO;
 
@@ -28,7 +31,7 @@ public class MessageDAOImpl extends AbstractEntityDAO implements MessageDAO {
 
     @Override
     protected String getInitialQuery() {
-        return "SELECT id, message, date, recipient, sender FROM messages";
+        return "SELECT id, message, date, recipient, sender, approved FROM messages";
     }
 
     @Override
@@ -47,6 +50,7 @@ public class MessageDAOImpl extends AbstractEntityDAO implements MessageDAO {
                 message.setMessageDate(rs.getDate(MESSAGE_DATE));
                 message.setRecipient(getUserById(Integer.valueOf(rs.getString(MESSAGE_RECIPIENT))));
                 message.setSender(getUserById(Integer.valueOf(rs.getString(MESSAGE_SENDER))));
+                message.setApproved(rs.getBoolean(MESSAGE_APPROVAL));
                 messages.add(message);
             }
         } catch (SQLException e) {
@@ -79,6 +83,7 @@ public class MessageDAOImpl extends AbstractEntityDAO implements MessageDAO {
             statement.setDate(2, new Date(message.getMessageDate().getTime()));
             statement.setString(3, message.getRecipient().getLogin());
             statement.setString(4, message.getSender().getLogin());
+            statement.setBoolean(5, message.isApproved());
 
             statement.executeUpdate();
         } catch (ConnectionPoolException | SQLException e) {
@@ -108,6 +113,7 @@ public class MessageDAOImpl extends AbstractEntityDAO implements MessageDAO {
                 message.setMessage(rs.getString(MESSAGE_MESSAGE));
                 message.setMessageDate(rs.getDate(MESSAGE_DATE));
                 message.setSender(getUserById(Integer.valueOf(rs.getString(MESSAGE_SENDER))));
+                message.setApproved(rs.getBoolean(MESSAGE_APPROVAL));
                 messages.add(message);
             }
 
@@ -117,5 +123,23 @@ public class MessageDAOImpl extends AbstractEntityDAO implements MessageDAO {
             ConnectionPool.getInstance().closeConnection(connection, statement);
         }
         return messages;
+    }
+
+    @Override
+    public void updateMessage(Message message) throws DAOException, SQLException {
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = ConnectionPool.getInstance().takeConnection();
+            statement = connection.prepareStatement(UPDATE_MESSAGE_SQL);
+            statement.setBoolean(1, message.isApproved());
+            statement.setInt(2, message.getId());
+            statement.executeUpdate();
+        } catch (ConnectionPoolException | SQLException e) {
+            throw new DAOException("Error during updating message", e);
+        }
+        finally {
+            ConnectionPool.getInstance().closeConnection(connection, statement);
+        }
     }
 }

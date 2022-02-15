@@ -40,7 +40,7 @@
             </select>
         </form>
 
-        <div ${user.userRole.name() eq 'CUSTOMER' ? 'class="btn-group"' : ''}>
+        <div>
 
             <c:if test="${user.userRole.name() eq 'CUSTOMER'}">
                 <a class="btn btn-outline-light btn-lg" href="/pharmacy/controller?command=GO_TO_CART">
@@ -51,7 +51,7 @@
             </c:if>
 
             <c:if test="${not empty user}">
-                <button type="button" class="btn btn-outline-light btn-lg mr-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-outline-light btn-lg mr-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
                     </svg>

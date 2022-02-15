@@ -10,7 +10,6 @@ import com.epam.training.epharmacy.entity.*;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import static com.epam.training.epharmacy.dao.constant.DaoConstants.*;
@@ -19,17 +18,17 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
 
     private static final String ADD_PRESCRIPTION_SQL =
             "INSERT INTO prescriptions (medicines_id, number_of_packages," +
-                    "usage_instruction, creation_date, expiration_date, client_id, doctor_id) " +
+                    "usage_instruction, creation_date, expiration_date, client_id, doctor_id, status) " +
                     "VALUES ((SELECT id FROM medicines WHERE serial_number=?), ?, ?, ?, ?," +
-                    "(SELECT id FROM users WHERE login=?), (SELECT id FROM users WHERE login=?))";
+                    "(SELECT id FROM users WHERE login=?), (SELECT id FROM users WHERE login=?), ?)";
 
     private static final String DELETE_PRESCRIPTION_SQL = "DELETE FROM prescriptions WHERE prescription_number = ?";
 
-    private static final String UPDATE_PRESCRIPTION_SQL = "UPDATE prescriptions SET orders_number = ? WHERE prescription_number = ?";
+    private static final String UPDATE_PRESCRIPTION_SQL = "UPDATE prescriptions SET status = ? WHERE prescription_number = ?";
 
-    private MedicineDAO medicineDAO;
-    private UserDAO userDAO;
-    private PrescriptionDAO prescriptionDAO;
+
+    private final MedicineDAO medicineDAO;
+    private final UserDAO userDAO;
 
     public PrescriptionDAOImpl(MedicineDAO medicineDAO, UserDAO userDAO) {
         this.medicineDAO = medicineDAO;
@@ -39,7 +38,7 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
     @Override
     protected String getInitialQuery() {
         return "SELECT prescription_number, medicines_id, number_of_packages, usage_instruction, " +
-                "creation_date, expiration_date, client_id, doctor_id FROM prescriptions";
+                "creation_date, expiration_date, client_id, doctor_id, status FROM prescriptions";
     }
 
     @Override
@@ -62,6 +61,7 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
                         .creationDate(rs.getDate(CREATION_DATE))
                         .expirationDate(rs.getDate(PRESCRIPTION_EXPIRATION_DATE))
                         .build();
+                prescription.setStatus(PrescriptionStatus.valueOf(rs.getString(PRESCRIPTION_STATUS)));
 
                 prescriptions.add(prescription);
             }
@@ -96,7 +96,7 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
     }
 
     @Override
-    public void addPrescription(Prescription prescription) throws SQLException {
+    public void addPrescription(Prescription prescription) {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
@@ -110,6 +110,7 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
             statement.setDate(5, new Date(prescription.getExpirationDate().getTime()));
             statement.setString(6, prescription.getClient().getLogin());
             statement.setString(7, prescription.getDoctor().getLogin());
+            statement.setString(8, String.valueOf(prescription.getStatus()));
 
             statement.executeUpdate();
 
@@ -120,8 +121,9 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
             if (generatedKeys.next()) {
                 prescription.setPrescriptionNumber(generatedKeys.getInt(1));
             }
-        }
-        finally {
+        } catch (SQLException e) {
+            throw new DAOException("Error during getting id for prescription", e);
+        } finally {
             ConnectionPool.getInstance().closeConnection(connection, statement);
         }
     }
@@ -138,6 +140,25 @@ public class PrescriptionDAOImpl extends AbstractEntityDAO implements Prescripti
         } catch (ConnectionPoolException | SQLException e) {
             throw new DAOException("Error during deleting prescription", e);
         } finally {
+            ConnectionPool.getInstance().closeConnection(connection, statement);
+        }
+    }
+
+    @Override
+    public void updatePrescription(Prescription prescription) {
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = ConnectionPool.getInstance().takeConnection();
+            statement = connection.prepareStatement(UPDATE_PRESCRIPTION_SQL);
+            statement.setString(1, String.valueOf(prescription.getStatus()));
+            statement.setInt(2, prescription.getPrescriptionNumber());
+
+            statement.executeUpdate();
+        } catch (ConnectionPoolException | SQLException e) {
+            throw new DAOException("Error during updating prescription", e);
+        }
+        finally {
             ConnectionPool.getInstance().closeConnection(connection, statement);
         }
     }

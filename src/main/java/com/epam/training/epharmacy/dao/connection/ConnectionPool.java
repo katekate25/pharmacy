@@ -1,5 +1,8 @@
 package com.epam.training.epharmacy.dao.connection;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.*;
 import java.util.Locale;
 import java.util.Map;
@@ -10,6 +13,7 @@ import java.util.concurrent.Executor;
 
 public class ConnectionPool {
 
+    private final Logger LOG = LogManager.getLogger(ConnectionPool.class);
     private static ConnectionPool instance;
 
     private BlockingQueue<Connection> connectionQueue;
@@ -67,6 +71,7 @@ public class ConnectionPool {
     public Connection takeConnection() throws ConnectionPoolException {
         Connection connection = null;
         try {
+            logConnectionStatistic("Take connection.");
             connection = connectionQueue.take();
             givenAwayConQueue.add(connection);
         } catch (InterruptedException e) {
@@ -93,6 +98,12 @@ public class ConnectionPool {
     public void closeConnection(Connection con, Statement st) {
         close(con);
         close(st);
+    }
+
+    private void logConnectionStatistic(String action) {
+        LOG.debug("{} Available connections {}. Taken connections {}", action, connectionQueue.size(),
+                givenAwayConQueue.size());
+
     }
 
     private void close(AutoCloseable autoCloseable) {
@@ -129,6 +140,7 @@ public class ConnectionPool {
 
         @Override
         public void close() throws SQLException {
+            logConnectionStatistic("Close connection.");
             if (connection.isClosed()) {
                 throw new SQLException("Attempting to close closed connection.");
             }

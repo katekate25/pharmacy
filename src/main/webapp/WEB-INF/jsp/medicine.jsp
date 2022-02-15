@@ -16,8 +16,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       }
        </style>
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
 
         <br>
         <fmt:message bundle="${loc}" key="local.commercialName" /> - ${medicineBySeries.commercialName}<br>
@@ -63,16 +63,16 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             <form action="/pharmacy/controller" method="post">
                 <input type="hidden" name="command" value="ADD_ENTRY_TO_CART">
                 <fmt:message bundle="${loc}" key="local.amount.medicine" />:
-                <input type="number" name="packageAmount" min="1" max="${medicineBySeries.productBalance}" />
+                <input type="number" name="packageAmount" min="1" max="${medicineBySeries.productBalance}" value="1" />
                 <input type="hidden" name="serialNumber" value="${medicineBySeries.serialNumber}">
                 <br />
-                <input type="submit" value="enter" />
+                <input type="submit" class="btn btn-dark" value="enter" />
             </form>
             <br />
         </c:if>
 
-        <common:footer />
     </div>
+    <common:footer />
 </body>
 
 </html>

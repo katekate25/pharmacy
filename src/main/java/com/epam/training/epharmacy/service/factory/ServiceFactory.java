@@ -6,7 +6,8 @@ import com.epam.training.epharmacy.service.impl.*;
 public final class ServiceFactory {
     private static final ServiceFactory instance = new ServiceFactory();
 
-    private final UserService userService = new UserServiceImpl();
+    private final PasswordService passwordService = new PasswordServiceImpl();
+    private final UserService userService = new UserServiceImpl(passwordService);
     private final MedicinesService medicinesService = new MedicinesServiceImpl();
     private final OrderService orderService = new OrderServiceImpl();
     private final MessageService messageService = new MessageServiceImpl();
@@ -38,5 +39,9 @@ public final class ServiceFactory {
 
     public PrescriptionService getPrescriptionService() {
         return prescriptionService;
+    }
+
+    public PasswordService getPasswordService() {
+        return passwordService;
     }
 }

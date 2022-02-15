@@ -18,12 +18,14 @@ public interface PrescriptionService {
 
     public User getUserByLogin(String login);
 
-    public List<Prescription> showPrescription(String login);
+    public List<Prescription> getUserAvailablePrescriptions(int userId);
 
     public List<Prescription> getAllPrescription();
 
+    public List<Prescription> getAllUserPrescription(String login);
+
     void updatePrescription(Integer prescriptionNumber, PrescriptionStatus status);
 
-    List<Prescription> findValidPrescriptionsByMedicine(User currentUser, Date currentDate, String medicineSerialNumber);
+    List<Prescription> findValidPrescriptionsByMedicine(User currentUser, String medicineSerialNumber);
 
 }

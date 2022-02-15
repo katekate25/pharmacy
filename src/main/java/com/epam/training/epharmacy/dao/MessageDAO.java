@@ -14,4 +14,6 @@ public interface MessageDAO {
 
     List<Message> getUserMessages(String login) throws DAOException, SQLException;
 
+    void updateMessage(Message message) throws DAOException, SQLException;
+
 }

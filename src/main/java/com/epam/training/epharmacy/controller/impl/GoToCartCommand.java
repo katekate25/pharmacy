@@ -3,6 +3,7 @@ package com.epam.training.epharmacy.controller.impl;
 import com.epam.training.epharmacy.controller.Command;
 import com.epam.training.epharmacy.controller.exception.PermissionsDeniedException;
 import com.epam.training.epharmacy.controller.util.ControllerUtils;
+import com.epam.training.epharmacy.entity.Order;
 import com.epam.training.epharmacy.entity.User;
 import com.epam.training.epharmacy.service.OrderService;
 import com.epam.training.epharmacy.service.PrescriptionService;
@@ -13,8 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-
 
 public class GoToCartCommand implements Command {
 
@@ -28,8 +27,15 @@ public class GoToCartCommand implements Command {
             throw new PermissionsDeniedException();
         }
 
-        req.setAttribute("prescriptions", prescriptionService.showPrescription(user.getLogin()));
-        req.setAttribute("order", orderService.getCartForUser(user));
+        req.setAttribute("availablePrescriptions", prescriptionService.getUserAvailablePrescriptions(user.getId()));
+        Order cart = orderService.getCartForUser(user);
+        req.setAttribute("order", cart);
+        if (cart != null){
+            req.setAttribute("isReadyForPayment", orderService.isCartReadyForPayment(cart));
+        }
+
+        req.setAttribute("minDeliveryDate", ControllerUtils.getMinDeliveryDate());
+        req.setAttribute("maxDeliveryDate", ControllerUtils.getMaxDeliveryDate());
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/cart.jsp");
         dispatcher.forward(req, resp);
     }

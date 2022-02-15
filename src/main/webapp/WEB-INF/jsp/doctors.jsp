@@ -17,8 +17,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       }
        </style>
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
         <br> <br>
         <table class="table table-hover table-bordered text-center">
             <thead class="thead-dark">
@@ -52,8 +52,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             </c:forEach>
             </tbody>
         </table>
-        <common:footer />
     </div>
+    <common:footer />
 </body>
 
 </html>

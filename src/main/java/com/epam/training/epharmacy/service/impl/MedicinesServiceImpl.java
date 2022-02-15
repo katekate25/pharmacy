@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MedicinesServiceImpl implements MedicinesService {
@@ -136,10 +137,10 @@ public class MedicinesServiceImpl implements MedicinesService {
 
         try {
             medicines = medicineDAO.findMedicineByCriteria(new Criteria<>());
-            for (int i=0;i<medicines.size(); i++) {
-                if ((medicines.get(i).getArrivalDate().after(beginning) || medicines.get(i).getArrivalDate().equals(beginning))
-                        && (medicines.get(i).getArrivalDate().before(end) || medicines.get(i).getArrivalDate().equals(end))  ){
-                    foundMedicines.add(medicines.get(i));
+            for (Medicine medicine:medicines) {
+                if ((medicine.getArrivalDate().after(beginning) || medicine.getArrivalDate().equals(beginning))
+                        && (medicine.getArrivalDate().before(end) || medicine.getArrivalDate().equals(end))  ){
+                    foundMedicines.add(medicine);
                 }
             }
 
@@ -151,16 +152,32 @@ public class MedicinesServiceImpl implements MedicinesService {
     }
 
     @Override
-    public List<Medicine> medicineByInvoiceNumber(String invoice) {
+    public Set<String> showInvoiceList(Date beginning, Date end) {
+        List<Medicine> medicines = medicineByIncome(beginning, end);
+        Set<String> invoices = null;
+        try {
+            for (Medicine medicine : medicines){
+                invoices.add(medicine.getInvoiceNumber());
+            }
+
+        } catch (DAOException e){
+            LOG.error("Error during finding medicines by invoice", e);
+            throw  new ServiceException(e);
+        }
+        return invoices;
+    }
+
+    @Override
+    public List<Medicine> medicineByInvoiceNumber(String invoiceNumber) {
         List<Medicine> medicines = null;
 
         try {
             Criteria<SearchCriteria.Medicine> criteria = new Criteria<>();
-            criteria.getParametersMap().put(SearchCriteria.Medicine.INVOICE_NUMBER, invoice);
+            criteria.getParametersMap().put(SearchCriteria.Medicine.INVOICE_NUMBER, invoiceNumber);
             medicines = medicineDAO.findMedicineByCriteria(criteria);
 
         } catch (DAOException e){
-            LOG.error("Error during finding medicines by invoice", e);
+            LOG.error("Error during finding medicines by date", e);
             throw  new ServiceException(e);
         }
         return medicines;

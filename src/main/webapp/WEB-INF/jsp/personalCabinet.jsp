@@ -19,8 +19,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       }
        </style>
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
 
         <br />
         <h1>
@@ -47,9 +47,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             <user:customerPersonalCabinet customer="${user}" />
         </c:if>
 
-
-        <common:footer />
     </div>
+    <common:footer />
 </body>
 
 </html>

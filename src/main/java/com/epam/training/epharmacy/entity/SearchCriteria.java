@@ -22,7 +22,8 @@ public final class SearchCriteria {
         CREATION_DATE,
         EXPIRATION_DATE,
         MEDICINES_ID,
-        NUMBER_OF_PACKAGES
+        NUMBER_OF_PACKAGES,
+        STATUS
     }
 
     public static enum Order {
@@ -46,7 +47,7 @@ public final class SearchCriteria {
     }
 
     public static enum Message {
-        ID, MESSAGE, DATE, RECIPIENT, SENDER
+        ID, MESSAGE, DATE, RECIPIENT, SENDER, APPROVED
     }
 
     public static enum UserRole {

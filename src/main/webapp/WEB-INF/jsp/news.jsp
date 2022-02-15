@@ -35,14 +35,14 @@
   </style>
 
 <body>
+    <common:header />
     <div class="container">
-<common:header />
 
-<br>
-<p><img src="img/snake.png" width="100" height="120" alt="Snake"><br><br><a href="http://minzdrav.gov.by/ru/">Ministry of Health</a></p>
+        <br>
+        <p><img src="img/snake.png" width="100" height="120" alt="Snake"><br><br><a href="http://minzdrav.gov.by/ru/">Ministry of Health</a></p>
 
-<br>
-<common:footer />
+        <br>
     </div>
+    <common:footer />
 </body>
 </html>

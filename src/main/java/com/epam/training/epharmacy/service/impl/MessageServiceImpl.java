@@ -33,14 +33,31 @@ public class MessageServiceImpl implements MessageService {
     public List<Message> showMessagesToUser(User user) {
         DAOFactory factory = DAOFactory.getInstance();
         MessageDAO messageDAO = factory.getMessageDAO();
-        Criteria<SearchCriteria.Message> criteria = new Criteria<>();
-        criteria.getParametersMap().put(SearchCriteria.Message.RECIPIENT, user.getId());
-        try {
 
+        try {
+            Criteria<SearchCriteria.Message> criteria = new Criteria<>();
+            criteria.getParametersMap().put(SearchCriteria.Message.RECIPIENT, user.getId());
             return messageDAO.findMessageByCriteria(criteria);
 
         } catch (DAOException e) {
             LOG.error("Error during returning messages for user", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void updateMessage(Integer messageId, boolean approval) {
+        DAOFactory factory = DAOFactory.getInstance();
+        MessageDAO messageDAO = factory.getMessageDAO();
+
+        try {
+            Criteria<SearchCriteria.Message> criteria = new Criteria<>();
+            criteria.getParametersMap().put(SearchCriteria.Message.ID, messageId);
+            Message message = messageDAO.findMessageByCriteria(criteria).iterator().next();
+            message.setApproved(approval);
+            messageDAO.updateMessage(message);
+        } catch (DAOException | SQLException e) {
+            LOG.error("Error during message update", e);
             throw new ServiceException(e);
         }
     }

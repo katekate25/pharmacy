@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="common" tagdir="/WEB-INF/tags/common" %>
-<%@ taglib prefix="order" tagdir="/WEB-INF/tags/order" %>
 
 <fmt:setLocale value="${sessionScope.local}"/>
 <fmt:setBundle basename="localization.local" var="loc"/>
@@ -17,8 +16,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       }
        </style>
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
 
         <br><br><br>
 
@@ -35,24 +34,34 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                     <th>
                                         <fmt:message bundle="${loc}" key="local.sender" />
                                     </th>
-
+                                    <th> </th>
                                 </tr>
             </thead>
 
             <tbody>
-                <c:forEach var="messages" items="${messages}">
+                <c:forEach var="message" items="${messages}">
                                     <tr>
                                         <td>
-                                            <c:out value="${messages.message}" />
+                                            <c:out value="${message.message}" />
                                         </td>
                                         <td>
-                                            <c:out value="${messages.messageDate}" />
+                                            <c:out value="${message.messageDate}" />
                                         </td>
                                         <td>
-                                            <c:out value="${messages.sender.fullName}" /><br>
-                                            <c:out value="${messages.sender.login}" />
+                                            <c:out value="${message.sender.fullName}" /><br>
+                                            <c:out value="${message.sender.login}" /><br>
+                                            <c:out value="${message.sender.telNumber}" />
                                         </td>
-
+                                        <td>
+                      <form action = "/pharmacy/controller" method = "post">
+                 <input type="hidden" name="command" value="UPDATE_MESSAGE_APPROVAL">
+                 <input type="hidden" name="messageId" value="${message.id}">
+                 <select class="form-control btn-light" name="approvalStatus" onchange="this.form.submit()">
+                     <option class="dropdown-item" value="true" ${message.approved ? 'selected' : ''}>Approved</option>
+                     <option class="dropdown-item" value="false" ${!message.approved ? 'selected' : ''}>Not seen</option>
+                 </select>
+              </form>
+              </td>
                                     </tr>
                                 </c:forEach>
             </tbody>
@@ -62,7 +71,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
         <c:if test="${empty messages}">
             You do not have messages yet
         </c:if>
-        <common:footer />
+
     </div>
+    <common:footer />
 </body>
 </html>

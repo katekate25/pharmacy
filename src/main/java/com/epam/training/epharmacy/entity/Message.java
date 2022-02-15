@@ -10,7 +10,7 @@ public class Message implements Serializable {
     private Date messageDate;
     private User recipient;
     private User sender;
-
+    private boolean approved;
 
 
     public Integer getId() {
@@ -53,17 +53,25 @@ public class Message implements Serializable {
         this.sender = sender;
     }
 
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message1 = (Message) o;
-        return Objects.equals(id, message1.id) && Objects.equals(message, message1.message) && Objects.equals(messageDate, message1.messageDate) && Objects.equals(recipient, message1.recipient) && Objects.equals(sender, message1.sender);
+        return approved == message1.approved && Objects.equals(id, message1.id) && Objects.equals(message, message1.message) && Objects.equals(messageDate, message1.messageDate) && Objects.equals(recipient, message1.recipient) && Objects.equals(sender, message1.sender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, message, messageDate, recipient, sender);
+        return Objects.hash(id, message, messageDate, recipient, sender, approved);
     }
 
     @Override
@@ -74,6 +82,7 @@ public class Message implements Serializable {
                 ", messageDate=" + messageDate +
                 ", recipient=" + recipient +
                 ", sender=" + sender +
+                ", isApproved=" + approved +
                 '}';
     }
 }

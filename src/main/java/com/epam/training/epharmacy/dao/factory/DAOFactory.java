@@ -11,17 +11,15 @@ public final class DAOFactory {
     private final ProducerDAO producerDAO = new ProducerDAOImp();
     private final UserDAO userDAO = new UserDAOImpl();
     private final MedicineDAO medicineDAO = new MedicineDAOImp(producerDAO);
-    private final OrderEntryDAO orderEntryDAO = new OrderEntryDAOImpl(medicineDAO);
+    private final PrescriptionDAO prescriptionDAO = new PrescriptionDAOImpl(medicineDAO, userDAO);
+    private final OrderEntryDAO orderEntryDAO = new OrderEntryDAOImpl(medicineDAO, prescriptionDAO);
     private final OrderDAO orderDAO = new OrderDAOImpl(userDAO, orderEntryDAO);
     private final DiseaseGroupDAO diseaseGroupDAO = new DiseaseGroupDAOImpl();
-
-    private final PrescriptionDAO prescriptionDAO = new PrescriptionDAOImpl(medicineDAO, userDAO);
     private final MessageDAO messageDAO = new MessageDAOImpl(userDAO);
 
     public static DAOFactory getInstance() {
         return instance;
     }
-
 
     public UserDAO getUserDAO() {
         return userDAO;

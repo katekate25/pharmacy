@@ -16,9 +16,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       }
        </style>
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
-
 
         <h2>
             <fmt:message bundle="${loc}" key="local.medicine.form" />
@@ -74,8 +73,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             <fmt:message bundle="${loc}" key="local.adding.successfull" />
         </c:if>
 
-        <common:footer />
     </div>
+    <common:footer />
 </body>
 
 </html>

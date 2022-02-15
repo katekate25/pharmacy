@@ -5,13 +5,13 @@
 <common:head title="Error" />
 
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
 
         <h1>Error 404</h1>
 
-        <common:footer />
     </div>
+    <common:footer />
 </body>
 
 </html>

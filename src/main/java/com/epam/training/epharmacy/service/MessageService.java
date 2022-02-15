@@ -12,5 +12,5 @@ public interface MessageService {
 
     List<Message> showMessagesToUser(User user);
 
-
+    void updateMessage(Integer messageId, boolean approval);
 }

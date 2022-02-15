@@ -17,8 +17,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       }
        </style>
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
 
         <br>
         <c:if test="${user.userRole.name() eq 'PHARMACIST'}">
@@ -242,10 +242,10 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                     </tr>
                                 </c:forEach>
             <tbody>
-<common:footer />
         </table>
         </c:if>
-</c:if>
+        </c:if>
     </div>
+    <common:footer />
 </body>
 </html>

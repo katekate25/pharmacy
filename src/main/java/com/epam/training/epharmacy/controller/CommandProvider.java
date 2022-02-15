@@ -11,8 +11,6 @@ public final class CommandProvider {
         commands.put("Login", new LoginCommand());
         commands.put("Registration", new RegistrationCommand());
         commands.put("localization", new LocalizationCommand());
-
-
         commands.put("GO_TO_REGISTRATION_PAGE", new GoToRegistrationPageCommand());
         commands.put("GO_TO_LOGIN_PAGE", new GoToLoginPageCommand());
         commands.put("GO_TO_GREETING_PAGE", new GoToGreetingPage());
@@ -50,8 +48,9 @@ public final class CommandProvider {
         commands.put("FIND_VALID_PRESCRIPTIONS", new FindPrescriptionForEntryCommand());
         commands.put("GO_TO_ACCOUNT_PAGE", new GoToInvoicesPageCommand());
         commands.put("SHOW_INVOICES_LIST", new ShowInvoicesCommand());
-
-
+        commands.put("UPDATE_MESSAGE_APPROVAL", new UpdateMessageApprovalStatusCommand());
+        commands.put("DELETE_PRESCRIPTION_FROM_ENTRY", new DeletePrescriptionFromEntryCommand());
+        commands.put("UPDATE_ENTRY_AMOUNT", new UpdatePackageAmountForEntryCommand());
     }
 
     public final Command getCommand(String commandName){

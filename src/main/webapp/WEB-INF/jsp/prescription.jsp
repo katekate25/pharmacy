@@ -17,8 +17,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       }
        </style>
 <body>
+    <common:header />
     <div class="container">
-        <common:header />
 
         <h2>
             <fmt:message bundle="${loc}" key="local.prescription" />
@@ -50,8 +50,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
 
         </form>
 
-        <common:footer />
     </div>
+    <common:footer />
 </body>
 
 </html>

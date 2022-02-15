@@ -1,25 +1,18 @@
 package com.epam.training.epharmacy.controller.util;
 
 import com.epam.training.epharmacy.entity.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import static com.epam.training.epharmacy.controller.constant.ControllerConstants.DELIVERY_DATE_FORMAT_PATTERN;
 
 public class ControllerUtils {
 
-    private static final Logger LOG = LogManager.getLogger(ControllerUtils.class);
-
-    private static final int ITERATION_COUNT = 65536;
-    private static final int KEY_LENGTH = 128;
-    private static final String PBKDF2WITHHMACSHA1_ALGORITHM = "PBKDF2WithHmacSHA1";
+    private static final DateFormat deliveryTimeFormatter = new SimpleDateFormat(DELIVERY_DATE_FORMAT_PATTERN);
 
     private ControllerUtils() {
     }
@@ -32,25 +25,17 @@ public class ControllerUtils {
         return null;
     }
 
-    public static byte[] generateHash(final String string) {
-        try {
-            final byte[] salt = getSalt();
-            final KeySpec spec = new PBEKeySpec(string.toCharArray(), salt, ITERATION_COUNT, KEY_LENGTH);
-            final SecretKeyFactory factory = SecretKeyFactory.getInstance(PBKDF2WITHHMACSHA1_ALGORITHM);
-            return factory.generateSecret(spec).getEncoded();
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            LOG.error("Error during generating hash");
-            throw new RuntimeException(e);
-        }
-
+    public static String getMinDeliveryDate() {
+        final int ONE_DAY = 1;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, ONE_DAY);
+        return deliveryTimeFormatter.format(calendar.getTime());
     }
 
-    private static byte[] getSalt() {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        return salt;
+    public static String getMaxDeliveryDate() {
+        final int TWO_WEEKS = 2;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.WEEK_OF_YEAR, TWO_WEEKS);
+        return deliveryTimeFormatter.format(calendar.getTime());
     }
-
-
 }

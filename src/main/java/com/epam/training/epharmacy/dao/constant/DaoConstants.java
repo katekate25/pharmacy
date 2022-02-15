@@ -21,12 +21,14 @@ public class DaoConstants {
     public static final String USER_AGE = "age";
     public static final String USER_WORK_PLACE = "work_place";
     public static final String USER_SPECIALIZATION = "specialization";
+    public static final String SALT = "salt";
 
     public static final String MESSAGE_ID = "id";
     public static final String MESSAGE_MESSAGE = "message";
     public static final String MESSAGE_DATE = "date";
     public static final String MESSAGE_RECIPIENT = "recipient";
     public static final String MESSAGE_SENDER = "sender";
+    public static final String MESSAGE_APPROVAL = "approved";
 
     public static final String ROLE_CODE = "roles_code";
 
@@ -59,6 +61,7 @@ public class DaoConstants {
     public static final String PACKAGE_AMOUNT = "package_amount";
     public static final String ENTRY_ORDER_NUMBER = "order_number";
     public static final String ENTRY_MEDICINES_ID = "medicines_id";
+    public static final String ENTRY_PRESCRIPTION_NUMBER = "prescriptions_prescription_number";
 
     public static final String PRESCRIPTION_NUMBER = "prescription_number";
     public static final String CLIENT_ID = "client_id";
@@ -68,6 +71,7 @@ public class DaoConstants {
     public static final String MEDICINES_ID = "medicines_id";
     public static final String NUMBER_OF_PACKAGES = "number_of_packages";
     public static final String USAGE_INSTRUCTION = "usage_instruction";
+    public static final String PRESCRIPTION_STATUS = "status";
 
     public static final String DISEASE_GROUP_CODE = "CODE";
 

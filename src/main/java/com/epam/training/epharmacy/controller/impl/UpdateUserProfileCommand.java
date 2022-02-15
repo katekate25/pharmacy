@@ -5,6 +5,7 @@ import com.epam.training.epharmacy.controller.constant.ControllerConstants;
 import com.epam.training.epharmacy.controller.exception.PermissionsDeniedException;
 import com.epam.training.epharmacy.controller.util.ControllerUtils;
 import com.epam.training.epharmacy.entity.User;
+import com.epam.training.epharmacy.service.PasswordService;
 import com.epam.training.epharmacy.service.UserService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
 import com.epam.training.epharmacy.service.factory.ServiceFactory;
@@ -21,6 +22,7 @@ public class UpdateUserProfileCommand implements Command {
 
     private final Logger LOG = LogManager.getLogger(UpdateUserProfileCommand.class);
     private final UserService userService = ServiceFactory.getInstance().getUserService();
+    private final PasswordService passwordService = ServiceFactory.getInstance().getPasswordService();
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -35,7 +37,7 @@ public class UpdateUserProfileCommand implements Command {
         String password = req.getParameter("password");
         if (StringUtils.isNotBlank(password))
         {
-            currentUser.setPassword(password);
+            passwordService.setPasswordForUser(currentUser,password);
         }
         currentUser.setWorkPlace(req.getParameter("workPlace"));
 
