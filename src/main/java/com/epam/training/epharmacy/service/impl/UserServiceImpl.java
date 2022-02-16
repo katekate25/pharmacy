@@ -2,7 +2,6 @@ package com.epam.training.epharmacy.service.impl;
 
 import com.epam.training.epharmacy.dao.UserDAO;
 import com.epam.training.epharmacy.dao.exception.DAOException;
-import com.epam.training.epharmacy.dao.factory.DAOFactory;
 import com.epam.training.epharmacy.entity.*;
 import com.epam.training.epharmacy.service.PasswordService;
 import com.epam.training.epharmacy.service.exception.ServiceException;
@@ -11,16 +10,16 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
     private final Logger LOG = LogManager.getLogger(UserServiceImpl.class);
-    private final UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+    private final UserDAO userDAO;
     private final PasswordService passwordService;
 
-    public UserServiceImpl(PasswordService passwordService) {
+    public UserServiceImpl(UserDAO userDAO, PasswordService passwordService) {
+        this.userDAO = userDAO;
         this.passwordService = passwordService;
     }
 
@@ -55,7 +54,7 @@ public class UserServiceImpl implements UserService {
             }
             userDAO.saveUser(user);
 
-        } catch (DAOException | SQLException e){
+        } catch (DAOException e){
             LOG.error("Error during registration", e);
             throw new IllegalArgumentException(e);
         }
@@ -64,9 +63,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> showDoctors() {
         try {
-            return userDAO.showUsersByRole(UserRole.DOCTOR);
+            Criteria<SearchCriteria.User> criteria = new Criteria<>();
+            criteria.getParametersMap().put(SearchCriteria.User.ROLES_CODE, UserRole.DOCTOR);
+            return userDAO.findUserByCriteria(criteria);
 
-        } catch (DAOException | SQLException e){
+        } catch (DAOException e){
             LOG.error("Error during showing doctors list", e);
             throw  new ServiceException(e);
         }
@@ -74,8 +75,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> showCustomers() {
-        List<User> users = null;
-
         try {
             Criteria<SearchCriteria.User> criteria = new Criteria<>();
             criteria.getParametersMap().put(SearchCriteria.User.ROLES_CODE, UserRole.CUSTOMER);
@@ -90,7 +89,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByLogin(String login) {
         List<User> users = null;
-        User user = null;
         try {
             Criteria<SearchCriteria.User> criteria = new Criteria<>();
             criteria.getParametersMap().put(SearchCriteria.User.LOGIN, login);

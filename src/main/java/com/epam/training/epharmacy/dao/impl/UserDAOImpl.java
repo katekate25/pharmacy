@@ -17,10 +17,9 @@ import static com.epam.training.epharmacy.dao.constant.DaoConstants.*;
 
 public class UserDAOImpl extends AbstractEntityDAO implements UserDAO {
 
-    private static final String ADD_USER_SQL = "INSERT INTO users (name, login, password, roles_code, email, telephone_number, age, work_place, specialization, salt) " +
+    private static final String ADD_USER_SQL = "INSERT INTO pharmacy.users (name, login, password, roles_code, email, telephone_number, age, work_place, specialization, salt) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_USER_SQL = "UPDATE users SET name = ?, password = ?, email = ?, telephone_number = ?, age = ?, work_place = ? WHERE login = ?";
-    private static final String SHOW_USERS_BY_ROLE_SQL = "SELECT id, name, login, password, roles_code, email, telephone_number, age, work_place, specialization FROM users WHERE roles_code=?";
+    private static final String UPDATE_USER_SQL = "UPDATE pharmacy.users SET name = ?, password = ?, email = ?, telephone_number = ?, age = ?, work_place = ? WHERE login = ?";
 
     @Override
     protected String getInitialQuery() {
@@ -53,14 +52,14 @@ public class UserDAOImpl extends AbstractEntityDAO implements UserDAO {
             }
         } catch (SQLException e) {
             throw new DAOException("Error during finding user", e);
-        }finally {
+        } finally {
             ConnectionPool.getInstance().closeConnection(connection, statement);
         }
         return users;
     }
 
     @Override
-    public void saveUser(User user) throws DAOException, SQLException {
+    public void saveUser(User user) throws DAOException {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
@@ -85,66 +84,35 @@ public class UserDAOImpl extends AbstractEntityDAO implements UserDAO {
             if (generatedKeys.next()) {
                 user.setId(generatedKeys.getInt(1));
             }
-        }
-            finally{
-                ConnectionPool.getInstance().closeConnection(connection, statement);
-            }
-        }
-
-
-        @Override
-    public void updateUser(User user) throws DAOException {
-            PreparedStatement statement = null;
-            Connection connection = null;
-            try {
-                connection = ConnectionPool.getInstance().takeConnection();
-                statement = connection.prepareStatement(UPDATE_USER_SQL);
-                statement.setString(1, user.getFullName());
-                statement.setString(2, user.getPassword());
-                statement.setString(3, user.getEmail());
-                statement.setString(4, user.getTelNumber());
-                statement.setInt(5, user.getAge());
-                statement.setString(6, user.getWorkPlace());
-                statement.setString(7, user.getLogin());
-
-                statement.executeUpdate();
-            } catch (ConnectionPoolException | SQLException e) {
-                throw new DAOException("Error during updating user", e);
-            }
-            finally {
-                ConnectionPool.getInstance().closeConnection(connection, statement);
-            }
-    }
-
-    @Override
-    public List<User> showUsersByRole(UserRole role) throws DAOException, SQLException {
-        PreparedStatement statement = null;
-        Connection connection = null;
-        List<User> users = new ArrayList<>();
-        try {
-            connection = ConnectionPool.getInstance().takeConnection();
-            statement = connection.prepareStatement(SHOW_USERS_BY_ROLE_SQL);
-            statement.setString(1, role.toString());
-            ResultSet rs = statement.executeQuery();
-            while(rs.next()){
-                User user = new User();
-                user.setFullName(rs.getString(USER_NAME));
-                user.setLogin(rs.getString(USER_LOGIN));
-                user.setEmail(rs.getString(USER_EMAIL));
-                user.setTelNumber(rs.getString(USER_TELEPHONE_NUMBER));
-                user.setSpecialization(rs.getString(USER_SPECIALIZATION));
-                user.setWorkPlace(rs.getString(USER_WORK_PLACE));
-                user.setUserRole(UserRole.valueOf(rs.getString(ROLE_CODE)));
-                users.add(user);
-            }
-
-        } catch (SQLException e) {
-            throw new DAOException("Error during returning users list", e);
-        }
-        finally {
+        }catch (SQLException e) {
+            throw new DAOException("Error during getting user id", e);
+        } finally {
             ConnectionPool.getInstance().closeConnection(connection, statement);
         }
-        return users;
+    }
+
+
+    @Override
+    public void updateUser(User user) throws DAOException {
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = ConnectionPool.getInstance().takeConnection();
+            statement = connection.prepareStatement(UPDATE_USER_SQL);
+            statement.setString(1, user.getFullName());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getTelNumber());
+            statement.setInt(5, user.getAge());
+            statement.setString(6, user.getWorkPlace());
+            statement.setString(7, user.getLogin());
+
+            statement.executeUpdate();
+        } catch (ConnectionPoolException | SQLException e) {
+            throw new DAOException("Error during updating user", e);
+        } finally {
+            ConnectionPool.getInstance().closeConnection(connection, statement);
+        }
     }
 
 }

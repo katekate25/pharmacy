@@ -1,5 +1,6 @@
 package com.epam.training.epharmacy.service.factory;
 
+import com.epam.training.epharmacy.dao.factory.DAOFactory;
 import com.epam.training.epharmacy.service.*;
 import com.epam.training.epharmacy.service.impl.*;
 
@@ -7,7 +8,7 @@ public final class ServiceFactory {
     private static final ServiceFactory instance = new ServiceFactory();
 
     private final PasswordService passwordService = new PasswordServiceImpl();
-    private final UserService userService = new UserServiceImpl(passwordService);
+    private final UserService userService = new UserServiceImpl(DAOFactory.getInstance().getUserDAO(), passwordService);
     private final MedicinesService medicinesService = new MedicinesServiceImpl();
     private final OrderService orderService = new OrderServiceImpl();
     private final MessageService messageService = new MessageServiceImpl();
