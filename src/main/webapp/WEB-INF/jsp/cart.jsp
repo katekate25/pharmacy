@@ -25,7 +25,9 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                 <order:cart order="${order}" />
             </c:when>
             <c:otherwise>
-                <fmt:message bundle="${loc}" key="local.cart.empty" />
+              <div class="card text-center">
+              <div class="card-body"><fmt:message bundle="${loc}" key="local.cart.empty" /></div>
+              </div>
             </c:otherwise>
         </c:choose>
 

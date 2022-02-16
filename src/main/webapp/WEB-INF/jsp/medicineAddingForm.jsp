@@ -17,63 +17,104 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
        </style>
 <body>
     <common:header />
-    <div class="container">
 
-        <h2>
-            <fmt:message bundle="${loc}" key="local.medicine.form" />
-        </h2>
-        <br />
 
-        <form action="/pharmacy/controller" method="post">
-            <input type="hidden" name="command" value="ADD_MEDICINE_TO_DB">
-            <fmt:message bundle="${loc}" key="local.commercialName" />:
-            <input type="text" name="commercialName" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.internationalName" />:
-            <input type="text" name="internationalName" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.medicineForm" />:
-            <input type="text" name="medicineForm" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.medicineDose" />:
-            <input type="text" name="medicineDose" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.productArrival" />:
-            <input type="text" name="productArrival" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.diseaseGroup" />:
-            <input type="text" name="diseaseGroup" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.arrivalDate" />:
-            <input type="text" name="arrivalDate" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.invoiceNumber" />:
-            <input type="text" name="invoiceNumber" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.expirationDate" />:
-            <input type="text" name="medicineExpirationDate" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.prescriptionRequired" />:
-            <input type="text" name="prescriptionRequired" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.packagePrice" />:
-            <input type="text" name="packagePrice" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.producer" />:
-            <input type="text" name="producerName" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.serialNumber" />:
-            <input type="text" name="serialNumber" value="" />
-            <br />
 
-            <input type="submit" value="enter" />
-        </form>
+     <section class="pt-5 pb-5 mt-0 align-items-center d-flex" style="min-height: 100vh; background-size: cover;">
+                    <div class="container-fluid">
+                      <div class="row  justify-content-center align-items-center d-flex-row text-center h-100">
+                        <div class="col-12 col-md-4 col-lg-3   h-50 ">
+                          <div class="card shadow">
+                            <div class="card-body mx-auto">
+                              <h4 class="card-title mt-3 text-center"><fmt:message bundle="${loc}" key="local.medicine.form" /></h4>
 
-        <c:if test="${param['successfulAdding']}">
-            <fmt:message bundle="${loc}" key="local.adding.successfull" />
-        </c:if>
+                              <c:if test="${param['successfulAdding']}">
+                                          <fmt:message bundle="${loc}" key="local.adding.successfull" />
+                                      </c:if>
 
-    </div>
+                              <form action="/pharmacy/controller" method="post">
+
+                              <input type="hidden" name="command" value="ADD_MEDICINE_TO_DB" />
+                                <div class="form-group">
+                                  <fmt:message bundle="${loc}" key="local.commercialName" /><br>
+                                  <input name="commercialName" class="form-control" type="text" >
+                                </div>
+
+                                <div class="form-group">
+
+                                        <fmt:message bundle="${loc}" key="local.internationalName" /><br>
+                                        <input name="internationalName" class="form-control"type="text" >
+                                      </div>
+                                      <div class="form-group">
+                                                                         <fmt:message bundle="${loc}" key="local.medicineForm" /><br>
+                                                                        <input name="medicineForm" class="form-control" type="text" >
+                                                                      </div>
+<div class="form-group">
+
+                                  <fmt:message bundle="${loc}" key="local.medicineDose" /><br>
+                                  <input name="medicineDose" class="form-control" type="text" >
+                                </div>
+                                <div class="form-group">
+
+                                                                   <fmt:message bundle="${loc}" key="local.productArrival" /><br>
+                                                                  <input name="productArrival" class="form-control" type="text" >
+                                                                </div>
+                 <div class="form-group">
+
+                                                   <fmt:message bundle="${loc}" key="local.diseaseGroup" /><br>
+                                                   <input name="diseaseGroup" class="form-control" type="text" >
+                                                 </div>
+                <div class="form-group">
+
+                                                  <fmt:message bundle="${loc}" key="local.arrivalDate" /><br>
+                                                  <input name="arrivalDate" class="form-control" type="text" >
+                                                </div>
+                <div class="form-group">
+                                                  <fmt:message bundle="${loc}" key="local.invoiceNumber" /><br>
+                                                  <input name="invoiceNumber" class="form-control" type="text" >
+                                                </div>
+                <div class="form-group">
+
+                                                  <fmt:message bundle="${loc}" key="local.expirationDate" /><br>
+                                                  <input name="medicineExpirationDate" class="form-control" type="text" >
+                                                </div>
+               <div class="form-group">
+
+                                                 <fmt:message bundle="${loc}" key="local.prescriptionRequired" /><br>
+                                                 <input name="prescriptionRequired" class="form-control" type="text" >
+                                               </div>
+               <div class="form-group">
+
+                                                 <fmt:message bundle="${loc}" key="local.packagePrice" /><br>
+                                                 <input name="packagePrice" class="form-control" type="text">
+                                               </div>
+              <div class="form-group">
+
+                                                <fmt:message bundle="${loc}" key="local.producer" /><br>
+                                                <input name="producerName" class="form-control" type="text">
+                                              </div>
+              <div class="form-group">
+
+                                                 <fmt:message bundle="${loc}" key="local.serialNumber" /><br>
+                                                <input name="serialNumber" class="form-control" type="text" required>
+                                              </div>
+
+                             <div class="row">
+                              <button type="submit" class="btn btn-primary btn-block"> <fmt:message bundle="${loc}" key="local.add.button" /> </button>
+                            </div>
+                            </form>
+
+
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                 </section>
+
     <common:footer />
 </body>
 

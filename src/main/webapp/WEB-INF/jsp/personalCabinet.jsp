@@ -15,7 +15,9 @@
 body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       background-size:cover;
       margin: 0;
-
+      }
+      a {
+          color: 	#FFFFFF;
       }
        </style>
 <body>
@@ -29,14 +31,23 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
 
         <c:if test="${user.userRole.name() eq 'PHARMACIST'}">
          <pharmacist:pharmacistPersonalCabinet pharmacist="${user}" /><br />
-            <a href="/pharmacy/controller?command=GO_TO_MEDICINE_FORM">
-                <fmt:message bundle="${loc}" key="local.medicine.form" />
-            </a>
-            <br>
-            <a href="/pharmacy/controller?command=GO_TO_REGISTRATION_PAGE">
-                <fmt:message bundle="${loc}" key="local.register.user" />
-            </a>
-            <br />
+
+
+            <nav class="navbar navbar-dark">
+              <form class="form-inline">
+                <button class="btn btn-dark" type="button"><a  href="/pharmacy/controller?command=GO_TO_MEDICINE_FORM">
+                  <fmt:message bundle="${loc}" key="local.medicine.form" />
+              </a></button>
+              </form>
+              <br />
+            </nav>
+            <nav class="navbar navbar-dark">
+          <form class="form-inline">
+            <button class="btn btn-dark" type="button"><a  href="/pharmacy/controller?command=GO_TO_REGISTRATION_PAGE">
+          <fmt:message bundle="${loc}" key="local.register.user" />
+      </a></button>
+          </form>
+        </nav>
         </c:if>
 
         <c:if test="${user.userRole.name() eq 'DOCTOR'}">

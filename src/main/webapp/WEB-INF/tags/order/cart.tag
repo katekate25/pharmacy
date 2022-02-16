@@ -6,6 +6,7 @@
 <fmt:setLocale value="${sessionScope.local}"/>
 <fmt:setBundle basename="localization.local" var="loc"/>
 <fmt:message bundle="${loc}" key="local.delete" var="remove_button" />
+<fmt:message bundle="${loc}" key="local.update"  var="update" />
 
 <br> <br> <br>
 
@@ -29,7 +30,7 @@
              <input type="hidden" name="command" value="UPDATE_ENTRY_AMOUNT">
              <input type="hidden" name="entryId" value="${orderEntry.id}"/>
              <input type="number" name="amount" min="1" max="${Double.valueOf(orderEntry.medicine.productBalance).intValue()}" value="${Double.valueOf(orderEntry.packageAmount).intValue()}" />
-             <input class="btn btn-dark" type="submit" value="Update" />
+             <input class="btn btn-dark" type="submit" value="${update}" />
         </form>
 
         </td>
@@ -57,7 +58,7 @@
        <c:if test="${orderEntry.medicine.prescriptionRequired == true && orderEntry.prescription == null}">
 
                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal_${orderEntry.id}">
-                 Choose Prescription
+                 <fmt:message bundle="${loc}" key="local.choose.prescription" />
                </button>
 
 
@@ -121,6 +122,6 @@
    <input type="hidden" name="command" value="PAY_ORDER">
    <p><fmt:message bundle="${loc}" key="local.choose.deliveryTime" /></p>
    <input class"date" type="date" min="${minDeliveryDate}" max="${maxDeliveryDate}" value="${minDeliveryDate}" name="deliveryTime">
-   <p><button class="btn btn-dark" type="submit" ${isReadyForPayment ? '' : 'disabled'}>Pay</button>
+   <p><button class="btn btn-dark" type="submit" ${isReadyForPayment ? '' : 'disabled'}><fmt:message bundle="${loc}" key="local.send.order" /></button>
 </form>
 

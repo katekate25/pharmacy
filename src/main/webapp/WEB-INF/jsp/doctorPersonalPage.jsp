@@ -20,18 +20,23 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
     <common:header />
     <div class="container">
 
-        Name - ${recipient.fullName} <br>
-        Email - ${recipient.email} <br>
-        Tel. Number - ${recipient.telNumber} <br>
-        Work Place - ${recipient.workPlace} <br>
-        Specialization - ${recipient.specialization} <br>
-        Age - ${recipient.age} <br>
+      <br>
 
+
+<div class="card" style="width:400px; margin:auto" >
+  <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+  <div class="card-body">
+    <h4 class="card-title">${recipient.fullName}</h4>
+    <p class="card-text"><fmt:message bundle="${loc}" key="local.specialization" />: ${recipient.specialization} <br>
+                       <fmt:message bundle="${loc}" key="local.email" />: ${recipient.email} <br>
+                       <fmt:message bundle="${loc}" key="local.telephone" />: ${recipient.telNumber} <br>
+                       <fmt:message bundle="${loc}" key="local.workPlace" />: ${recipient.workPlace} <br>
+                       <fmt:message bundle="${loc}" key="local.age" />: ${recipient.age} <br></p>
 
         <c:if test="${user.userRole.name() eq 'CUSTOMER'}">
-            <h2>
+            <h5>
                 <fmt:message bundle="${loc}" key="local.ask.prescription" />
-            </h2>
+            </h5>
             <br />
             <form action="/pharmacy/controller" method="post">
                 <input type="hidden" name="command" value="CREATE_REQUEST_FOR_PRESCRIPTION">
@@ -48,7 +53,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                 <fmt:message bundle="${loc}" key="local.send" />
             </c:if>
 
-        </c:if>
+        </c:if>  </div>
+               </div>
     </div>
     <common:footer />
 </body>

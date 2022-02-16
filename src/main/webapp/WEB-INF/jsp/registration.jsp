@@ -38,7 +38,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                       <div class="card shadow">
                         <div class="card-body mx-auto">
                           <h4 class="card-title mt-3 text-center">Create Account</h4>
-                          <p class="text-center">Get started with your free account</p>
+
                            <c:if test='${param["userExists"]}'>
                                          <p style="color:red">
                                              <fmt:message bundle="${loc}" key="local.user.already.exist" />
@@ -67,6 +67,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                   <input name="password" class="form-control" placeholder="password" type="password" minlength="5"
                                         maxlength="15" title="Enter 5-15 symbols" required>
                                 </div>
+                                <small>Format: 12 345 67 89</small>
                                 <div class="form-group input-group">
                                   <div class="input-group-prepend">
                                   <span class="input-group-text"> <i class="fa fa-user"></i> </span>
@@ -76,7 +77,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                        required>
 
 
-                              </div><small>Format: 12 345 67 89</small>
+                              </div>
                               <div class="form-group input-group">
                                 <div class="input-group-prepend">
 
@@ -125,15 +126,16 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                       </div>
                      </c:if>
 
+
                            <div class="row">
                               <button type="submit" class="btn btn-primary btn-block">  ${register} </button>
                             </div>
                             </form>
-
+                      <c:if test="${user.userRole.name() ne 'PHARMACIST'}">
                            <div class="login">
-                          <p> Have an account? <a href="/pharmacy/controller?command=GO_TO_LOGIN_PAGE">Log In</a></p>
+                          <p> <fmt:message bundle="${loc}" key="local.have.account" /> <a href="/pharmacy/controller?command=GO_TO_LOGIN_PAGE"><fmt:message bundle="${loc}" key="local.logination.link" /></a></p>
                           </div>
-
+                      </c:if>
 
 
 

@@ -57,8 +57,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                  <input type="hidden" name="command" value="UPDATE_MESSAGE_APPROVAL">
                  <input type="hidden" name="messageId" value="${message.id}">
                  <select class="form-control btn-light" name="approvalStatus" onchange="this.form.submit()">
-                     <option class="dropdown-item" value="true" ${message.approved ? 'selected' : ''}>Approved</option>
-                     <option class="dropdown-item" value="false" ${!message.approved ? 'selected' : ''}>Not seen</option>
+                     <option class="dropdown-item" value="true" ${message.approved ? 'selected' : ''}><fmt:message bundle="${loc}" key="local.message.approved" /></option>
+                     <option class="dropdown-item" value="false" ${!message.approved ? 'selected' : ''}><fmt:message bundle="${loc}" key="local.message.not.seen" /></option>
                  </select>
               </form>
               </td>

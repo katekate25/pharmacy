@@ -18,39 +18,65 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
        </style>
 <body>
     <common:header />
-    <div class="container">
 
-        <h2>
-            <fmt:message bundle="${loc}" key="local.prescription" />
-        </h2>
-        <form action="/pharmacy/controller" method="post">
-            <input type="hidden" name="command" value="ADD_PRESCRIPTION_TO_DB" />
 
-            <fmt:message bundle="${loc}" key="local.prescription.patient" />:
-            <input type="text" name="client" value="" />
-            <br />
+<section class="pt-5 pb-5 mt-0 align-items-center d-flex" style="min-height: 100vh; background-size: cover;">
+<div class="container-fluid">
+<div class="row  justify-content-center align-items-center d-flex-row text-center h-100">
+<div class="col-12 col-md-4 col-lg-3   h-50 ">
+  <div class="card shadow">
+    <div class="card-body mx-auto">
+      <h4 class="card-title mt-3 text-center"><fmt:message bundle="${loc}" key="local.prescription" /></h4>
 
-            <input type="hidden" name="serialNumber" value="${serialNumber}">
+      <form action="/pharmacy/controller" method="post">
 
-            <input type="hidden" name="doctor" value="${login}" />
+      <input type="hidden" name="command" value="ADD_PRESCRIPTION_TO_DB" />
 
-            <fmt:message bundle="${loc}" key="local.prescribed.amount" />:
-            <input type="text" name="packageAmount" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.usage.instruction" />:
-            <input type="text" name="usageInstruction" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.prescription.creation.date" />:
-            <input type="text" name="creationDate" value="" />
-            <br />
-            <fmt:message bundle="${loc}" key="local.prescription.expiration.date" />:
-            <input type="text" name="expirationDate" value="" />
-            <br />
-            <input type="submit" value="${add_button}" />
+        <div class="form-group">
+          <fmt:message bundle="${loc}" key="local.prescription.patient" /><br>
+          <input name="client" class="form-control" type="text" >
+        </div>
+<input type="hidden" name="serialNumber" value="${serialNumber}">
+<input type="hidden" name="doctor" value="${login}" />
 
-        </form>
+        <div class="form-group">
+                 <fmt:message bundle="${loc}" key="local.prescribed.amount" /><br>
+                <input name="packageAmount" class="form-control"type="text" >
+              </div>
+
+              <div class="form-group">
+                 <fmt:message bundle="${loc}" key="local.usage.instruction" /><br>
+                <input name="usageInstruction" class="form-control" type="text" >
+              </div>
+<div class="form-group">
+
+          <fmt:message bundle="${loc}" key="local.prescription.creation.date" /><br>
+          <input name="creationDate" class="form-control" type="text" >
+        </div>
+
+
+        <div class="form-group">
+           <fmt:message bundle="${loc}" key="local.prescription.expiration.date" /><br>
+          <input name="expirationDate" class="form-control" type="text" >
+        </div>
+
+
+     <div class="row">
+      <button type="submit" class="btn btn-primary btn-block"> <fmt:message bundle="${loc}" key="local.add.button" /> </button>
+    </div>
+    </form>
+
+
+
 
     </div>
+  </div>
+</div>
+</div>
+</div>
+
+                 </section>
+
     <common:footer />
 </body>
 

@@ -27,22 +27,22 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             <thead class="thead-dark">
                 <tr>
                     <th>
-                        Order number
+                        <fmt:message bundle="${loc}" key="local.order.number" />
                     </th>
                     <th>
-                        Order status
+                        <fmt:message bundle="${loc}" key="local.order.status" />
                     </th>
                     <th>
-                        Payment status
+                        <fmt:message bundle="${loc}" key="local.payment.status" />
                     </th>
                     <th>
-                        Total price
+                        <fmt:message bundle="${loc}" key="local.total.price" />
                     </th>
                     <th>
-                       Delivery time
+                       <fmt:message bundle="${loc}" key="local.delivery.time" />
                     </th>
                     <th>
-                       Medicines
+                       <fmt:message bundle="${loc}" key="local.ordered" />
                     </th>
                 </tr>
             </thead>
@@ -56,7 +56,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
         </table>
         </c:if>
         <c:if test="${empty orders}">
-            You do not have orders yet
+             <fmt:message bundle="${loc}" key="local.customer.empty" />
         </c:if>
     </div>
     <common:footer />

@@ -49,17 +49,62 @@
         </c:if>
 
         <br />
-        <h3>
+        <h3 align="center">
            <fmt:message bundle="${loc}" key="local.greeting.add" />
         </h3>
 
-        <h1>
+        <h1 align="center">
             <fmt:message bundle="${loc}" key="local.greeting.main.page" />
         </h1>
 <br>
-        <p>
+        <p align="center">
         <font size="5" color="black"> <em><fmt:message bundle="${loc}" key="local.care" /></em>
         </p>
+
+<h3 align="center">
+           <fmt:message bundle="${loc}" key="local.advert" />
+        </h3>
+        <section id="gallery">
+              <div class="container">
+                <div class="row">
+                <div class="col-lg-4 mb-4">
+                <div class="card">
+                  <img src="img/teraflu.jpg" alt="" class="card-img-top">
+                  <div class="card-body">
+                    <h2 class="card-title" align="center">Терафлю</h2>
+                    <p class="card-text"><small>ТЕРАФЛЮ (ПОР. Д/ПРИГ. Р-РА Д/ПРИЕМА ВНУТРЬ (ЛИМОН) ПАК. №10) FAMAR ORLEANS-ФРАНЦИЯ</small></p>
+                   <a href="" class="btn btn-outline-primary btn-sm" align="center"><fmt:message bundle="${loc}" key="local.doctor.details" /></a>
+
+                  </div>
+                 </div>
+                </div>
+              <div class="col-lg-4 mb-4">
+              <div class="card">
+                  <img src="img/orvis.jpg" alt="" class="card-img-top">
+                  <div class="card-body">
+                    <h2 class="card-title" align="center">Орвис</h2>
+                    <p class="card-text"><small>ЧАЙ (БАД) ДЛЯ ИММУНИТЕТА БЫСТРОРАСТВОРИМЫЙ В САШЕ ПО 3,0 Г №20) ЭВАЛАР ЗАО-РОССИЯ</small></p>
+                   <a href="" class="btn btn-outline-primary btn-sm"><fmt:message bundle="${loc}" key="local.doctor.details" /></a>
+
+                  </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                <div class="card">
+                  <img src="img/rinocil.jpg" alt="" class="card-img-top">
+                  <div class="card-body">
+                    <h2 class="card-title" align="center">Риноцил</h2>
+                    <p class="card-text">РИНОЦИЛ (СПРЕЙ НАЗ. (2,5МГ/0,25МГ)/1МЛ ФЛ. 10 МЛ №1) РУБИКОН ООО-БЕЛАРУСЬ</p>
+                   <a href="" class="btn btn-outline-primary btn-sm" align="center"><small><fmt:message bundle="${loc}" key="local.doctor.details" /></small></a>
+
+                  </div>
+                 </div>
+                </div>
+              </div>
+            </div>
+            </section>
+
+
 
     </div>
     <common:footer />

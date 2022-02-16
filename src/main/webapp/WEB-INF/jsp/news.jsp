@@ -9,40 +9,60 @@
 
 <html>
 <common:head title="News" />
-<style type="text/css">
-   A {
-    text-decoration: none;
-   }
-   A:hover {
-    text-decoration: underline;
-    color: blue;
-   }
-   body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
-           background-size:cover;
-           margin: 0;
+<style>
+body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
+      background-size:cover;
+      margin: 0;
 
-           }
-
-              .leftimg {
-               float:left; /* Выравнивание по левому краю */
-               margin: 7px 7px 7px 0; /* Отступы вокруг картинки */
-              }
-              .rightimg  {
-               float: right; /* Выравнивание по правому краю  */
-               margin: 7px 0 7px 7px; /* Отступы вокруг картинки */
-              }
-
-  </style>
-
+      }
+       </style>
 <body>
     <common:header />
     <div class="container">
+     <br><br><br>
+ <section id="gallery">
+              <div class="container">
+                <div class="row">
+                <div class="col-lg-4 mb-4">
+                <div class="card">
+                  <img src="img/mh.jpg" alt="" class="card-img-top">
+                  <div class="card-body">
+                    <h2 class="card-title" align="center"><fmt:message bundle="${loc}" key="local.ministry" /></h2>
+                    <p class="card-text" align="center"><fmt:message bundle="${loc}" key="local.actual" /></p>
+                   <a href="http://minzdrav.gov.by/ru/" class="btn btn-outline-primary btn-sm" align="center"><fmt:message bundle="${loc}" key="local.doctor.details" /></a>
 
-        <br>
-        <p><img src="img/snake.png" width="100" height="120" alt="Snake"><br><br><a href="http://minzdrav.gov.by/ru/">Ministry of Health</a></p>
+                  </div>
+                 </div>
+                </div>
+              <div class="col-lg-4 mb-4">
+              <div class="card">
+                  <img src="img/covid.jpg" alt="" class="card-img-top">
+                  <div class="card-body">
+                    <h2 class="card-title" align="center"><fmt:message bundle="${loc}" key="local.coronavirus.news" /></h2>
 
-        <br>
-    </div>
+                   <a href="https://www.who.int/ru/emergencies/diseases/novel-coronavirus-2019/advice-for-public" class="btn btn-outline-primary btn-sm"><fmt:message bundle="${loc}" key="local.doctor.details" /></a>
+
+                  </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                <div class="card">
+                  <img src="img/teenager.jpg" alt="" class="card-img-top">
+                  <div class="card-body">
+                    <h2 class="card-title" align="center"><fmt:message bundle="${loc}" key="local.teenagers.health" /></h2>
+
+                   <a href="https://teenage.by/articles/zdorove" class="btn btn-outline-primary btn-sm" align="center"><small><fmt:message bundle="${loc}" key="local.doctor.details" /></small></a>
+
+                  </div>
+                 </div>
+                </div>
+              </div>
+            </div>
+            </section>
+
+ </div>
+
+
     <common:footer />
 </body>
 </html>

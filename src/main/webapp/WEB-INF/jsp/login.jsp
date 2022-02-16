@@ -6,6 +6,8 @@
 <fmt:setLocale value="${sessionScope.local}" />
 <fmt:setBundle basename="localization.local" var="loc" />
 <fmt:message bundle="${loc}" key="local.enter" var="enter" />
+<fmt:message bundle="${loc}" key="local.login" var="login" />
+<fmt:message bundle="${loc}" key="local.password" var="password" />
 
 <html>
 <common:head title="Log in" />
@@ -37,7 +39,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                     <div class="col-12 col-md-4 col-lg-3   h-50 ">
                       <div class="card shadow">
                         <div class="card-body mx-auto">
-                          <h4 class="card-title mt-3 text-center">Log in</h4>
+                          <h4 class="card-title mt-3 text-center"><fmt:message bundle="${loc}" key="local.logination.link" /></h4>
 
                           <c:if test="${param['wrongUser']}">
                                       <fmt:message bundle="${loc}" key="local.incorrect.data" />
@@ -50,14 +52,14 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                               <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                               </div>
-                              <input name="login" class="form-control" placeholder="login" type="text" required>
+                              <input name="login" class="form-control" placeholder="${login}" type="text" required>
                             </div>
 
                                   <div class="form-group input-group">
                                     <div class="input-group-prepend">
                                     <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                                   </div>
-                                  <input name="password" class="form-control" placeholder="password" type="password" minlength="5"
+                                  <input name="password" class="form-control" placeholder="${password}" type="password" minlength="5"
                                         maxlength="15" title="Enter 5-15 symbols" required>
                                 </div>
 
@@ -73,7 +75,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                             </form>
 
                            <div class="register">
-                          <p> Don’t have an account? <a href="/pharmacy/controller?command=GO_TO_REGISTRATION_PAGE">Sign Up</a></p>
+                          <p> <fmt:message bundle="${loc}" key="local.not.have.account" /> <a href="/pharmacy/controller?command=GO_TO_REGISTRATION_PAGE"><fmt:message bundle="${loc}" key="local.register" /> </a></p>
                           </div>
 
 

@@ -6,14 +6,14 @@
 
 <fmt:setLocale value="${sessionScope.local}"/>
 <fmt:setBundle basename="localization.local" var="loc"/>
+<fmt:message bundle="${loc}" key="local.type.login" var="typeLogin" />
 
 <html >
-    <common:head title="Orders" />
+    <common:head title="Customers" />
  <style>
 body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       background-size:cover;
       margin: 0;
-
       }
        </style>
 <body>
@@ -24,8 +24,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                     <div class="col-md-8 offset-md-1">
                         <form class="form-inline" action="/pharmacy/controller" method="post">
                             <input type="hidden" name="command" value="SHOW_CUSTOMERS">
-                            <input class="form-control col-md-4 mr-sm-3 mb-2" type="text" name="client" value="" placeholder="Type client login"/>
-                            <button class="btn btn-dark mb-2" type="submit">Search</button>
+                            <input class="form-control col-md-4 mr-sm-3 mb-2" type="text" name="client" value="" placeholder="${typeLogin}"/>
+                            <button class="btn btn-dark mb-2" type="submit"><fmt:message bundle="${loc}" key="local.search.button" /></button>
                         </form>
                     </div>
                 </div>
@@ -35,20 +35,20 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             <thead class="thead-dark">
                 <tr>
                   <th>
-                        fullName
+                        <fmt:message bundle="${loc}" key="local.customer.name" />
                     </th>
                     <th>
-                        login
+                        <fmt:message bundle="${loc}" key="local.customer.login" />
                     </th>
 
                     <th>
-                       email
+                       <fmt:message bundle="${loc}" key="local.customer.email" />
                     </th>
                      <th>
-                       telNumber
+                       <fmt:message bundle="${loc}" key="local.customer.telephone" />
                      </th>
                      <th>
-                       age
+                       <fmt:message bundle="${loc}" key="local.customer.age" />
                      </th>
                 </tr>
             </thead>
@@ -84,20 +84,20 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             <thead class="thead-dark">
                 <tr>
                   <th>
-                        fullName
+                        <fmt:message bundle="${loc}" key="local.customer.name" />
                     </th>
                     <th>
-                        login
+                        <fmt:message bundle="${loc}" key="local.customer.login" />
                     </th>
 
                     <th>
-                       email
+                       <fmt:message bundle="${loc}" key="local.customer.email" />
                     </th>
                      <th>
-                       telNumber
+                       <fmt:message bundle="${loc}" key="local.customer.telephone" />
                      </th>
                      <th>
-                       age
+                       <fmt:message bundle="${loc}" key="local.customer.age" />
                      </th>
                 </tr>
             </thead>
@@ -128,7 +128,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
         </table>
         </c:if>
         <c:if test="${empty customers}">
-            You do not have customers yet
+            <fmt:message bundle="${loc}" key="local.customer.empty" />
         </c:if>
 
     </div>

@@ -56,7 +56,7 @@
                         <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
                     </svg>
                 </button>
-                <div class="dropdown-menu" style="left:auto">
+                <div class="dropdown-menu" style="left:1680;">
                     <c:if test="${user.userRole.name() eq 'CUSTOMER'}">
                         <a class="dropdown-item" href="/pharmacy/controller?command=GO_TO_ORDERS">
                             <fmt:message bundle="${loc}" key="local.my.orders" />
@@ -76,8 +76,7 @@
                             <fmt:message bundle="${loc}" key="local.customers.list" /> </a>
                         <a class="dropdown-item" href="/pharmacy/controller?command=GO_TO_PRESCRIPTIONS_LIST">
                             <fmt:message bundle="${loc}" key="local.prescriptions.list" /> </a>
-                        <a class="dropdown-item" href="/pharmacy/controller?command=GO_TO_ACCOUNT_PAGE">
-                            report</a>
+
                     </c:if>
                     <a class="dropdown-item" href="/pharmacy/controller?command=GO_TO_PERSONAL_CABINET">
                         <fmt:message bundle="${loc}" key="local.personal.cabinet.title" /> </a>

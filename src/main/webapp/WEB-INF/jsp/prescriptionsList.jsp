@@ -6,6 +6,7 @@
 
 <fmt:setLocale value="${sessionScope.local}"/>
 <fmt:setBundle basename="localization.local" var="loc"/>
+<fmt:message bundle="${loc}" key="local.type.customer.name" var="customer" />
 
 <html >
     <common:head title="Prescriptions" />
@@ -26,8 +27,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             <div class="col-md-8 offset-md-1">
                 <form class="form-inline" action="/pharmacy/controller" method="post">
                     <input type="hidden" name="command" value="SHOW_PRESCRIPTIONS">
-                    <input class="form-control col-md-4 mr-sm-3 mb-2" type="text" name="client" value="" placeholder="Type patient login"/>
-                    <button class="btn btn-dark mb-2" type="submit">Search</button>
+                    <input class="form-control col-md-4 mr-sm-3 mb-2" type="text" name="client" value="" placeholder="${customer}"/>
+                    <button class="btn btn-dark mb-2" type="submit"><fmt:message bundle="${loc}" key="local.search.button" /></button>
                 </form>
             </div>
         </div>
@@ -38,26 +39,26 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             <thead class="thead-dark">
                 <tr>
                     <th>
-                        prescriptionNumber
+                        <fmt:message bundle="${loc}" key="local.prescription.number" />
                     </th>
                     <th>
-                        client
+                        <fmt:message bundle="${loc}" key="local.customer" />
                     </th>
                     <th>
-                        doctor
+                        <fmt:message bundle="${loc}" key="local.doctor" />
                     </th>
                     <th>
-                        medicine
-                        packageAmount
+                        <fmt:message bundle="${loc}" key="local.medicine.title" />
+                        <fmt:message bundle="${loc}" key="local.prescribed.amount" />уп
                     </th>
                     <th>
-                       creationDate
+                       <fmt:message bundle="${loc}" key="local.prescription.creation.date" />
                     </th>
                      <th>
-                       expirationDate
+                       <fmt:message bundle="${loc}" key="local.prescription.expiration.date" />
                      </th>
                      <th>
-                       status
+                       <fmt:message bundle="${loc}" key="local.prescription.status" />
                      </th>
 
                 </tr>
@@ -83,10 +84,10 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                             <c:out value="${prescription.medicine.commercialName}" /><br>
                                             <c:out value="${prescription.medicine.internationalName}" /><br>
                                             <c:out value="${prescription.medicine.medicineForm}" />&nbsp
-                                            <c:out value="${prescription.medicine.medicineDose}" />mg<br>
+                                            <c:out value="${prescription.medicine.medicineDose}" /><fmt:message bundle="${loc}" key="local.mg" /><br>
                                             <c:out value="${prescription.medicine.serialNumber}" /><br>
                                             <c:out value="${prescription.medicine.producer.producerFactoryName}" /><br><br>
-                                            <c:out value="${prescription.packageAmount}" />уп
+                                            <c:out value="${prescription.packageAmount}" />уп<fmt:message bundle="${loc}" key="local.package" />
                                         </td>
 
                                         <td>
@@ -111,27 +112,28 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             <thead class="thead-dark">
                 <tr>
                     <th>
-                        prescriptionNumber
-                    </th>
-                    <th>
-                        client
-                    </th>
-                    <th>
-                        doctor
-                    </th>
-                    <th>
-                        medicine
-                        packageAmount
-                    </th>
-                    <th>
-                       creationDate
-                    </th>
-                     <th>
-                       expirationDate
-                     </th>
-                     <th>
-                       status
-                     </th>
+                                            <fmt:message bundle="${loc}" key="local.prescription.number" />
+                                        </th>
+                                        <th>
+                                            <fmt:message bundle="${loc}" key="local.customer" />
+                                        </th>
+                                        <th>
+                                            <fmt:message bundle="${loc}" key="local.doctor" />
+                                        </th>
+                                        <th>
+                                            <fmt:message bundle="${loc}" key="local.medicine.title" />
+                                            <fmt:message bundle="${loc}" key="local.prescribed.amount" />уп
+                                        </th>
+                                        <th>
+                                           <fmt:message bundle="${loc}" key="local.prescription.creation.date" />
+                                        </th>
+                                         <th>
+                                           <fmt:message bundle="${loc}" key="local.prescription.expiration.date" />
+                                         </th>
+                                         <th>
+                                           <fmt:message bundle="${loc}" key="local.prescription.status" />
+                                         </th>
+
                 </tr>
             </thead>
 
@@ -155,10 +157,10 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                             <c:out value="${prescription.medicine.commercialName}" /><br>
                                             <c:out value="${prescription.medicine.internationalName}" /><br>
                                             <c:out value="${prescription.medicine.medicineForm}" />&nbsp
-                                            <c:out value="${prescription.medicine.medicineDose}" />mg<br>
+                                            <c:out value="${prescription.medicine.medicineDose}" /><fmt:message bundle="${loc}" key="local.mg" /><br>
                                             <c:out value="${prescription.medicine.serialNumber}" /><br>
                                             <c:out value="${prescription.medicine.producer.producerFactoryName}" /><br><br>
-                                            <c:out value="${prescription.packageAmount}" />уп
+                                            <c:out value="${prescription.packageAmount}" /><fmt:message bundle="${loc}" key="local.package" />
                                         </td>
 
                                         <td>
@@ -184,24 +186,26 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             <thead class="thead-dark">
                 <tr>
                     <th>
-                        prescriptionNumber
-                    </th>
-                    <th>
-                        client
-                    </th>
-                    <th>
-                        doctor
-                    </th>
-                    <th>
-                        medicine
-                        packageAmount
-                    </th>
-                    <th>
-                       creationDate
-                    </th>
-                     <th>
-                       expirationDate
-                     </th>
+                                            <fmt:message bundle="${loc}" key="local.prescription.number" />
+                                        </th>
+                                        <th>
+                                            <fmt:message bundle="${loc}" key="local.customer" />
+                                        </th>
+                                        <th>
+                                            <fmt:message bundle="${loc}" key="local.doctor" />
+                                        </th>
+                                        <th>
+                                            <fmt:message bundle="${loc}" key="local.medicine.title" />
+                                            <fmt:message bundle="${loc}" key="local.prescribed.amount" />уп
+                                        </th>
+                                        <th>
+                                           <fmt:message bundle="${loc}" key="local.prescription.creation.date" />
+                                        </th>
+                                         <th>
+                                           <fmt:message bundle="${loc}" key="local.prescription.expiration.date" />
+                                         </th>
+
+
 
                 </tr>
             </thead>
@@ -226,10 +230,10 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                             <c:out value="${prescription.medicine.commercialName}" /><br>
                                             <c:out value="${prescription.medicine.internationalName}" /><br>
                                             <c:out value="${prescription.medicine.medicineForm}" />&nbsp
-                                            <c:out value="${prescription.medicine.medicineDose}" />mg<br>
+                                            <c:out value="${prescription.medicine.medicineDose}" />mg<fmt:message bundle="${loc}" key="local.mg" /><br>
                                             <c:out value="${prescription.medicine.serialNumber}" /><br>
                                             <c:out value="${prescription.medicine.producer.producerFactoryName}" /><br><br>
-                                            <c:out value="${prescription.packageAmount}" />уп
+                                            <c:out value="${prescription.packageAmount}" /><fmt:message bundle="${loc}" key="local.package" />
                                         </td>
 
                                         <td>

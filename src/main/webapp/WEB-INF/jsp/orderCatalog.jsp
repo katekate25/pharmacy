@@ -6,47 +6,60 @@
 
 <fmt:setLocale value="${sessionScope.local}"/>
 <fmt:setBundle basename="localization.local" var="loc"/>
-
+<fmt:message bundle="${loc}" key="local.type.customer.name" var="customer" />
 <html >
     <common:head title="Orders" />
  <style>
 body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       background-size:cover;
       margin: 0;
-
       }
+      .table thead th {
+          vertical-align: middle;
+          }
        </style>
 <body>
     <common:header />
+    <br><br>
     <div class="container">
+         <div class="row">
+            <div class="col-md-8 offset-md-1">
+                <form class="form-inline" action="/pharmacy/controller" method="post">
+                    <input type="hidden" name="command" value="GO_TO_ORDER_LIST">
+                    <input class="form-control col-md-4 mr-sm-3 mb-2" type="text" name="customerName" value="" placeholder="${customer}"/>
+                    <button class="btn btn-dark mb-2" type="submit"><fmt:message bundle="${loc}" key="local.search.button" /></button>
+                </form>
+            </div>
+        </div>
 
-        <br><br><br>
-
+        <br><br>
         <c:if test="${not empty orderList}">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
         <table class="table table-hover table-bordered text-center">
             <thead class="thead-dark">
                 <tr>
                     <th>
-                        Order number
+                        <fmt:message bundle="${loc}" key="local.order.number" />
                     </th>
                     <th>
-                        Customer
+                        <fmt:message bundle="${loc}" key="local.customer" />
                     </th>
                     <th>
-                        Order status
+                        <fmt:message bundle="${loc}" key="local.order.status" />
                     </th>
                     <th>
-                        Payment status
+                        <fmt:message bundle="${loc}" key="local.payment.status" />
                     </th>
 
                     <th>
-                       Delivery time
+                       <fmt:message bundle="${loc}" key="local.delivery.time" />
                     </th>
                     <th>
-                       Medicines
+                       <fmt:message bundle="${loc}" key="local.ordered" />
                     </th>
                      <th>
-                       Total price
+                       <fmt:message bundle="${loc}" key="local.total.price" />
                      </th>
                 </tr>
             </thead>
@@ -63,9 +76,11 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                         </td>
 
                                         <td>
+                                        <c:if test="${order.orderStatus ne 'CANCELLED'}">
                                             <form class="form-inline" action = "/pharmacy/controller" method = "post">
                                                  <input type="hidden" name="command" value="UPDATE_STATUS">
                                                  <input type="hidden" name="orderNumber" value="${order.orderNumber}"/>
+
                                                  <select class="form-control btn-light" name="orderStatus" onchange="this.form.submit()">
                                                     <option class="dropdown-item" value="READY_FOR_PAYMENT" ${order.orderStatus.name() eq 'READY_FOR_PAYMENT' ? 'selected' : ''}>Ready for payment</option>
                                                     <option class="dropdown-item" value="PAID" ${order.orderStatus.name() eq 'PAID' ? 'selected' : ''}>Paid</option>
@@ -73,6 +88,10 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                                     <option class="dropdown-item" value="CANCELLED" ${order.orderStatus.name() eq 'CANCELLED' ? 'selected' : ''}>Canceled</option>
                                                  </select>
                                             </form>
+                                        </c:if>
+                                        <c:if test="${order.orderStatus eq 'CANCELLED'}">
+                                        <c:out value="${order.orderStatus}" />
+                                        </c:if>
                                         </td>
                                         <td>
                                             <c:out value="${order.paymentStatus}" />
@@ -93,9 +112,12 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             <tbody>
 
         </table>
+
+    </div>
+</div>
         </c:if>
         <c:if test="${empty orderList}">
-            You do not have orders yet
+            <fmt:message bundle="${loc}" key="local.customer.empty" />
         </c:if>
     </div>
     <common:footer />

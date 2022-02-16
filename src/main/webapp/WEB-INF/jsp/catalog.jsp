@@ -6,13 +6,13 @@
 
 <fmt:setLocale value="${sessionScope.local}" />
 <fmt:setBundle basename="localization.local" var="loc" />
+<fmt:message bundle="${loc}" key="local.type.medicine" var="typeMedicine" />
 
 <html>
  <style>
 body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       background-size:cover;
       margin: 0;
-
       }
 
        </style>
@@ -21,9 +21,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
 <body>
     <common:header />
     <div class="container">
-        <h2>
-            <fmt:message bundle="${loc}" key="local.sold.now" />
-        </h2>
+
         <div class="row">
             <h2 class="col-md-8 offset-md-1">
                 <fmt:message bundle="${loc}" key="local.catalog.name" />
@@ -33,8 +31,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             <div class="col-md-8 offset-md-1">
                 <form class="form-inline" action="/pharmacy/controller" method="post">
                     <input type="hidden" name="command" value="GO_TO_CATALOG">
-                    <input class="form-control col-md-4 mr-sm-3 mb-2" type="text" name="commercialName" value="" placeholder="Type medicine name"/>
-                    <button class="btn btn-dark mb-2" type="submit">Search</button>
+                    <input class="form-control col-md-4 mr-sm-3 mb-2" type="text" name="commercialName" value="" placeholder="${typeMedicine}"/>
+                    <button class="btn btn-dark mb-2" type="submit"><fmt:message bundle="${loc}" key="local.search.button" /></button>
                 </form>
             </div>
         </div>
