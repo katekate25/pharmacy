@@ -46,8 +46,6 @@ public final class CommandProvider {
         commands.put("UPDATE_STATUS", new UpdateOrderStatusCommand());
         commands.put("ADD_PRESCRIPTION_TO_ENTRY", new AddPrescriptionToEntryCommand());
         commands.put("FIND_VALID_PRESCRIPTIONS", new FindPrescriptionForEntryCommand());
-        commands.put("GO_TO_ACCOUNT_PAGE", new GoToInvoicesPageCommand());
-        commands.put("SHOW_INVOICES_LIST", new ShowInvoicesCommand());
         commands.put("UPDATE_MESSAGE_APPROVAL", new UpdateMessageApprovalStatusCommand());
         commands.put("DELETE_PRESCRIPTION_FROM_ENTRY", new DeletePrescriptionFromEntryCommand());
         commands.put("UPDATE_ENTRY_AMOUNT", new UpdatePackageAmountForEntryCommand());

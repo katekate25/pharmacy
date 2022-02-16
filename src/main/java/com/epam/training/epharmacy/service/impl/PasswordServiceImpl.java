@@ -32,12 +32,14 @@ public class PasswordServiceImpl implements PasswordService {
         byte[] hashedPassword = generateHash(password, salt);
         user.setSalt(new String(salt));
         user.setPassword(getPassword(salt, hashedPassword));
+        LOG.debug("Create - password {}, salt {}, hashedPassword {}, resultPass {}", password, new String(salt), new String(hashedPassword), getPassword(salt, hashedPassword));
     }
 
     @Override
     public boolean isPasswordValid(User user, String password) {
         byte[] salt = user.getSalt() != null ? user.getSalt().getBytes() : StringUtils.EMPTY.getBytes();
         byte[] hashedPassword = generateHash(password, salt);
+        LOG.debug("Login - password {}, salt {}, hashedPassword {}, resultPass {}", password, new String(salt), new String(hashedPassword), getPassword(salt, hashedPassword));
         return Objects.equals(user.getPassword(), getPassword(salt, hashedPassword));
     }
 

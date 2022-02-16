@@ -24,7 +24,7 @@ public class UserDAOImpl extends AbstractEntityDAO implements UserDAO {
 
     @Override
     protected String getInitialQuery() {
-        return "SELECT id, name, login, password, roles_code, email, telephone_number, age, work_place, specialization, salt FROM users";
+        return "SELECT id, name, login, password, roles_code, email, telephone_number, age, work_place, specialization, salt FROM pharmacy.users";
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.epam.training.epharmacy.dao.MedicineDAO;
 import com.epam.training.epharmacy.dao.OrderDAO;
 import com.epam.training.epharmacy.dao.OrderEntryDAO;
 import com.epam.training.epharmacy.dao.PrescriptionDAO;
+import com.epam.training.epharmacy.dao.UserDAO;
 import com.epam.training.epharmacy.dao.exception.DAOException;
 import com.epam.training.epharmacy.dao.factory.DAOFactory;
 import com.epam.training.epharmacy.entity.*;
@@ -26,6 +27,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderEntryDAO orderEntryDAO = DAOFactory.getInstance().getOrderEntryDAO();
     private final MedicineDAO medicineDAO = DAOFactory.getInstance().getMedicineDAO();
     private final PrescriptionDAO prescriptionDAO = DAOFactory.getInstance().getPrescriptionDAO();
+    private final UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
 
 
     @Override
@@ -128,13 +130,55 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getOrdersByCustomerName(String name, boolean isFindByPartialName) {
+        List<Order> orders = null;
+        List<User> users = null;
+
+        try {
+            Criteria<SearchCriteria.User> criteria = new Criteria<>();
+            criteria.getParametersMap().put(SearchCriteria.User.NAME, name);
+            users = userDAO.findUserByCriteria(criteria);
+            if (users != null && !users.isEmpty()) {
+                for (User user : users) {
+                    Criteria<SearchCriteria.Order> criteriaOrder = new Criteria<>();
+                    criteriaOrder.getParametersMap().put(SearchCriteria.Order.CLIENTS_ID, user.getId());
+
+                    orders = isFindByPartialName ?
+                            orderDAO.findOrderByCriteria(criteriaOrder, isFindByPartialName) :
+                            orderDAO.findOrderByCriteria(criteriaOrder);
+                }
+            }
+        } catch (DAOException | SQLException e){
+            LOG.error("Error during finding orders by customer name", e);
+            throw  new ServiceException(e);
+        }
+        return orders;
+    }
+
+    @Override
     public void updateOrder(Integer orderNumber, OrderStatus status) throws SQLException {
         Criteria<SearchCriteria.Order> criteria = new Criteria<>();
         criteria.getParametersMap().put(SearchCriteria.Order.NUMBER, orderNumber);
         Order order = orderDAO.findOrderByCriteria(criteria).iterator().next();
         try {
             order.setOrderStatus(status);
+            if (status.equals(OrderStatus.CANCELLED)) {
+                List<OrderEntry> entries = order.getOrderEntries();
+                if (entries != null && !entries.isEmpty()) {
+                    for (OrderEntry entry : entries){
+                        if (entry.getPrescription() != null) {
+                            Prescription prescription = entry.getPrescription();
+                            prescription.setStatus(PrescriptionStatus.NOT_USED);
+                            prescriptionDAO.updatePrescription(prescription);
+                        }
+                        Medicine medicine = findMedicineBySerialNumber(entry.getMedicine().getSerialNumber());
+                        medicine.setProductBalance(medicine.getProductBalance() + entry.getPackageAmount());
+                        medicineDAO.updateMedicine(medicine);
+                    }
+                }
+            }
             orderDAO.updateOrder(order);
+
         } catch (DAOException e) {
             LOG.error("Error during order update", e);
             throw new ServiceException(e);

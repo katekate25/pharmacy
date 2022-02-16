@@ -44,7 +44,7 @@ public class LoginCommand implements Command {
 
         } catch (ServiceException | IllegalArgumentException e){
             LOG.error("Error during logging", e);
-            resp.sendRedirect(ERROR_PAGE);
+            resp.sendRedirect(req.getContextPath() + "/controller?command=GO_TO_LOGIN_PAGE&wrongUser=true");
         }
     }
 }

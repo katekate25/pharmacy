@@ -18,7 +18,6 @@ public class ConnectionCreator {
             String driverName = (String) properties.get("db.driver");
             Class.forName(driverName);
         } catch (IOException | ClassNotFoundException e) {
-            // TODO throw custom exception
             throw new RuntimeException("Error during creating connection", e);
         }
         DATABASE_URL = (String) properties.get("db.url");
