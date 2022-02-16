@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.epam.training.epharmacy.controller.constant.ControllerConstants.ERROR_PAGE;
+import static com.epam.training.epharmacy.controller.constant.ControllerConstants.GREETING_PAGE;
+import static com.epam.training.epharmacy.controller.constant.ControllerConstants.ORDER_LIST;
 
 public class GoToOrderListCommand implements Command {
     private final Logger LOG = LogManager.getLogger(GoToPersonalCabinet.class);
@@ -40,7 +42,7 @@ public class GoToOrderListCommand implements Command {
             String customerName = req.getParameter("customerName");
 
             List<Order> orders = StringUtils.isNotBlank(customerName) ?
-                    orderService.getOrdersByCustomerName(customerName,true) :
+                    orderService.getOrdersByCustomerName(customerName) :
                     orderService.getOrdersForAdmin();
 
             req.setAttribute("orderList", orders);
@@ -48,6 +50,7 @@ public class GoToOrderListCommand implements Command {
 
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/orderCatalog.jsp");
             dispatcher.forward(req, resp);
+
         }catch (ServiceException e){
             LOG.error("Error during redirecting to order list", e);
             resp.sendRedirect(ERROR_PAGE);

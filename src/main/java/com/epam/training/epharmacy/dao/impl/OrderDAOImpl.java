@@ -41,17 +41,12 @@ public class OrderDAOImpl extends AbstractEntityDAO implements OrderDAO {
 
     @Override
     public List<Order> findOrderByCriteria(Criteria<SearchCriteria.Order> criteria) throws DAOException, SQLException {
-        return findOrderByCriteria(criteria, false);
-    }
-
-    @Override
-    public List<Order> findOrderByCriteria(Criteria<SearchCriteria.Order> criteria, boolean isUseLike) throws DAOException, SQLException {
         PreparedStatement statement = null;
         Connection connection = null;
         List<Order> orders = new ArrayList<>();
         try {
             connection = ConnectionPool.getInstance().takeConnection();
-            statement = (isUseLike) ? createLikeStatement(connection, criteria) : createStatement(connection, criteria);
+            statement = createStatement(connection, criteria);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
 

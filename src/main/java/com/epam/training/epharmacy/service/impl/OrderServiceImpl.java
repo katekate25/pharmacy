@@ -130,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrdersByCustomerName(String name, boolean isFindByPartialName) {
+    public List<Order> getOrdersByCustomerName(String name) {
         List<Order> orders = null;
         List<User> users = null;
 
@@ -143,9 +143,7 @@ public class OrderServiceImpl implements OrderService {
                     Criteria<SearchCriteria.Order> criteriaOrder = new Criteria<>();
                     criteriaOrder.getParametersMap().put(SearchCriteria.Order.CLIENTS_ID, user.getId());
 
-                    orders = isFindByPartialName ?
-                            orderDAO.findOrderByCriteria(criteriaOrder, isFindByPartialName) :
-                            orderDAO.findOrderByCriteria(criteriaOrder);
+                    orders = orderDAO.findOrderByCriteria(criteriaOrder);
                 }
             }
         } catch (DAOException | SQLException e){

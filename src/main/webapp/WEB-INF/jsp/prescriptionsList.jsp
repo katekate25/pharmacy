@@ -6,7 +6,7 @@
 
 <fmt:setLocale value="${sessionScope.local}"/>
 <fmt:setBundle basename="localization.local" var="loc"/>
-<fmt:message bundle="${loc}" key="local.type.customer.name" var="customer" />
+<fmt:message bundle="${loc}" key="local.type.login" var="customer" />
 
 <html >
     <common:head title="Prescriptions" />
@@ -49,7 +49,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                     </th>
                     <th>
                         <fmt:message bundle="${loc}" key="local.medicine.title" />
-                        <fmt:message bundle="${loc}" key="local.prescribed.amount" />уп
+
                     </th>
                     <th>
                        <fmt:message bundle="${loc}" key="local.prescription.creation.date" />
@@ -122,7 +122,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                         </th>
                                         <th>
                                             <fmt:message bundle="${loc}" key="local.medicine.title" />
-                                            <fmt:message bundle="${loc}" key="local.prescribed.amount" />уп
+
                                         </th>
                                         <th>
                                            <fmt:message bundle="${loc}" key="local.prescription.creation.date" />
@@ -196,7 +196,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
                                         </th>
                                         <th>
                                             <fmt:message bundle="${loc}" key="local.medicine.title" />
-                                            <fmt:message bundle="${loc}" key="local.prescribed.amount" />уп
+
                                         </th>
                                         <th>
                                            <fmt:message bundle="${loc}" key="local.prescription.creation.date" />

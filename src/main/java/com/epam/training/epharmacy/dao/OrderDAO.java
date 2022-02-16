@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface OrderDAO {
-    List<Order> findOrderByCriteria(Criteria<SearchCriteria.Order> criteria, boolean isUseLike) throws DAOException, SQLException;
 
     List<Order> findOrderByCriteria(Criteria<SearchCriteria.Order> criteria) throws DAOException, SQLException;
 

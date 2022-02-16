@@ -30,11 +30,10 @@
        font-style: normal;
    }
 
-     body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
-      background-size: contain;
+     body {
+ background: url(img/medical-supplies-placed-on-a-blue.jpg);
+      background-size:cover;
       margin: 0;
-          height: 100%;
-
       }
 
   </style>
@@ -72,8 +71,8 @@
                   <img src="img/teraflu.jpg" alt="" class="card-img-top">
                   <div class="card-body">
                     <h2 class="card-title" align="center">Терафлю</h2>
-                    <p class="card-text"><small>ТЕРАФЛЮ (ПОР. Д/ПРИГ. Р-РА Д/ПРИЕМА ВНУТРЬ (ЛИМОН) ПАК. №10) FAMAR ORLEANS-ФРАНЦИЯ</small></p>
-                   <a href="" class="btn btn-outline-primary btn-sm" align="center"><fmt:message bundle="${loc}" key="local.doctor.details" /></a>
+                    <p class="card-text"><small>ПОР. Д/ПРИГ. Р-РА Д/ПРИЕМА ВНУТРЬ (ЛИМОН) (ПАК. №10) FAMAR ORLEANS-ФРАНЦИЯ</small></p>
+                   <a href="http://127.0.0.1:8080/pharmacy/controller?command=SHOW_MEDICINE_DETAILS&serialNumber=17022021" class="btn btn-outline-primary btn-sm" align="center"><fmt:message bundle="${loc}" key="local.doctor.details" /></a>
 
                   </div>
                  </div>
@@ -83,8 +82,8 @@
                   <img src="img/orvis.jpg" alt="" class="card-img-top">
                   <div class="card-body">
                     <h2 class="card-title" align="center">Орвис</h2>
-                    <p class="card-text"><small>ЧАЙ (БАД) ДЛЯ ИММУНИТЕТА БЫСТРОРАСТВОРИМЫЙ В САШЕ ПО 3,0 Г №20) ЭВАЛАР ЗАО-РОССИЯ</small></p>
-                   <a href="" class="btn btn-outline-primary btn-sm"><fmt:message bundle="${loc}" key="local.doctor.details" /></a>
+                    <p class="card-text"><small>ЧАЙ ДЛЯ ИММУНИТЕТА БЫСТРОРАСТВОРИМЫЙ (В САШЕ ПО 3,0 Г №20) ЭВАЛАР-РОССИЯ</small></p>
+                   <a href="http://127.0.0.1:8080/pharmacy/controller?command=SHOW_MEDICINE_DETAILS&serialNumber=111000" class="btn btn-outline-primary btn-sm"><fmt:message bundle="${loc}" key="local.doctor.details" /></a>
 
                   </div>
                   </div>
@@ -94,8 +93,8 @@
                   <img src="img/rinocil.jpg" alt="" class="card-img-top">
                   <div class="card-body">
                     <h2 class="card-title" align="center">Риноцил</h2>
-                    <p class="card-text">РИНОЦИЛ (СПРЕЙ НАЗ. (2,5МГ/0,25МГ)/1МЛ ФЛ. 10 МЛ №1) РУБИКОН ООО-БЕЛАРУСЬ</p>
-                   <a href="" class="btn btn-outline-primary btn-sm" align="center"><small><fmt:message bundle="${loc}" key="local.doctor.details" /></small></a>
+                    <p class="card-text"><small>СПРЕЙ НАЗАЛЬНЫЙ (2,5МГ/0,25МГ)/1МЛ ФЛ. 10 МЛ №1) РУБИКОН-БЕЛАРУСЬ</small></p>
+                   <a href="http://127.0.0.1:8080/pharmacy/controller?command=SHOW_MEDICINE_DETAILS&serialNumber=1602" class="btn btn-outline-primary btn-sm" align="center"><fmt:message bundle="${loc}" key="local.doctor.details" /></a>
 
                   </div>
                  </div>

@@ -117,7 +117,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
 </div>
         </c:if>
         <c:if test="${empty orderList}">
-            <fmt:message bundle="${loc}" key="local.customer.empty" />
+            <fmt:message bundle="${loc}" key="local.not.found" />
         </c:if>
     </div>
     <common:footer />

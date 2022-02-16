@@ -45,7 +45,7 @@ public class UpdateUserProfileCommand implements Command {
             userService.updateUser(currentUser);
             HttpSession session = req.getSession(true);
             session.setAttribute("user", currentUser);
-            resp.sendRedirect(ControllerConstants.PERSONAL_CABINET);
+            resp.sendRedirect(req.getContextPath() + "/controller?command=GO_TO_PERSONAL_CABINET&successUpdate=true");
         } catch (ServiceException e){
             LOG.error("Error during updating user profile", e);
             resp.sendRedirect(ControllerConstants.ERROR_PAGE);

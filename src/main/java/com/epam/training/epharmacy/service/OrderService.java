@@ -23,7 +23,7 @@ public interface OrderService {
 
     List<Order> getOrdersForAdmin();
 
-    List<Order> getOrdersByCustomerName(String name, boolean isFindByPartialName);
+    List<Order> getOrdersByCustomerName(String name);
 
     void updateOrder(Integer orderNumber, OrderStatus status) throws SQLException;
 

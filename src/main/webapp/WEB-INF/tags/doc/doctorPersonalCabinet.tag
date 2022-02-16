@@ -35,11 +35,15 @@
    <div class="form-group">
            <label class="col-sm-2 control-label"><fmt:message bundle="${loc}" key="local.password" /></label>
            <div class="col-sm-3">
-               <input class="form-control" type="password" name="password" value="" placeholder="Enter new password">
+               <input class="form-control" type="password" minlength="5" maxlength="15" name="password" value="" placeholder="Enter new password">
            </div>
       </div>
 
+<c:if test="${param['successUpdate']}">
+      <fmt:message bundle="${loc}" key="local.update.successful" />
+</c:if>
+<br>
    <div class="form-group">
-        <button type="submit" class="btn btn-dark"/>Update</button>
+        <button type="submit" class="btn btn-dark"/><fmt:message bundle="${loc}" key="local.update" /></button>
    <div class="form-group">
 </form>

@@ -85,7 +85,7 @@ public class ConnectionPool {
             closeConnectionsQueue(givenAwayConQueue);
             closeConnectionsQueue(connectionQueue);
         } catch (SQLException e) {
-            //todo logger.log(Level.ERROR, "Error closing the connection.", e);
+            LOG.error("Error closing the connection.", e);
         }
     }
 
@@ -111,7 +111,8 @@ public class ConnectionPool {
             try {
                 autoCloseable.close();
             } catch (Exception e) {
-                //todo logger.log(Level.ERROR, "Connection isn't return to the pool.");
+                LOG.error("Connection isn't return to the pool.");
+
             }
         }
     }
