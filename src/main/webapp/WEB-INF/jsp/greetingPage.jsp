@@ -30,7 +30,7 @@
        font-style: normal;
    }
 
-     body { background: url(img/shopping-cart.jpg);
+     body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
       background-size: contain;
       margin: 0;
           height: 100%;
