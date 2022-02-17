@@ -80,7 +80,8 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             </article>
             <article class="day-forecast">
                 <h2><fmt:message bundle="${loc}" key="local.prescriptionRequired" /></h2>
-                <p><c:out value="${medicineBySeries.prescriptionRequired}" /></p>
+                <p><td class="${medicineBySeries.prescriptionRequired ? 'text-danger' : 'text-success'} font-weight-bold">
+                                               <fmt:message bundle="${loc}" key="local.${medicineBySeries.prescriptionRequired}" /></p>
             </article>
             <article class="day-forecast">
                 <h2><fmt:message bundle="${loc}" key="local.producer" /></h2>
@@ -89,7 +90,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
             </article>
             <article class="day-forecast">
                             <h2><fmt:message bundle="${loc}" key="local.diseaseGroup" /></h2>
-                            <p><c:out value="${medicineBySeries.diseaseGroup}" /></p>
+                            <p><fmt:message bundle="${loc}" key="local.${medicineBySeries.diseaseGroup}.disease.group" /></p>
                         </article>
         <c:if test="${user.userRole.name() eq 'PHARMACIST'}">
                <article class="day-forecast">

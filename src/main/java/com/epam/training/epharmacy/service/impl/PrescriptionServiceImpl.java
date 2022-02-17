@@ -96,17 +96,19 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public List<Prescription> getAllUserPrescription(String login) {
+        List<Prescription> prescriptions = null;
         try {
             Criteria<SearchCriteria.User> criteriaUser = new Criteria<>();
             criteriaUser.getParametersMap().put(SearchCriteria.User.LOGIN, login);
 
             Criteria<SearchCriteria.Prescription> criteria = new Criteria<>();
             criteria.getParametersMap().put(SearchCriteria.Prescription.CLIENT_ID, userDAO.findUserByCriteria(criteriaUser).iterator().next().getId());
-            return prescriptionDAO.findPrescriptionByCriteria(criteria);
+            prescriptions = prescriptionDAO.findPrescriptionByCriteria(criteria);
         } catch (DAOException e){
             LOG.error("Error during finding prescriptions list", e);
             throw  new ServiceException(e);
         }
+        return prescriptions;
     }
 
     @Override

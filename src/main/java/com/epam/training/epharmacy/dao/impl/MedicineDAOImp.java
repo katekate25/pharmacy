@@ -123,7 +123,7 @@ public class MedicineDAOImp extends AbstractEntityDAO implements MedicineDAO {
                         .medicineExpirationDate(rs.getDate(EXPIRATION_DATE))
                         .isPrescriptionRequired(rs.getBoolean(PRESCRIPTION_REQUIRED))
                         .packagePrice(rs.getDouble(PRICE))
-                        .producer(getProducerById(rs.getInt(PRODUCER_ID)))
+                        .producer(getProducerById(rs.getInt(PRODUCERS_ID)))
                         .serialNumber(rs.getString(SERIAL_NUMBER))
                         .productBalance(rs.getDouble(PRODUCT_BALANCE))
                         .build();

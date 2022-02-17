@@ -76,6 +76,7 @@ public class DaoConstants {
     public static final String DISEASE_GROUP_CODE = "CODE";
 
     public static final String PRODUCER_ID = "id";
+    public static final String PRODUCERS_ID = "producers_id";
     public static final String FACTORY_NAME = "factory_name";
     public static final String COUNTRY = "producer_country";
 

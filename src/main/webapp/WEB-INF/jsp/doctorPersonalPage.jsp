@@ -24,7 +24,7 @@ body { background: url(img/medical-supplies-placed-on-a-blue.jpg);
 
 
 <div class="card" style="width:400px; margin:auto" >
-  <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+  <img class="card-img-top" src="img/doc.jpg" alt="Card image">
   <div class="card-body">
     <h4 class="card-title">${recipient.fullName}</h4>
     <p class="card-text"><fmt:message bundle="${loc}" key="local.specialization" />: ${recipient.specialization} <br>
